@@ -2,6 +2,9 @@ name: Tests
 
 on: [push, pull_request]
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   test_linux:
     name: Run tests (Linux)
@@ -54,6 +57,9 @@ jobs:
   test_windows:
     name: Run tests (Windows)
     runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
     strategy:
       matrix:
         rust-version: [stable-gnu]
@@ -68,18 +74,22 @@ jobs:
           target: x86_64-pc-windows-gnu
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW64
+          msystem: MSYS
           path-type: inherit
           release: false
           update: true
           install: >-
             mingw-w64-x86_64-clang
             mingw-w64-x86_64-toolchain
+      - name: Add necessary paths
+        run: |
+          echo "C:\msys64\usr\bin" >> $GITHUB_PATH
+          echo "C:\msys64\mingw64\bin" >> $GITHUB_PATH
       - name: Build
-        run: msys2 -c 'cargo build'
+        run: cargo build --verbose
         env:
           LIBCLANG_PATH: C:\msys64\mingw64\bin
       - name: Run tests
-        run: msys2 -c 'cargo test -- --nocapture --test-threads=1'
+        run: cargo test --verbose -- --nocapture --test-threads=1
         env:
           LIBCLANG_PATH: C:\msys64\mingw64\bin
