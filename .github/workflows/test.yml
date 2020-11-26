@@ -72,10 +72,10 @@ jobs:
         run: |
           pacman -S --noconfirm mingw-w64-x86_64-clang mingw-w64-x86_64-toolchain
       - name: Build
-        run: msys2 -c 'C:/Rust/.cargo/bin/cargo build'
+        run: msys2 -c -use-full-path 'C:/Rust/.cargo/bin/cargo build'
         env:
           LIBCLANG_PATH: C:\msys64\mingw64\bin
       - name: Run tests
-        run: msys2 -c 'C:/Rust/.cargo/bin/cargo test -- --nocapture --test-threads=1'
+        run: msys2 -c -use-full-path 'C:/Rust/.cargo/bin/cargo test -- --nocapture --test-threads=1'
         env:
           LIBCLANG_PATH: C:\msys64\mingw64\bin
