@@ -91,6 +91,7 @@ jobs:
           ls "C:/msys64" | echo 
           ls "C:/msys64/mingw64/bin" | echo 
           ls "C:/msys64/usr/bin" | echo 
+          clang -v
       - name: Build
         run: cargo build --verbose
         env:
