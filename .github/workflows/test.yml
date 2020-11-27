@@ -100,6 +100,8 @@ jobs:
         run: |
           llvm-config --libdir
           llvm-config --includedir
+      - name: Is Cargo part of the path?
+        run: echo $GITHUB_PATH
       - name: Build
         run: cargo build --verbose
         env:
