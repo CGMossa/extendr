@@ -85,6 +85,7 @@ jobs:
         run: |
           echo "C:/msys64/usr/bin" >> $GITHUB_PATH
           echo "C:/msys64/mingw64/bin" >> $GITHUB_PATH
+          echo "C:/msys64/mingw64/x86_64-w64-mingw32/include" >> $GITHUB_PATH
       - name: What Clang is being used?
         run: clang -v
       - name: diagnose location of things
@@ -93,6 +94,12 @@ jobs:
           ls "C:/msys64"
           ls "C:/msys64/mingw64/bin" 
           ls "C:/msys64/usr/bin"
+      - name: Which Cargo?
+        run: where cargo
+      - name: llvm-config stuff
+        run: |
+          llvm-config --libdir
+          llvm-config --includedir
       - name: Build
         run: cargo build --verbose
         env:
