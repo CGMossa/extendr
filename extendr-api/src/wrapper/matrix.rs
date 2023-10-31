@@ -39,7 +39,7 @@ pub type RMatrix<T> = RArray<T, [usize; 2]>;
 pub type RMatrix3D<T> = RArray<T, [usize; 3]>;
 // impl<'a, T> RMatrix<T>
 // where
-//     T::ScalarType: ToVectorValue,
+//     T::ScalarType: ToVectorValue  'a,
 //     // Robj: AsTypedSlice<'a, T::ScalarType>
 //     Robj: AsTypedSlice<'a, T>,
 //     T: RTypeAssoc + 'a,
