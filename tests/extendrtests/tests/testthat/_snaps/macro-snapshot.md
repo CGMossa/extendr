@@ -440,7 +440,7 @@
                       drop(unwind_err);
                       let err_string = {
                           let res = ::alloc::fmt::format(
-                              format_args!("user function panicked: {0}", "me"),
+                              format_args!("user function panicked: {0}", "me_owned"),
                           );
                           res
                       };
@@ -525,7 +525,7 @@
                       drop(unwind_err);
                       let err_string = {
                           let res = ::alloc::fmt::format(
-                              format_args!("user function panicked: {0}\0", "me_ref"),
+                              format_args!("user function panicked: {0}", "me_ref"),
                           );
                           res
                       };
@@ -608,7 +608,7 @@
                       drop(unwind_err);
                       let err_string = {
                           let res = ::alloc::fmt::format(
-                              format_args!("user function panicked: {0}\0", "me_mut"),
+                              format_args!("user function panicked: {0}", "me_mut"),
                           );
                           res
                       };
@@ -691,7 +691,7 @@
                       drop(unwind_err);
                       let err_string = {
                           let res = ::alloc::fmt::format(
-                              format_args!("user function panicked: {0}\0", "me_explicit_ref"),
+                              format_args!("user function panicked: {0}", "me_explicit_ref"),
                           );
                           res
                       };
@@ -776,7 +776,7 @@
                       drop(unwind_err);
                       let err_string = {
                           let res = ::alloc::fmt::format(
-                              format_args!("user function panicked: {0}\0", "me_explicit_mut"),
+                              format_args!("user function panicked: {0}", "me_explicit_mut"),
                           );
                           res
                       };
@@ -1067,7 +1067,7 @@
               > = unsafe {
                   let _a_robj = extendr_api::robj::Robj::from_sexp(a);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok(extendr_api::Robj::from(euclidean_dist(_a_robj.try_into()?)))
+                      Ok((euclidean_dist(_a_robj.try_into()?)).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1262,7 +1262,7 @@
               > = unsafe {
                   let _input_robj = extendr_api::robj::Robj::from_sexp(input);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok(extendr_api::Robj::from(type_aware_sum(_input_robj.try_into()?)))
+                      Ok((type_aware_sum(_input_robj.try_into()?)).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1433,11 +1433,7 @@
               > = unsafe {
                   let _type_robj = extendr_api::robj::Robj::from_sexp(r#type);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok(
-                          extendr_api::Robj::from(
-                              raw_identifier_in_fn_args(_type_robj.try_into()?),
-                          ),
-                      )
+                      Ok((raw_identifier_in_fn_args(_type_robj.try_into()?)).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1522,7 +1518,7 @@
                   Box<dyn std::any::Any + Send>,
               > = unsafe {
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok(extendr_api::Robj::from(r#true()))
+                      Ok((r#true()).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1597,7 +1593,7 @@
               > = unsafe {
                   let _type_robj = extendr_api::robj::Robj::from_sexp(r#type);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok(extendr_api::Robj::from(r#false(_type_robj.try_into()?)))
+                      Ok((r#false(_type_robj.try_into()?)).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1947,12 +1943,11 @@
                   let _x_robj = extendr_api::robj::Robj::from_sexp(x);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                       Ok(
-                          extendr_api::Robj::from(
-                              leak_arg2_try_implicit_strings(
-                                  __y_robj.try_into()?,
-                                  _x_robj.try_into()?,
-                              ),
-                          ),
+                          (leak_arg2_try_implicit_strings(
+                              __y_robj.try_into()?,
+                              _x_robj.try_into()?,
+                          ))
+                              .try_into()?,
                       )
                   })
               };
@@ -2048,12 +2043,11 @@
                   let _x_robj = extendr_api::robj::Robj::from_sexp(x);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                       Ok(
-                          extendr_api::Robj::from(
-                              leak_arg2_try_implicit_doubles(
-                                  __y_robj.try_into()?,
-                                  _x_robj.try_into()?,
-                              ),
-                          ),
+                          (leak_arg2_try_implicit_doubles(
+                              __y_robj.try_into()?,
+                              _x_robj.try_into()?,
+                          ))
+                              .try_into()?,
                       )
                   })
               };
@@ -3686,7 +3680,7 @@
               Box<dyn std::any::Any + Send>,
           > = unsafe {
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(try_rfloat_na()))
+                  Ok((try_rfloat_na()).try_into()?)
               })
           };
           match wrap_result_state {
@@ -3756,7 +3750,7 @@
               Box<dyn std::any::Any + Send>,
           > = unsafe {
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(try_rint_na()))
+                  Ok((try_rint_na()).try_into()?)
               })
           };
           match wrap_result_state {
@@ -3827,7 +3821,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(check_rfloat_na(_x_robj.try_into()?)))
+                  Ok((check_rfloat_na(_x_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -3907,7 +3901,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(check_rint_na(_x_robj.try_into()?)))
+                  Ok((check_rint_na(_x_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -3987,7 +3981,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(try_double_vec(_x_robj.try_into()?)))
+                  Ok((try_double_vec(_x_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4072,9 +4066,8 @@
               let _i_robj = extendr_api::robj::Robj::from_sexp(i);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                   Ok(
-                      extendr_api::Robj::from(
-                          get_doubles_element(_x_robj.try_into()?, _i_robj.try_into()?),
-                      ),
+                      (get_doubles_element(_x_robj.try_into()?, _i_robj.try_into()?))
+                          .try_into()?,
                   )
               })
           };
@@ -4165,9 +4158,8 @@
               let _i_robj = extendr_api::robj::Robj::from_sexp(i);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                   Ok(
-                      extendr_api::Robj::from(
-                          get_integers_element(_x_robj.try_into()?, _i_robj.try_into()?),
-                      ),
+                      (get_integers_element(_x_robj.try_into()?, _i_robj.try_into()?))
+                          .try_into()?,
                   )
               })
           };
@@ -4258,9 +4250,8 @@
               let _i_robj = extendr_api::robj::Robj::from_sexp(i);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                   Ok(
-                      extendr_api::Robj::from(
-                          get_logicals_element(_x_robj.try_into()?, _i_robj.try_into()?),
-                      ),
+                      (get_logicals_element(_x_robj.try_into()?, _i_robj.try_into()?))
+                          .try_into()?,
                   )
               })
           };
@@ -4350,7 +4341,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(doubles_square(_input_robj.try_into()?)))
+                  Ok((doubles_square(_input_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4434,7 +4425,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(complexes_square(_input_robj.try_into()?)))
+                  Ok((complexes_square(_input_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4518,7 +4509,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(integers_square(_input_robj.try_into()?)))
+                  Ok((integers_square(_input_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4602,7 +4593,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(logicals_not(_input_robj.try_into()?)))
+                  Ok((logicals_not(_input_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4682,7 +4673,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(check_default(_x_robj.try_into()?)))
+                  Ok((check_default(_x_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4937,7 +4928,7 @@
               Box<dyn std::any::Any + Send>,
           > = unsafe {
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(test_rename()))
+                  Ok((test_rename()).try_into()?)
               })
           };
           match wrap_result_state {
@@ -5088,7 +5079,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(extendr_api::Robj::from(add_5_if_not_null(_x_robj.try_into()?)))
+                  Ok((add_5_if_not_null(_x_robj.try_into()?)).try_into()?)
               })
           };
           match wrap_result_state {
