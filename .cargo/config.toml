@@ -1,4 +1,6 @@
 [alias]
 extendr = "run --package xtask --"
+[env]
+RUST_BACKTRACE = "1"
 [patch.crates-io]
 # libR-sys = { git = "https://github.com/extendr/libR-sys", branch = "master" }
