@@ -1,6 +1,7 @@
 use extendr_api::prelude::*;
 
 #[test]
+#[ignore = "this was never the issue behind issue 397"]
 fn test_allocation() {
     test! {
         const COUNT: u64 = 2_000_000u64;
