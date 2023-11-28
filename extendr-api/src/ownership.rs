@@ -20,13 +20,17 @@ use libR_sys::{
 static OWNERSHIP: Lazy<Mutex<Ownership>> = Lazy::new(|| Mutex::new(Ownership::new()));
 
 pub(crate) unsafe fn protect(sexp: SEXP) {
-    let mut own = OWNERSHIP.lock().expect("protect failed");
-    own.protect(sexp);
+    if sexp != R_NilValue {
+        let mut own = OWNERSHIP.lock().expect("protect failed");
+        own.protect(sexp);
+    }
 }
 
 pub(crate) unsafe fn unprotect(sexp: SEXP) {
-    let mut own = OWNERSHIP.lock().expect("unprotect failed");
-    own.unprotect(sexp);
+    if sexp != R_NilValue {
+        let mut own = OWNERSHIP.lock().expect("unprotect failed");
+        own.unprotect(sexp);
+    }
 }
 
 pub const INITIAL_PRESERVATION_SIZE: usize = 100000;
