@@ -17,7 +17,7 @@ where
     F: FnOnce() -> R,
 {
     // `parking_lot`'s Mutex is without poisoning, and reentrant mutex is useful
-    // when there are nested calls to `single_threaded`. 
+    // when there are nested calls to `single_threaded`.
     let _guard = R_API_LOCK.lock();
     f()
 }
