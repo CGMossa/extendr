@@ -62,7 +62,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
+      
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@master
         with:
@@ -170,6 +170,8 @@ jobs:
             # Note: no feature is specified, which means such features like graphics, serde, ndarray, and num-complex are not tested here. 
             ci-cargo test $(if($target -ne 'default') {"--target=$target"} ) '--' --nocapture -ActionName "Testing for $target target"
           }
+        env:
+          RUST_BACKTRACE: 1
 
       # c.f. https://github.com/actions/checkout#checkout-multiple-repos-side-by-side
       - name: Obtain 'rextendr'
