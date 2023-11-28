@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["to_robj"],"struct":["RobjSerializer","SerializeMap","SerializeSeq","SerializeStruct","SerializeStructVariant","SerializeTuple","SerializeTupleStruct","SerializeTupleVariant"]};

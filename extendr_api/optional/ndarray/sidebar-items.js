@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["make_array_view_1","make_array_view_2"]};
