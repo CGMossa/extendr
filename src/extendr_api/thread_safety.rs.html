@@ -124,7 +124,7 @@
     </span>F: FnOnce() -&gt; R,
 {
     <span class="comment">// `parking_lot`&#39;s Mutex is without poisoning, and reentrant mutex is useful
-    // when there are nested calls to `single_threaded`. 
+    // when there are nested calls to `single_threaded`.
     </span><span class="kw">let </span>_guard = R_API_LOCK.lock();
     f()
 }
