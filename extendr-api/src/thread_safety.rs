@@ -1,16 +1,10 @@
 //! Provide limited protection for multithreaded access to the R API.
 
 use crate::*;
-use std::cell::Cell;
-use std::sync::Mutex;
 
 /// A global lock, that should represent the global lock on the R-API.
 /// It is not tied to an actual instance of R.
-static R_API_LOCK: Mutex<()> = Mutex::new(());
-
-thread_local! {
-    static THREAD_HAS_LOCK: Cell<bool> = Cell::new(false);
-}
+static R_API_LOCK: parking_lot::ReentrantMutex<()> = parking_lot::ReentrantMutex::new(());
 
 /// Run `f` while ensuring that `f` runs in a single-threaded manner.
 ///
@@ -22,26 +16,10 @@ pub fn single_threaded<F, R>(f: F) -> R
 where
     F: FnOnce() -> R,
 {
-    let has_lock = THREAD_HAS_LOCK.with(|x| x.get());
-
-    // acquire R-API lock
-    let _guard = if !has_lock {
-        Some(R_API_LOCK.lock().unwrap())
-    } else {
-        None
-    };
-
-    // this thread now has the lock
-    THREAD_HAS_LOCK.with(|x| x.set(true));
-
-    let result = f();
-
-    // release the R-API lock
-    if _guard.is_some() {
-        THREAD_HAS_LOCK.with(|x| x.set(false));
-    }
-
-    result
+    // `parking_lot`'s Mutex is without poisoning, and reentrant mutex is useful
+    // when there are nested calls to `single_threaded`. 
+    let _guard = R_API_LOCK.lock();
+    f()
 }
 
 /// This function is used by the wrapper logic to catch
