@@ -334,6 +334,10 @@
 <a href="#334" id="334">334</a>
 <a href="#335" id="335">335</a>
 <a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Maintain ownership of R objects.
 //!
 //! This provides the functions [protect] and [unprotect].
@@ -356,13 +360,17 @@
 <span class="kw">static </span>OWNERSHIP: Lazy&lt;Mutex&lt;Ownership&gt;&gt; = Lazy::new(|| Mutex::new(Ownership::new()));
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>protect(sexp: SEXP) {
-    <span class="kw">let </span><span class="kw-2">mut </span>own = OWNERSHIP.lock().expect(<span class="string">&quot;protect failed&quot;</span>);
-    own.protect(sexp);
+    <span class="kw">if </span>sexp != R_NilValue {
+        <span class="kw">let </span><span class="kw-2">mut </span>own = OWNERSHIP.lock().expect(<span class="string">&quot;protect failed&quot;</span>);
+        own.protect(sexp);
+    }
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>unprotect(sexp: SEXP) {
-    <span class="kw">let </span><span class="kw-2">mut </span>own = OWNERSHIP.lock().expect(<span class="string">&quot;unprotect failed&quot;</span>);
-    own.unprotect(sexp);
+    <span class="kw">if </span>sexp != R_NilValue {
+        <span class="kw">let </span><span class="kw-2">mut </span>own = OWNERSHIP.lock().expect(<span class="string">&quot;unprotect failed&quot;</span>);
+        own.unprotect(sexp);
+    }
 }
 
 <span class="kw">pub const </span>INITIAL_PRESERVATION_SIZE: usize = <span class="number">100000</span>;
