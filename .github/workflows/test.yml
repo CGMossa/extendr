@@ -15,6 +15,9 @@ on:
 # ci-cargo does not handle correctly -- separator, so wrap it in quotes ('--')
 # A special named parameter called `ActionName` can be used to set the name of current ci-cargo action,
 # used as `ci-cargo .... -ActionName "Called for documentation purposes"`.
+env: 
+  ACTIONS_STEP_DEBUG: true
+
 jobs:
   # All tests under this job are run with pre-computed libR-sys bindings.
   tests_no_bindgen:
