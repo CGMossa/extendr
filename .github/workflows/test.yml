@@ -261,6 +261,7 @@ jobs:
   #  > https://github.com/rust-lang/rust/issues/64245
   #  > https://github.com/rust-lang/cargo/issues/7040
   bindgen:
+    if: false # disable this while fixing the mess above
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} w/ bindgen (R-${{ matrix.config.r }} rust-${{ matrix.config.rust-version }} ${{join(matrix.config.rust-targets, ',')}})
