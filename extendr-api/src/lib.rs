@@ -497,30 +497,54 @@ pub unsafe fn register_call_methods(info: *mut libR_sys::DllInfo, metadata: Meta
 /// Type of R objects used by [Robj::rtype].
 #[derive(Debug, PartialEq)]
 pub enum Rtype {
-    Null,        // NILSXP
-    Symbol,      // SYMSXP
-    Pairlist,    // LISTSXP
-    Function,    // CLOSXP
-    Environment, // ENVSXP
-    Promise,     // PROMSXP
-    Language,    // LANGSXP
-    Special,     // SPECIALSXP
-    Builtin,     // BUILTINSXP
-    Rstr,        // CHARSXP
-    Logicals,    // LGLSXP
-    Integers,    // INTSXP
-    Doubles,     // REALSXP
-    Complexes,   // CPLXSXP
-    Strings,     // STRSXP
-    Dot,         // DOTSXP
-    Any,         // ANYSXP
-    List,        // VECSXP
-    Expressions, // EXPRSXP
-    Bytecode,    // BCODESXP
-    ExternalPtr, // EXTPTRSXP
-    WeakRef,     // WEAKREFSXP
-    Raw,         // RAWSXP
-    S4,          // S4SXP
+    /// R-internal name: `NILSXP`
+    Null,
+    /// R-internal name: `SYMSXP`
+    Symbol,
+    /// R-internal name: `LISTSXP`
+    Pairlist,
+    /// R-internal name: `CLOSXP`
+    Function,
+    /// R-internal name: `ENVSXP`
+    Environment,
+    /// R-internal name: `PROMSXP`
+    Promise,
+    /// R-internal name: `LANGSXP`
+    Language,
+    /// R-internal name: `SPECIALSXP`
+    Special,
+    /// R-internal name: `BUILTINSXP`
+    Builtin,
+    /// R-internal name: `CHARSXP`
+    Rstr,
+    /// R-internal name: `LGLSXP`
+    Logicals,
+    /// R-internal name: `INTSXP`
+    Integers,
+    /// R-internal name: `REALSXP`
+    Doubles,
+    /// R-internal name: `CPLXSXP`
+    Complexes,
+    /// R-internal name: `STRSXP`
+    Strings,
+    /// R-internal name: `DOTSXP`
+    Dot,
+    /// R-internal name: `ANYSXP`
+    Any,
+    /// R-internal name: `VECSXP`
+    List,
+    /// R-internal name: `EXPRSXP`
+    Expressions,
+    /// R-internal name: `BCODESXP`
+    Bytecode,
+    /// R-internal name: `EXTPTRSXP`
+    ExternalPtr,
+    /// R-internal name: `WEAKREFSXP`
+    WeakRef,
+    /// R-internal name: `RAWSXP`
+    Raw,
+    /// R-internal name: `S4SXP`
+    S4,
     Unknown,
 }
 
@@ -529,34 +553,58 @@ pub enum Rtype {
 // Note: this only works if the wrappers are all just SEXPs.
 #[derive(Debug, PartialEq)]
 pub enum Rany<'a> {
-    Null(&'a Robj),               // NILSXP
-    Symbol(&'a Symbol),           // SYMSXP
-    Pairlist(&'a Pairlist),       // LISTSXP
-    Function(&'a Function),       // CLOSXP
-    Environment(&'a Environment), // ENVSXP
-    Promise(&'a Promise),         // PROMSXP
-    Language(&'a Language),       // LANGSXP
-    Special(&'a Primitive),       // SPECIALSXP
-    Builtin(&'a Primitive),       // BUILTINSXP
-    Rstr(&'a Rstr),               // CHARSXP
-    Logicals(&'a Logicals),       // LGLSXP
-    Integers(&'a Integers),       // INTSXP
-    Doubles(&'a Doubles),         // REALSXP
-    Complexes(&'a Complexes),     // CPLXSXP
-    Strings(&'a Strings),         // STRSXP
-    Dot(&'a Robj),                // DOTSXP
-    Any(&'a Robj),                // ANYSXP
-    List(&'a List),               // VECSXP
-    Expressions(&'a Expressions), // EXPRSXP
-    Bytecode(&'a Robj),           // BCODESXP
-    ExternalPtr(&'a Robj),        // EXTPTRSXP
-    WeakRef(&'a Robj),            // WEAKREFSXP
-    Raw(&'a Raw),                 // RAWSXP
-    S4(&'a S4),                   // S4SXP
+    /// R-internal name: `NILSXP`
+    Null(&'a Robj),
+    /// R-internal name: `SYMSXP`
+    Symbol(&'a Symbol),
+    /// R-internal name: `LISTSXP`
+    Pairlist(&'a Pairlist),
+    /// R-internal name: `CLOSXP`
+    Function(&'a Function),
+    /// R-internal name: `ENVSXP`
+    Environment(&'a Environment),
+    /// R-internal name: `PROMSXP`
+    Promise(&'a Promise),
+    /// R-internal name: `LANGSXP`
+    Language(&'a Language),
+    /// R-internal name: `SPECIALSXP`
+    Special(&'a Primitive),
+    /// R-internal name: `BUILTINSXP`
+    Builtin(&'a Primitive),
+    /// R-internal name: `CHARSXP`
+    Rstr(&'a Rstr),
+    /// R-internal name: `LGLSXP`
+    Logicals(&'a Logicals),
+    /// R-internal name: `INTSXP`
+    Integers(&'a Integers),
+    /// R-internal name: `REALSXP`
+    Doubles(&'a Doubles),
+    /// R-internal name: `CPLXSXP`
+    Complexes(&'a Complexes),
+    /// R-internal name: `STRSXP`
+    Strings(&'a Strings),
+    /// R-internal name: `DOTSXP`
+    Dot(&'a Robj),
+    /// R-internal name: `ANYSXP`
+    Any(&'a Robj),
+    /// R-internal name: `VECSXP`
+    List(&'a List),
+    /// R-internal name: `EXPRSXP`
+    Expressions(&'a Expressions),
+    /// R-internal name: `BCODESXP`
+    Bytecode(&'a Robj),
+    /// R-internal name: `EXTPTRSXP`
+    ExternalPtr(&'a Robj),
+    /// R-internal name: `WEAKREFSXP`
+    WeakRef(&'a Robj),
+    /// R-internal name: `RAWSXP`
+    Raw(&'a Raw),
+    /// R-internal name: `S4SXP`
+    S4(&'a S4),
     Unknown(&'a Robj),
 }
 
-/// Convert extendr's Rtype to R's SEXPTYPE.
+/// Convert extendr's [Rtype] to R's [SEXPTYPE].
 /// Panics if the type is Unknown.
 pub fn rtype_to_sxp(rtype: Rtype) -> i32 {
     use Rtype::*;
@@ -589,7 +637,7 @@ pub fn rtype_to_sxp(rtype: Rtype) -> i32 {
     }) as i32
 }
 
-/// Convert R's SEXPTYPE to extendr's Rtype.
+/// Convert R's [SEXPTYPE] to extendr's [Rtype].
 pub fn sxp_to_rtype(sxptype: i32) -> Rtype {
     use Rtype::*;
     match sxptype as u32 {
