@@ -1652,17 +1652,17 @@
 </span><span class="attr">#[doc(hidden)]
 </span><span class="kw">pub fn </span>print_r_output&lt;T: Into&lt;Vec&lt;u8&gt;&gt;&gt;(s: T) {
     <span class="kw">let </span>cs = CString::new(s).expect(<span class="string">"NulError"</span>);
-    <span class="kw">unsafe </span>{
+    single_threaded(|| <span class="kw">unsafe </span>{
         Rprintf(PRINTF_NO_FMT_CSTRING.as_ptr(), cs.as_ptr());
-    }
+    })
 }
 
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">pub fn </span>print_r_error&lt;T: Into&lt;Vec&lt;u8&gt;&gt;&gt;(s: T) {
     <span class="kw">let </span>cs = CString::new(s).expect(<span class="string">"NulError"</span>);
-    <span class="kw">unsafe </span>{
+    single_threaded(|| <span class="kw">unsafe </span>{
         REprintf(PRINTF_NO_FMT_CSTRING.as_ptr(), cs.as_ptr());
-    }
+    })
 }
 
 <span class="attr">#[cfg(test)]

@@ -474,7 +474,7 @@
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>make_symbol(name: <span class="kw-2">&amp;</span>str) -&gt; SEXP {
     <span class="kw">let </span>name = CString::new(name).unwrap();
-    <span class="kw">unsafe </span>{ libR_sys::Rf_install(name.as_ptr()) }
+    single_threaded(|| <span class="kw">unsafe </span>{ libR_sys::Rf_install(name.as_ptr()) })
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>make_vector&lt;T&gt;(sexptype: u32, values: T) -&gt; Robj
