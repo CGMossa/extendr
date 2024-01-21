@@ -650,7 +650,7 @@ where
     &'a T: ToVectorValue + 'a,
 {
     fn from(val: &'a [T; N]) -> Self {
-        fixed_size_collect(val.into_iter(), N)
+        fixed_size_collect(val.iter(), N)
     }
 }
 
@@ -660,7 +660,7 @@ where
     &'a mut T: ToVectorValue + 'a,
 {
     fn from(val: &'a mut [T; N]) -> Self {
-        fixed_size_collect(val.into_iter(), N)
+        fixed_size_collect(val.iter_mut(), N)
     }
 }
 
@@ -685,7 +685,7 @@ where
     &'a T: ToVectorValue,
 {
     fn from(val: &'a [T]) -> Self {
-        val.into_iter().collect_robj()
+        val.iter().collect_robj()
     }
 }
 
@@ -702,7 +702,7 @@ impl From<Vec<Robj>> for Robj {
 impl From<Vec<Rstr>> for Robj {
     /// Convert a vector of Rstr into strings.
     fn from(val: Vec<Rstr>) -> Self {
-        Strings::from_values(val.into_iter()).into()
+        Strings::from_values(val).into()
     }
 }
 
