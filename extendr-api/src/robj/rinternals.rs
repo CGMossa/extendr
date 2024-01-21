@@ -15,7 +15,7 @@ pub trait Rinternals: Types + Conversions {
         unsafe { Rf_isSymbol(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is a boolean (logical) vector
+    /// Return `true` if this is a boolean (`logical`) vector
     fn is_logical(&self) -> bool {
         unsafe { Rf_isLogical(self.get()) == Rboolean_TRUE }
     }
@@ -87,12 +87,12 @@ pub trait Rinternals: Types + Conversions {
         })
     }
 
-    /// Convert a pairlist (LISTSXP) to a vector list (VECSXP).
+    /// Convert a pairlist (`LISTSXP`) to a vector list (`VECSXP`).
     fn pair_to_vector_list(&self) -> Robj {
         single_threaded(|| unsafe { Robj::from_sexp(Rf_PairToVectorList(self.get())) })
     }
 
-    /// Convert a vector list (VECSXP) to a pair list (LISTSXP)
+    /// Convert a vector list (`VECSXP`) to a pair list (`LISTSXP`)
     fn vector_to_pair_list(&self) -> Robj {
         single_threaded(|| unsafe { Robj::from_sexp(Rf_VectorToPairList(self.get())) })
     }
@@ -115,7 +115,7 @@ pub trait Rinternals: Types + Conversions {
 
     /// Find a function in an environment ignoring other variables.
     ///
-    /// This evaulates promises if they are found.
+    /// This evaluates promises if they are found.
     ///
     /// See also [global_function()].
     /// ```
@@ -161,7 +161,7 @@ pub trait Rinternals: Types + Conversions {
 
     /// Find a variable in an environment.
     ///
-    /// See also [global_var()].
+    /// See also [`global_var()`].
     ///
     /// Note that many common variables and functions are contained in promises
     /// which must be evaluated and this function may throw an R error.
@@ -182,7 +182,7 @@ pub trait Rinternals: Types + Conversions {
         if !self.is_environment() {
             return Err(Error::NotFound(key.into()));
         }
-        // Alterative:
+        // Alternative:
         // let mut env: Robj = self.into();
         // loop {
         //     if let Some(var) = env.local(&key) {
@@ -316,22 +316,22 @@ pub trait Rinternals: Types + Conversions {
         unsafe { Rf_isFrame(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is a function or a primitive (CLOSXP, BUILTINSXP or SPECIALSXP)
+    /// Return `true` if this is a function or a primitive (`CLOSXP`, `BUILTINSXP` or `SPECIALSXP`)
     fn is_function(&self) -> bool {
         unsafe { Rf_isFunction(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is an integer vector (INTSXP) but not a factor.
+    /// Return `true` if this is an integer vector (`INTSXP`) but not a factor.
     fn is_integer(&self) -> bool {
         unsafe { Rf_isInteger(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is a language object (LANGSXP).
+    /// Return `true` if this is a language object (`LANGSXP`).
     fn is_language(&self) -> bool {
         unsafe { Rf_isLanguage(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is NILSXP or LISTSXP.
+    /// Return `true` if this is `NILSXP` or `LISTSXP`.
     fn is_pairlist(&self) -> bool {
         unsafe { Rf_isList(self.get()) == Rboolean_TRUE }
     }
@@ -341,17 +341,17 @@ pub trait Rinternals: Types + Conversions {
         unsafe { Rf_isMatrix(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is NILSXP or VECSXP.
+    /// Return `true` if this is `NILSXP` or `VECSXP`.
     fn is_list(&self) -> bool {
         unsafe { Rf_isNewList(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is INTSXP, LGLSXP or REALSXP but not a factor.
+    /// Return `true` if this is `INTSXP`, `LGLSXP` or `REALSXP` but not a factor.
     fn is_number(&self) -> bool {
         unsafe { Rf_isNumber(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return `true` if this is a primitive function BUILTINSXP, SPECIALSXP.
+    /// Return `true` if this is a primitive function `BUILTINSXP`, `SPECIALSXP`.
     fn is_primitive(&self) -> bool {
         unsafe { Rf_isPrimitive(self.get()) == Rboolean_TRUE }
     }
