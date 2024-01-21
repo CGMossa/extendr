@@ -115,7 +115,7 @@ pub trait AltrepImpl: Clone + std::fmt::Debug {
 
     /// Get the data pointer for this vector, possibly expanding the
     /// compact representation into a full R vector.
-    fn dataptr(x: SEXP, _writeable: bool) -> *mut u8 {
+    unsafe fn dataptr(x: SEXP, _writeable: bool) -> *mut u8 {
         single_threaded(|| unsafe {
             let data2 = R_altrep_data2(x);
             if data2 == R_NilValue || TYPEOF(data2) != TYPEOF(x) {
@@ -130,7 +130,7 @@ pub trait AltrepImpl: Clone + std::fmt::Debug {
 
     /// Get the data pointer for this vector, returning NULL
     /// if the object is unmaterialized.
-    fn dataptr_or_null(x: SEXP) -> *const u8 {
+    unsafe fn dataptr_or_null(x: SEXP) -> *const u8 {
         unsafe {
             let data2 = R_altrep_data2(x);
             if data2 == R_NilValue || TYPEOF(data2) != TYPEOF(x) {
@@ -565,8 +565,8 @@ impl Altrep {
                 Robj::from_sexp(class),
                 Robj::from_sexp(state),
                 Robj::from_sexp(attr),
-                objf as i32,
-                levs as i32,
+                objf,
+                levs,
             )
             .get()
         }
@@ -1045,8 +1045,7 @@ impl Altrep {
                 i: R_xlen_t,
                 v: SEXP,
             ) {
-                Altrep::get_state_mut::<StateType>(x)
-                    .set_elt(i as usize, Robj::from_sexp(v).try_into().unwrap())
+                Altrep::get_state_mut::<StateType>(x).set_elt(i as usize, Robj::from_sexp(v))
             }
 
             R_set_altlist_Elt_method(class_ptr, Some(altlist_Elt::<StateType>));
