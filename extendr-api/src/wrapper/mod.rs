@@ -59,7 +59,7 @@ pub use symbol::Symbol;
 
 pub(crate) fn make_symbol(name: &str) -> SEXP {
     let name = CString::new(name).unwrap();
-    unsafe { libR_sys::Rf_install(name.as_ptr()) }
+    single_threaded(|| unsafe { libR_sys::Rf_install(name.as_ptr()) })
 }
 
 pub(crate) fn make_vector<T>(sexptype: u32, values: T) -> Robj
