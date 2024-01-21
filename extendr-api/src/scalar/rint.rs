@@ -64,7 +64,15 @@ impl Rint {
     }
 }
 
-gen_trait_impl!(Rint, i32, |x: &Rint| x.0 == i32::MIN, i32::MIN);
+mod rint_helpers {
+    use super::*;
+
+    pub fn check_na(x: &Rint) -> bool {
+        x.0 == i32::MIN
+    }
+}
+
+gen_trait_impl!(Rint, i32, rint_helpers::check_na, i32::MIN);
 gen_from_primitive!(Rint, i32);
 
 impl From<Rint> for Option<i32> {
