@@ -431,6 +431,11 @@
 <a href="#429" id="429">429</a>
 <a href="#430" id="430">430</a>
 <a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Wrappers for matrices with deferred arithmetic.
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -524,9 +529,14 @@
         <span class="self">Self </span>{ robj, data, dim }
     }
 
-    <span class="doccomment">/// Get the underlying data fro this array.
+    <span class="doccomment">/// Get the underlying data from this array.
     </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
         <span class="kw">unsafe </span>{ std::slice::from_raw_parts(<span class="self">self</span>.data, <span class="self">self</span>.robj.len()) }
+    }
+
+    <span class="doccomment">/// Get mutable access to the underlying data
+    </span><span class="kw">pub fn </span>data_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
+        <span class="kw">unsafe </span>{ std::slice::from_raw_parts_mut(<span class="self">self</span>.data, <span class="self">self</span>.robj.len()) }
     }
 
     <span class="doccomment">/// Get the dimensions for this array.

@@ -507,60 +507,60 @@
 </span><span class="kw">pub trait </span>Rinternals: Types + Conversions {
     <span class="doccomment">/// Return true if this is the null object.
     </span><span class="kw">fn </span>is_null(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isNull(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isNull(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a symbol.
+    <span class="doccomment">/// Return `true` if this is a symbol.
     </span><span class="kw">fn </span>is_symbol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isSymbol(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isSymbol(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a boolean (logical) vector
+    <span class="doccomment">/// Return `true` if this is a boolean (logical) vector
     </span><span class="kw">fn </span>is_logical(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isLogical(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isLogical(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a real (f64) vector.
+    <span class="doccomment">/// Return `true` if this is a real (`f64`) vector.
     </span><span class="kw">fn </span>is_real(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isReal(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isReal(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a complex vector.
+    <span class="doccomment">/// Return `true` if this is a complex vector.
     </span><span class="kw">fn </span>is_complex(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isComplex(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isComplex(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an expression.
+    <span class="doccomment">/// Return `true` if this is an expression.
     </span><span class="kw">fn </span>is_expressions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isExpression(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isExpression(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an environment.
+    <span class="doccomment">/// Return `true` if this is an environment.
     </span><span class="kw">fn </span>is_environment(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isEnvironment(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isEnvironment(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an environment.
+    <span class="doccomment">/// Return `true` if this is an environment.
     </span><span class="kw">fn </span>is_promise(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.sexptype() == PROMSXP
     }
 
-    <span class="doccomment">/// Return true if this is a string.
+    <span class="doccomment">/// Return `true` if this is a string.
     </span><span class="kw">fn </span>is_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isString(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isString(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an object (ie. has a class attribute).
+    <span class="doccomment">/// Return `true` if this is an object (ie. has a class attribute).
     </span><span class="kw">fn </span>is_object(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isObject(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isObject(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a S4 object.
+    <span class="doccomment">/// Return `true` if this is a S4 object.
     </span><span class="kw">fn </span>is_s4(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isS4(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isS4(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an expression.
+    <span class="doccomment">/// Return `true` if this is an expression.
     </span><span class="kw">fn </span>is_external_pointer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.rtype() == Rtype::ExternalPtr
     }
@@ -796,112 +796,112 @@
         single_threaded(|| <span class="kw">unsafe </span>{ Robj::from_sexp(Rf_allocVector(sexptype, len <span class="kw">as </span>R_xlen_t)) })
     }
 
-    <span class="doccomment">/// Return true if two arrays have identical dims.
+    <span class="doccomment">/// Return `true` if two arrays have identical dims.
     </span><span class="kw">fn </span>conformable(a: <span class="kw-2">&amp;</span>Robj, b: <span class="kw-2">&amp;</span>Robj) -&gt; bool {
-        single_threaded(|| <span class="kw">unsafe </span>{ Rf_conformable(a.get(), b.get()) != <span class="number">0 </span>})
+        single_threaded(|| <span class="kw">unsafe </span>{ Rf_conformable(a.get(), b.get()) == Rboolean_TRUE })
     }
 
-    <span class="doccomment">/// Return true if this is an array.
+    <span class="doccomment">/// Return `true` if this is an array.
     </span><span class="kw">fn </span>is_array(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isArray(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isArray(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is factor.
+    <span class="doccomment">/// Return `true` if this is factor.
     </span><span class="kw">fn </span>is_factor(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isFactor(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isFactor(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a data frame.
+    <span class="doccomment">/// Return `true` if this is a data frame.
     </span><span class="kw">fn </span>is_frame(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isFrame(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isFrame(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a function or a primitive (CLOSXP, BUILTINSXP or SPECIALSXP)
+    <span class="doccomment">/// Return `true` if this is a function or a primitive (CLOSXP, BUILTINSXP or SPECIALSXP)
     </span><span class="kw">fn </span>is_function(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isFunction(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isFunction(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an integer vector (INTSXP) but not a factor.
+    <span class="doccomment">/// Return `true` if this is an integer vector (INTSXP) but not a factor.
     </span><span class="kw">fn </span>is_integer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isInteger(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isInteger(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a language object (LANGSXP).
+    <span class="doccomment">/// Return `true` if this is a language object (LANGSXP).
     </span><span class="kw">fn </span>is_language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isLanguage(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isLanguage(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is NILSXP or LISTSXP.
+    <span class="doccomment">/// Return `true` if this is NILSXP or LISTSXP.
     </span><span class="kw">fn </span>is_pairlist(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isList(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isList(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a matrix.
+    <span class="doccomment">/// Return `true` if this is a matrix.
     </span><span class="kw">fn </span>is_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isMatrix(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isMatrix(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is NILSXP or VECSXP.
+    <span class="doccomment">/// Return `true` if this is NILSXP or VECSXP.
     </span><span class="kw">fn </span>is_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isNewList(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isNewList(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is INTSXP, LGLSXP or REALSXP but not a factor.
+    <span class="doccomment">/// Return `true` if this is INTSXP, LGLSXP or REALSXP but not a factor.
     </span><span class="kw">fn </span>is_number(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isNumber(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isNumber(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a primitive function BUILTINSXP, SPECIALSXP.
+    <span class="doccomment">/// Return `true` if this is a primitive function BUILTINSXP, SPECIALSXP.
     </span><span class="kw">fn </span>is_primitive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isPrimitive(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isPrimitive(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a time series vector (see tsp).
+    <span class="doccomment">/// Return `true` if this is a time series vector (see tsp).
     </span><span class="kw">fn </span>is_ts(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isTs(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isTs(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a user defined binop.
+    <span class="doccomment">/// Return `true` if this is a user defined binop.
     </span><span class="kw">fn </span>is_user_binop(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isUserBinop(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isUserBinop(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a valid string.
+    <span class="doccomment">/// Return `true` if this is a valid string.
     </span><span class="kw">fn </span>is_valid_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isValidString(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isValidString(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a valid string.
+    <span class="doccomment">/// Return `true` if this is a valid string.
     </span><span class="kw">fn </span>is_valid_string_f(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isValidStringF(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isValidStringF(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a vector.
+    <span class="doccomment">/// Return `true` if this is a vector.
     </span><span class="kw">fn </span>is_vector(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVector(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isVector(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is an atomic vector.
+    <span class="doccomment">/// Return `true` if this is an atomic vector.
     </span><span class="kw">fn </span>is_vector_atomic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVectorAtomic(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isVectorAtomic(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is a vector list.
+    <span class="doccomment">/// Return `true` if this is a vector list.
     </span><span class="kw">fn </span>is_vector_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVectorList(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isVectorList(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is can be made into a vector.
+    <span class="doccomment">/// Return `true` if this is can be made into a vector.
     </span><span class="kw">fn </span>is_vectorizable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVectorizable(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ Rf_isVectorizable(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return true if this is RAWSXP.
+    <span class="doccomment">/// Return `true` if this is RAWSXP.
     </span><span class="kw">fn </span>is_raw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.rtype() == Rtype::Raw
     }
 
-    <span class="doccomment">/// Return true if this is CHARSXP.
+    <span class="doccomment">/// Return `true` if this is CHARSXP.
     </span><span class="kw">fn </span>is_char(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.rtype() == Rtype::Rstr
     }
@@ -928,7 +928,7 @@
     }
 
     <span class="kw">fn </span>is_package_env(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ R_IsPackageEnv(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ R_IsPackageEnv(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
     <span class="kw">fn </span>package_env_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
@@ -936,7 +936,7 @@
     }
 
     <span class="kw">fn </span>is_namespace_env(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ R_IsNamespaceEnv(<span class="self">self</span>.get()) != <span class="number">0 </span>}
+        <span class="kw">unsafe </span>{ R_IsNamespaceEnv(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
     <span class="kw">fn </span>namespace_env_spec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
