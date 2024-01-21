@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - master
+      - everything_single_threaded
   pull_request:
     branches:
       - main
