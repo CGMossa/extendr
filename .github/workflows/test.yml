@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - master
-      - everything_single_threaded
   pull_request:
     branches:
       - main
@@ -41,9 +40,6 @@ jobs:
           # R-devel requires LD_LIBRARY_PATH
           - { os: ubuntu-latest,   r: 'devel',   rust-version: 'stable' }
           - { os: ubuntu-latest,   r: 'oldrel',  rust-version: 'stable' }
-
-
-
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
@@ -268,7 +264,6 @@ jobs:
   #  > https://github.com/rust-lang/rust/issues/64245
   #  > https://github.com/rust-lang/cargo/issues/7040
   bindgen:
-    if: false # disable this while fixing the mess above
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} w/ bindgen (R-${{ matrix.config.r }} rust-${{ matrix.config.rust-version }} ${{join(matrix.config.rust-targets, ',')}})
@@ -286,7 +281,7 @@ jobs:
           # lets the doctests run, which accordingly require the nightly toolchain.
           - { os: windows-latest, r: 'release', rust-version: 'nightly-msvc', rust-targets: [ 'x86_64-pc-windows-gnu' ], rtools-version: '43', extra-args: [ '-Zdoctest-xcompile' ] }
           - { os: windows-latest, r: 'oldrel',  rust-version: 'nightly-msvc', rust-targets: [ 'x86_64-pc-windows-gnu' ], rtools-version: '42', extra-args: [ '-Zdoctest-xcompile' ] }
-
+    
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
