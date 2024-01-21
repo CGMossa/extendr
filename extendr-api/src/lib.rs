@@ -481,6 +481,7 @@ pub unsafe fn register_call_methods(info: *mut libR_sys::DllInfo, metadata: Meta
         numArgs: 0,
     });
 
+    single_threaded(|| {
     libR_sys::R_registerRoutines(
         info,
         std::ptr::null(),
@@ -492,6 +493,7 @@ pub unsafe fn register_call_methods(info: *mut libR_sys::DllInfo, metadata: Meta
     // This seems to allow both symbols and strings,
     libR_sys::R_useDynamicSymbols(info, 0);
     libR_sys::R_forceSymbols(info, 0);
+    })
 }
 
 /// Type of R objects used by [Robj::rtype].
