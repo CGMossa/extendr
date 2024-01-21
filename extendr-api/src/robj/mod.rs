@@ -125,11 +125,11 @@ impl Default for Robj {
 }
 
 pub trait GetSexp {
-    /// Get a copy of the underlying SEXP.
+    /// Get a copy of the underlying [SEXP].
     ///
     /// # Safety
     ///
-    /// Access to a raw SEXP pointer can cause undefined behaviour and is not thread safe.
+    /// Access to a raw [SEXP] pointer can cause undefined behaviour and is not thread safe.
     unsafe fn get(&self) -> SEXP;
 
     unsafe fn get_mut(&mut self) -> SEXP;
@@ -165,7 +165,7 @@ pub trait Slices: GetSexp {
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instatiate and Altrep objects.
+    /// Creating this slice will also instantiate and Altrep objects.
     unsafe fn as_typed_slice_raw<T>(&self) -> &[T] {
         let len = XLENGTH(self.get()) as usize;
         let data = DATAPTR_RO(self.get()) as *const T;
@@ -177,8 +177,8 @@ pub trait Slices: GetSexp {
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instatiate and Altrep objects.
-    /// Not all obejects (especially not list and strings) support this.
+    /// Creating this slice will also instantiate and AltRep objects.
+    /// Not all objects (especially not list and strings) support this.
     unsafe fn as_typed_slice_raw_mut<T>(&mut self) -> &mut [T] {
         let len = XLENGTH(self.get()) as usize;
         let data = DATAPTR(self.get_mut()) as *mut T;
