@@ -623,17 +623,17 @@ const PRINTF_NO_FMT_CSTRING: &[std::os::raw::c_char] = &[37, 115, 0]; // same as
 #[doc(hidden)]
 pub fn print_r_output<T: Into<Vec<u8>>>(s: T) {
     let cs = CString::new(s).expect("NulError");
-    unsafe {
+    single_threaded(|| unsafe {
         Rprintf(PRINTF_NO_FMT_CSTRING.as_ptr(), cs.as_ptr());
-    }
+    })
 }
 
 #[doc(hidden)]
 pub fn print_r_error<T: Into<Vec<u8>>>(s: T) {
     let cs = CString::new(s).expect("NulError");
-    unsafe {
+    single_threaded(|| unsafe {
         REprintf(PRINTF_NO_FMT_CSTRING.as_ptr(), cs.as_ptr());
-    }
+    })
 }
 
 #[cfg(test)]
