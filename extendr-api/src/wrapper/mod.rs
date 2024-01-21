@@ -240,6 +240,7 @@ make_conversions!(Strings, ExpectedString, is_string, "Not a string vector");
 
 make_getsexp!(Dataframe<T>, impl<T>);
 
+//FIXME: why is this commented out?
 // impl Deref for Integers {
 //     type Target = [Rint];
 
