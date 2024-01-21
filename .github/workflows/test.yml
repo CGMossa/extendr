@@ -59,6 +59,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
       
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@master
@@ -292,6 +294,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: 'true'
 
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@master
