@@ -179,6 +179,7 @@ jobs:
       - name: Obtain 'rextendr'
         uses: actions/checkout@v4
         with:
+          submodules: 'true'
           repository: extendr/rextendr
           path: ./tests/rextendr
 
