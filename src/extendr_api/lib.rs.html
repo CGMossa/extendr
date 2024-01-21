@@ -1077,6 +1077,8 @@
 <a href="#1075" id="1075">1075</a>
 <a href="#1076" id="1076">1076</a>
 <a href="#1077" id="1077">1077</a>
+<a href="#1078" id="1078">1078</a>
+<a href="#1079" id="1079">1079</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//!
 //! A safe and user friendly R extension interface.
 //!
@@ -1560,6 +1562,7 @@
         numArgs: <span class="number">0</span>,
     });
 
+    single_threaded(|| {
     libR_sys::R_registerRoutines(
         info,
         std::ptr::null(),
@@ -1571,6 +1574,7 @@
     <span class="comment">// This seems to allow both symbols and strings,
     </span>libR_sys::R_useDynamicSymbols(info, <span class="number">0</span>);
     libR_sys::R_forceSymbols(info, <span class="number">0</span>);
+    })
 }
 
 <span class="doccomment">/// Type of R objects used by [Robj::rtype].
