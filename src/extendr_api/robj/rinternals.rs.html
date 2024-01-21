@@ -515,7 +515,7 @@
         <span class="kw">unsafe </span>{ Rf_isSymbol(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is a boolean (logical) vector
+    <span class="doccomment">/// Return `true` if this is a boolean (`logical`) vector
     </span><span class="kw">fn </span>is_logical(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isLogical(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
@@ -587,12 +587,12 @@
         })
     }
 
-    <span class="doccomment">/// Convert a pairlist (LISTSXP) to a vector list (VECSXP).
+    <span class="doccomment">/// Convert a pairlist (`LISTSXP`) to a vector list (`VECSXP`).
     </span><span class="kw">fn </span>pair_to_vector_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
         single_threaded(|| <span class="kw">unsafe </span>{ Robj::from_sexp(Rf_PairToVectorList(<span class="self">self</span>.get())) })
     }
 
-    <span class="doccomment">/// Convert a vector list (VECSXP) to a pair list (LISTSXP)
+    <span class="doccomment">/// Convert a vector list (`VECSXP`) to a pair list (`LISTSXP`)
     </span><span class="kw">fn </span>vector_to_pair_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
         single_threaded(|| <span class="kw">unsafe </span>{ Robj::from_sexp(Rf_VectorToPairList(<span class="self">self</span>.get())) })
     }
@@ -615,7 +615,7 @@
 
     <span class="doccomment">/// Find a function in an environment ignoring other variables.
     ///
-    /// This evaulates promises if they are found.
+    /// This evaluates promises if they are found.
     ///
     /// See also [global_function()].
     /// ```
@@ -661,7 +661,7 @@
 
     <span class="doccomment">/// Find a variable in an environment.
     ///
-    /// See also [global_var()].
+    /// See also [`global_var()`].
     ///
     /// Note that many common variables and functions are contained in promises
     /// which must be evaluated and this function may throw an R error.
@@ -682,7 +682,7 @@
         <span class="kw">if </span>!<span class="self">self</span>.is_environment() {
             <span class="kw">return </span><span class="prelude-val">Err</span>(Error::NotFound(key.into()));
         }
-        <span class="comment">// Alterative:
+        <span class="comment">// Alternative:
         // let mut env: Robj = self.into();
         // loop {
         //     if let Some(var) = env.local(&amp;key) {
@@ -816,22 +816,22 @@
         <span class="kw">unsafe </span>{ Rf_isFrame(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is a function or a primitive (CLOSXP, BUILTINSXP or SPECIALSXP)
+    <span class="doccomment">/// Return `true` if this is a function or a primitive (`CLOSXP`, `BUILTINSXP` or `SPECIALSXP`)
     </span><span class="kw">fn </span>is_function(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isFunction(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is an integer vector (INTSXP) but not a factor.
+    <span class="doccomment">/// Return `true` if this is an integer vector (`INTSXP`) but not a factor.
     </span><span class="kw">fn </span>is_integer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isInteger(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is a language object (LANGSXP).
+    <span class="doccomment">/// Return `true` if this is a language object (`LANGSXP`).
     </span><span class="kw">fn </span>is_language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isLanguage(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is NILSXP or LISTSXP.
+    <span class="doccomment">/// Return `true` if this is `NILSXP` or `LISTSXP`.
     </span><span class="kw">fn </span>is_pairlist(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isList(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
@@ -841,17 +841,17 @@
         <span class="kw">unsafe </span>{ Rf_isMatrix(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is NILSXP or VECSXP.
+    <span class="doccomment">/// Return `true` if this is `NILSXP` or `VECSXP`.
     </span><span class="kw">fn </span>is_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isNewList(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is INTSXP, LGLSXP or REALSXP but not a factor.
+    <span class="doccomment">/// Return `true` if this is `INTSXP`, `LGLSXP` or `REALSXP` but not a factor.
     </span><span class="kw">fn </span>is_number(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isNumber(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
 
-    <span class="doccomment">/// Return `true` if this is a primitive function BUILTINSXP, SPECIALSXP.
+    <span class="doccomment">/// Return `true` if this is a primitive function `BUILTINSXP`, `SPECIALSXP`.
     </span><span class="kw">fn </span>is_primitive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">unsafe </span>{ Rf_isPrimitive(<span class="self">self</span>.get()) == Rboolean_TRUE }
     }
