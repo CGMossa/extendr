@@ -7,60 +7,60 @@ use std::os::raw;
 pub trait Rinternals: Types + Conversions {
     /// Return true if this is the null object.
     fn is_null(&self) -> bool {
-        unsafe { Rf_isNull(self.get()) != 0 }
+        unsafe { Rf_isNull(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a symbol.
+    /// Return `true` if this is a symbol.
     fn is_symbol(&self) -> bool {
-        unsafe { Rf_isSymbol(self.get()) != 0 }
+        unsafe { Rf_isSymbol(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a boolean (logical) vector
+    /// Return `true` if this is a boolean (logical) vector
     fn is_logical(&self) -> bool {
-        unsafe { Rf_isLogical(self.get()) != 0 }
+        unsafe { Rf_isLogical(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a real (f64) vector.
+    /// Return `true` if this is a real (`f64`) vector.
     fn is_real(&self) -> bool {
-        unsafe { Rf_isReal(self.get()) != 0 }
+        unsafe { Rf_isReal(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a complex vector.
+    /// Return `true` if this is a complex vector.
     fn is_complex(&self) -> bool {
-        unsafe { Rf_isComplex(self.get()) != 0 }
+        unsafe { Rf_isComplex(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an expression.
+    /// Return `true` if this is an expression.
     fn is_expressions(&self) -> bool {
-        unsafe { Rf_isExpression(self.get()) != 0 }
+        unsafe { Rf_isExpression(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an environment.
+    /// Return `true` if this is an environment.
     fn is_environment(&self) -> bool {
-        unsafe { Rf_isEnvironment(self.get()) != 0 }
+        unsafe { Rf_isEnvironment(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an environment.
+    /// Return `true` if this is an environment.
     fn is_promise(&self) -> bool {
         self.sexptype() == PROMSXP
     }
 
-    /// Return true if this is a string.
+    /// Return `true` if this is a string.
     fn is_string(&self) -> bool {
-        unsafe { Rf_isString(self.get()) != 0 }
+        unsafe { Rf_isString(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an object (ie. has a class attribute).
+    /// Return `true` if this is an object (ie. has a class attribute).
     fn is_object(&self) -> bool {
-        unsafe { Rf_isObject(self.get()) != 0 }
+        unsafe { Rf_isObject(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a S4 object.
+    /// Return `true` if this is a S4 object.
     fn is_s4(&self) -> bool {
-        unsafe { Rf_isS4(self.get()) != 0 }
+        unsafe { Rf_isS4(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an expression.
+    /// Return `true` if this is an expression.
     fn is_external_pointer(&self) -> bool {
         self.rtype() == Rtype::ExternalPtr
     }
@@ -296,112 +296,112 @@ pub trait Rinternals: Types + Conversions {
         single_threaded(|| unsafe { Robj::from_sexp(Rf_allocVector(sexptype, len as R_xlen_t)) })
     }
 
-    /// Return true if two arrays have identical dims.
+    /// Return `true` if two arrays have identical dims.
     fn conformable(a: &Robj, b: &Robj) -> bool {
-        single_threaded(|| unsafe { Rf_conformable(a.get(), b.get()) != 0 })
+        single_threaded(|| unsafe { Rf_conformable(a.get(), b.get()) == Rboolean_TRUE })
     }
 
-    /// Return true if this is an array.
+    /// Return `true` if this is an array.
     fn is_array(&self) -> bool {
-        unsafe { Rf_isArray(self.get()) != 0 }
+        unsafe { Rf_isArray(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is factor.
+    /// Return `true` if this is factor.
     fn is_factor(&self) -> bool {
-        unsafe { Rf_isFactor(self.get()) != 0 }
+        unsafe { Rf_isFactor(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a data frame.
+    /// Return `true` if this is a data frame.
     fn is_frame(&self) -> bool {
-        unsafe { Rf_isFrame(self.get()) != 0 }
+        unsafe { Rf_isFrame(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a function or a primitive (CLOSXP, BUILTINSXP or SPECIALSXP)
+    /// Return `true` if this is a function or a primitive (CLOSXP, BUILTINSXP or SPECIALSXP)
     fn is_function(&self) -> bool {
-        unsafe { Rf_isFunction(self.get()) != 0 }
+        unsafe { Rf_isFunction(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an integer vector (INTSXP) but not a factor.
+    /// Return `true` if this is an integer vector (INTSXP) but not a factor.
     fn is_integer(&self) -> bool {
-        unsafe { Rf_isInteger(self.get()) != 0 }
+        unsafe { Rf_isInteger(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a language object (LANGSXP).
+    /// Return `true` if this is a language object (LANGSXP).
     fn is_language(&self) -> bool {
-        unsafe { Rf_isLanguage(self.get()) != 0 }
+        unsafe { Rf_isLanguage(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is NILSXP or LISTSXP.
+    /// Return `true` if this is NILSXP or LISTSXP.
     fn is_pairlist(&self) -> bool {
-        unsafe { Rf_isList(self.get()) != 0 }
+        unsafe { Rf_isList(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a matrix.
+    /// Return `true` if this is a matrix.
     fn is_matrix(&self) -> bool {
-        unsafe { Rf_isMatrix(self.get()) != 0 }
+        unsafe { Rf_isMatrix(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is NILSXP or VECSXP.
+    /// Return `true` if this is NILSXP or VECSXP.
     fn is_list(&self) -> bool {
-        unsafe { Rf_isNewList(self.get()) != 0 }
+        unsafe { Rf_isNewList(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is INTSXP, LGLSXP or REALSXP but not a factor.
+    /// Return `true` if this is INTSXP, LGLSXP or REALSXP but not a factor.
     fn is_number(&self) -> bool {
-        unsafe { Rf_isNumber(self.get()) != 0 }
+        unsafe { Rf_isNumber(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a primitive function BUILTINSXP, SPECIALSXP.
+    /// Return `true` if this is a primitive function BUILTINSXP, SPECIALSXP.
     fn is_primitive(&self) -> bool {
-        unsafe { Rf_isPrimitive(self.get()) != 0 }
+        unsafe { Rf_isPrimitive(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a time series vector (see tsp).
+    /// Return `true` if this is a time series vector (see tsp).
     fn is_ts(&self) -> bool {
-        unsafe { Rf_isTs(self.get()) != 0 }
+        unsafe { Rf_isTs(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a user defined binop.
+    /// Return `true` if this is a user defined binop.
     fn is_user_binop(&self) -> bool {
-        unsafe { Rf_isUserBinop(self.get()) != 0 }
+        unsafe { Rf_isUserBinop(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a valid string.
+    /// Return `true` if this is a valid string.
     fn is_valid_string(&self) -> bool {
-        unsafe { Rf_isValidString(self.get()) != 0 }
+        unsafe { Rf_isValidString(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a valid string.
+    /// Return `true` if this is a valid string.
     fn is_valid_string_f(&self) -> bool {
-        unsafe { Rf_isValidStringF(self.get()) != 0 }
+        unsafe { Rf_isValidStringF(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a vector.
+    /// Return `true` if this is a vector.
     fn is_vector(&self) -> bool {
-        unsafe { Rf_isVector(self.get()) != 0 }
+        unsafe { Rf_isVector(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is an atomic vector.
+    /// Return `true` if this is an atomic vector.
     fn is_vector_atomic(&self) -> bool {
-        unsafe { Rf_isVectorAtomic(self.get()) != 0 }
+        unsafe { Rf_isVectorAtomic(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is a vector list.
+    /// Return `true` if this is a vector list.
     fn is_vector_list(&self) -> bool {
-        unsafe { Rf_isVectorList(self.get()) != 0 }
+        unsafe { Rf_isVectorList(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is can be made into a vector.
+    /// Return `true` if this is can be made into a vector.
     fn is_vectorizable(&self) -> bool {
-        unsafe { Rf_isVectorizable(self.get()) != 0 }
+        unsafe { Rf_isVectorizable(self.get()) == Rboolean_TRUE }
     }
 
-    /// Return true if this is RAWSXP.
+    /// Return `true` if this is RAWSXP.
     fn is_raw(&self) -> bool {
         self.rtype() == Rtype::Raw
     }
 
-    /// Return true if this is CHARSXP.
+    /// Return `true` if this is CHARSXP.
     fn is_char(&self) -> bool {
         self.rtype() == Rtype::Rstr
     }
@@ -428,7 +428,7 @@ pub trait Rinternals: Types + Conversions {
     }
 
     fn is_package_env(&self) -> bool {
-        unsafe { R_IsPackageEnv(self.get()) != 0 }
+        unsafe { R_IsPackageEnv(self.get()) == Rboolean_TRUE }
     }
 
     fn package_env_name(&self) -> Robj {
@@ -436,7 +436,7 @@ pub trait Rinternals: Types + Conversions {
     }
 
     fn is_namespace_env(&self) -> bool {
-        unsafe { R_IsNamespaceEnv(self.get()) != 0 }
+        unsafe { R_IsNamespaceEnv(self.get()) == Rboolean_TRUE }
     }
 
     fn namespace_env_spec(&self) -> Robj {
