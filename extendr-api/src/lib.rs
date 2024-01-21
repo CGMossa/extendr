@@ -468,7 +468,9 @@ pub unsafe fn register_call_methods(info: *mut libR_sys::DllInfo, metadata: Meta
 
     for imp in metadata.impls {
         for func in imp.methods {
-            let wrapped_name = format!("wrap__{}__{}", imp.name, func.mod_name);
+            let imp_name = imp.name;
+            let func_module_name = func.mod_name;
+            let wrapped_name = format!("wrap__{imp_name}__{func_module_name}");
             make_method_def(&mut cstrings, &mut rmethods, &func, wrapped_name.as_str());
         }
     }
