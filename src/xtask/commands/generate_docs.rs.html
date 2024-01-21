@@ -11,10 +11,12 @@
 <a href="#9" id="9">9</a>
 <a href="#10" id="10">10</a>
 <a href="#11" id="11">11</a>
+<a href="#12" id="12">12</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>xshell::{cmd, Error, Shell};
 
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>run(shell: <span class="kw-2">&amp;</span>Shell) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-    <span class="kw">let </span>_generate_docs = <span class="macro">cmd!</span>(
+<span class="doccomment">/// Generates documentation like on the site extendr.github.io
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>run(shell: <span class="kw-2">&amp;</span>Shell) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    <span class="macro">cmd!</span>(
         shell,
         <span class="string">"cargo doc --workspace --no-deps --document-private-items --features full-functionality"
     </span>)

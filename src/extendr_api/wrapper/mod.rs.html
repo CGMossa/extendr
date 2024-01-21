@@ -413,6 +413,7 @@
 <a href="#411" id="411">411</a>
 <a href="#412" id="412">412</a>
 <a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Wrappers are lightweight proxies for references to R datatypes.
 //! They do not contain an Robj (see array.rs for an example of this).
 
@@ -655,7 +656,8 @@
 
 <span class="macro">make_getsexp!</span>(Dataframe&lt;T&gt;, <span class="kw">impl</span>&lt;T&gt;);
 
-<span class="comment">// impl Deref for Integers {
+<span class="comment">//FIXME: why is this commented out?
+// impl Deref for Integers {
 //     type Target = [Rint];
 
 //     fn deref(&amp;self) -&gt; &amp;Self::Target {

@@ -1091,7 +1091,6 @@
 <a href="#1089" id="1089">1089</a>
 <a href="#1090" id="1090">1090</a>
 <a href="#1091" id="1091">1091</a>
-<a href="#1092" id="1092">1092</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>prelude::{Rbool, Rcplx, Rfloat, Rint, Scalar};
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -1209,7 +1208,7 @@
 
     <span class="doccomment">/// Get the data pointer for this vector, possibly expanding the
     /// compact representation into a full R vector.
-    </span><span class="kw">fn </span>dataptr(x: SEXP, _writeable: bool) -&gt; <span class="kw-2">*mut </span>u8 {
+    </span><span class="kw">unsafe fn </span>dataptr(x: SEXP, _writeable: bool) -&gt; <span class="kw-2">*mut </span>u8 {
         single_threaded(|| <span class="kw">unsafe </span>{
             <span class="kw">let </span>data2 = R_altrep_data2(x);
             <span class="kw">if </span>data2 == R_NilValue || TYPEOF(data2) != TYPEOF(x) {
@@ -1224,7 +1223,7 @@
 
     <span class="doccomment">/// Get the data pointer for this vector, returning NULL
     /// if the object is unmaterialized.
-    </span><span class="kw">fn </span>dataptr_or_null(x: SEXP) -&gt; <span class="kw-2">*const </span>u8 {
+    </span><span class="kw">unsafe fn </span>dataptr_or_null(x: SEXP) -&gt; <span class="kw-2">*const </span>u8 {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data2 = R_altrep_data2(x);
             <span class="kw">if </span>data2 == R_NilValue || TYPEOF(data2) != TYPEOF(x) {
@@ -1659,8 +1658,8 @@
                 Robj::from_sexp(class),
                 Robj::from_sexp(state),
                 Robj::from_sexp(attr),
-                objf <span class="kw">as </span>i32,
-                levs <span class="kw">as </span>i32,
+                objf,
+                levs,
             )
             .get()
         }
@@ -2139,8 +2138,7 @@
                 i: R_xlen_t,
                 v: SEXP,
             ) {
-                Altrep::get_state_mut::&lt;StateType&gt;(x)
-                    .set_elt(i <span class="kw">as </span>usize, Robj::from_sexp(v).try_into().unwrap())
+                Altrep::get_state_mut::&lt;StateType&gt;(x).set_elt(i <span class="kw">as </span>usize, Robj::from_sexp(v))
             }
 
             R_set_altlist_Elt_method(class_ptr, <span class="prelude-val">Some</span>(altlist_Elt::&lt;StateType&gt;));

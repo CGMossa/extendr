@@ -62,9 +62,9 @@
     Error,
 }
 
-<span class="kw">impl </span>Into&lt;RCmdCheckErrorOn&gt; <span class="kw">for </span>ErrorOn {
-    <span class="kw">fn </span>into(<span class="self">self</span>) -&gt; RCmdCheckErrorOn {
-        <span class="kw">match </span><span class="self">self </span>{
+<span class="kw">impl </span>From&lt;ErrorOn&gt; <span class="kw">for </span>RCmdCheckErrorOn {
+    <span class="kw">fn </span>from(val: ErrorOn) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>val {
             ErrorOn::Never =&gt; RCmdCheckErrorOn::Never,
             ErrorOn::Note =&gt; RCmdCheckErrorOn::Note,
             ErrorOn::Warning =&gt; RCmdCheckErrorOn::Warning,

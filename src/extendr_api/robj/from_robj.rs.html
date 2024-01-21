@@ -470,7 +470,7 @@
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; FromRobj&lt;<span class="lifetime">'a</span>&gt; <span class="kw">for </span>HashMap&lt;<span class="kw-2">&amp;</span>str, Robj&gt; {
     <span class="kw">fn </span>from_robj(robj: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Robj) -&gt; std::result::Result&lt;<span class="self">Self</span>, <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(iter) = robj.as_list().map(|l| l.iter()) {
-            <span class="prelude-val">Ok</span>(iter.map(|(k, v)| (k, v)).collect::&lt;HashMap&lt;<span class="kw-2">&amp;</span>str, Robj&gt;&gt;())
+            <span class="prelude-val">Ok</span>(iter.collect::&lt;HashMap&lt;<span class="kw-2">&amp;</span>str, Robj&gt;&gt;())
         } <span class="kw">else </span>{
             <span class="prelude-val">Err</span>(<span class="string">"expected a list"</span>)
         }

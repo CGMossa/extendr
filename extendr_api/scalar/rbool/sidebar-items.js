@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["Rbool"]};
+window.SIDEBAR_ITEMS = {"mod":["rbool_helpers"],"struct":["Rbool"]};

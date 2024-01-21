@@ -432,7 +432,9 @@
 <a href="#430" id="430">430</a>
 <a href="#431" id="431">431</a>
 <a href="#432" id="432">432</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! Conversions to Robj
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! Conversions to [`Robj`]
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 
@@ -507,8 +509,8 @@
                 }
 
                 <span class="comment">// &lt;Robj&gt;::as_xxx() methods can work only when the underlying
-                // SEXP is the corresponding type, so we cannot use as_real()
-                // directly on INTSXP.
+                // `SEXP` is the corresponding type, so we cannot use `as_real()`
+                // directly on `INTSXP`.
                 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_real() {
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(v <span class="kw">as </span><span class="self">Self</span>);
                 }
@@ -538,7 +540,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>bool {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an LGLSXP object into a boolean.
+    <span class="doccomment">/// Convert an `LGLSXP` object into a boolean.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>robj.is_na() {
@@ -552,7 +554,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>str {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a scalar STRSXP object into a string slice.
+    <span class="doccomment">/// Convert a scalar `STRSXP` object into a string slice.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>robj.is_na() {
@@ -575,7 +577,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>String {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an scalar STRSXP object into a String.
+    <span class="doccomment">/// Convert an scalar `STRSXP` object into a String.
     /// Note: Unless you plan to store the result, use a string slice instead.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -586,7 +588,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;i32&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an INTSXP object into a vector of i32 (integer).
+    <span class="doccomment">/// Convert an `INTSXP` object into a vector of i32 (integer).
     /// Note: Unless you plan to store the result, use a slice instead.
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -602,7 +604,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;f64&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a REALSXP object into a vector of f64 (double precision floating point).
+    <span class="doccomment">/// Convert a `REALSXP` object into a vector of f64 (double precision floating point).
     /// Note: Unless you plan to store the result, use a slice instead.
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -618,7 +620,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;u8&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a RAWSXP object into a vector of bytes.
+    <span class="doccomment">/// Convert a `RAWSXP` object into a vector of bytes.
     /// Note: Unless you plan to store the result, use a slice instead.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
@@ -632,7 +634,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rint&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an INTSXP object into a vector of i32 (integer).
+    <span class="doccomment">/// Convert an `INTSXP` object into a vector of i32 (integer).
     /// Note: Unless you plan to store the result, use a slice instead.
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -647,7 +649,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rfloat&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a REALSXP object into a vector of f64 (double precision floating point).
+    <span class="doccomment">/// Convert a `REALSXP` object into a vector of f64 (double precision floating point).
     /// Note: Unless you plan to store the result, use a slice instead.
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -662,7 +664,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rbool&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a LGLSXP object into a vector of Rbool (tri-state booleans).
+    <span class="doccomment">/// Convert a `LGLSXP` object into a vector of `Rbool` (tri-state booleans).
     /// Note: Unless you plan to store the result, use a slice instead.
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -677,7 +679,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rcplx&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a complex object into a vector of Rcplx.
+    <span class="doccomment">/// Convert a complex object into a vector of `Rcplx`.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
             <span class="prelude-val">Ok</span>(Vec::from(v))
@@ -690,7 +692,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;String&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a STRSXP object into a vector of `String`s.
+    <span class="doccomment">/// Convert a `STRSXP` object into a vector of `String`s.
     /// Note: Unless you plan to store the result, use a slice instead.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(iter) = robj.as_str_iter() {
@@ -709,7 +711,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[i32] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an INTSXP object into a slice of i32 (integer).
+    <span class="doccomment">/// Convert an `INTSXP` object into a slice of i32 (integer).
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
@@ -720,7 +722,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rint] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an integer object into a slice of Rint (tri-state booleans).
+    <span class="doccomment">/// Convert an integer object into a slice of `Rint` (tri-state booleans).
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
@@ -731,7 +733,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rfloat] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a doubles object into a slice of Rfloat (tri-state booleans).
+    <span class="doccomment">/// Convert a doubles object into a slice of `Rfloat` (tri-state booleans).
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
@@ -742,7 +744,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rbool] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a logical object into a slice of Rbool (tri-state booleans).
+    <span class="doccomment">/// Convert a logical object into a slice of `Rbool` (tri-state booleans).
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
@@ -753,7 +755,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rcplx] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a complex object into a slice of Rbool
+    <span class="doccomment">/// Convert a complex object into a slice of `Rbool`
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
@@ -764,7 +766,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[u8] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a RAWSXP object into a slice of bytes.
+    <span class="doccomment">/// Convert a `RAWSXP` object into a slice of bytes.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedRaw(robj.clone()))
@@ -774,7 +776,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[f64] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a REALSXP object into a slice of f64 (double precision floating point).
+    <span class="doccomment">/// Convert a `REALSXP` object into a slice of f64 (double precision floating point).
     /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
@@ -782,7 +784,9 @@
     }
 }
 
-<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Rcplx {
+<span class="comment">// NOTE: Cannot support `Box&lt;[T]&gt;` as that may cause a double-free!
+
+</span><span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Rcplx {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -818,8 +822,8 @@
     }
 }
 
-<span class="comment">// Convert TryFrom&lt;&amp;Robj&gt; into TryFrom&lt;Robj&gt;. Sadly, we are unable to make a blanket
-// conversion using GetSexp with the current version of Rust.
+<span class="comment">// Convert `TryFrom&lt;&amp;Robj&gt;` into `TryFrom&lt;Robj&gt;`. Sadly, we are unable to make a blanket
+// conversion using `GetSexp` with the current version of Rust.
 </span><span class="macro">macro_rules! </span>impl_try_from_robj {
     ($(<span class="macro-nonterminal">$</span><span class="kw">type </span>: <span class="macro-nonterminal">ty</span>)<span class="kw-2">*</span>) =&gt; {
         $(

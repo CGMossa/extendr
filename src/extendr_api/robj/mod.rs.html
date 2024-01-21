@@ -1224,11 +1224,11 @@
 }
 
 <span class="kw">pub trait </span>GetSexp {
-    <span class="doccomment">/// Get a copy of the underlying SEXP.
+    <span class="doccomment">/// Get a copy of the underlying [SEXP].
     ///
     /// # Safety
     ///
-    /// Access to a raw SEXP pointer can cause undefined behaviour and is not thread safe.
+    /// Access to a raw [SEXP] pointer can cause undefined behaviour and is not thread safe.
     </span><span class="kw">unsafe fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SEXP;
 
     <span class="kw">unsafe fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; SEXP;
@@ -1264,7 +1264,7 @@
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instatiate and Altrep objects.
+    /// Creating this slice will also instantiate and Altrep objects.
     </span><span class="kw">unsafe fn </span>as_typed_slice_raw&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
         <span class="kw">let </span>len = XLENGTH(<span class="self">self</span>.get()) <span class="kw">as </span>usize;
         <span class="kw">let </span>data = DATAPTR_RO(<span class="self">self</span>.get()) <span class="kw">as </span><span class="kw-2">*const </span>T;
@@ -1276,8 +1276,8 @@
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instatiate and Altrep objects.
-    /// Not all obejects (especially not list and strings) support this.
+    /// Creating this slice will also instantiate and AltRep objects.
+    /// Not all objects (especially not list and strings) support this.
     </span><span class="kw">unsafe fn </span>as_typed_slice_raw_mut&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
         <span class="kw">let </span>len = XLENGTH(<span class="self">self</span>.get()) <span class="kw">as </span>usize;
         <span class="kw">let </span>data = DATAPTR(<span class="self">self</span>.get_mut()) <span class="kw">as </span><span class="kw-2">*mut </span>T;
