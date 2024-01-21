@@ -7,7 +7,7 @@ use libR_sys::{R_compute_identical, Rboolean_TRUE, Rf_PrintValue};
 fn test_what_is_returned_from_set_class() {
     with_r(|| {
         let mut a = list!(a = 42);
-        let a_class = a.set_class(&["class"]).unwrap();
+        let a_class = a.set_class(&["class2"]).unwrap();
 
         unsafe {
             Rf_PrintValue(a.get());
