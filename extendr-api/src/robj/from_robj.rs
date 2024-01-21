@@ -1,9 +1,8 @@
 use super::*;
-use crate::wrapper::matrix::MatrixConversions;
 
-/// Trait used for incomming parameter conversion.
+/// Trait used for incoming parameter conversion.
 pub trait FromRobj<'a>: Sized {
-    // Convert an incomming Robj from R into a value or an error.
+    // Convert an incoming Robj from R into a value or an error.
     fn from_robj(_robj: &'a Robj) -> std::result::Result<Self, &'static str> {
         Err("unable to convert value from R object")
     }
