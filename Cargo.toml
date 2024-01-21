@@ -2,6 +2,7 @@
 resolver = "2"
 
 members = ["extendr-api", "extendr-engine", "extendr-macros", "xtask"]
+exclude = ["libR-sys"]
 
 [workspace.package]
 version = "0.6.0"
