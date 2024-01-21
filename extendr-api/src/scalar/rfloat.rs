@@ -84,9 +84,17 @@ impl Rfloat {
     }
 }
 
+mod rfloat_helpers {
+    use super::*;
+
+    pub fn check_na(x: &Rfloat) -> bool {
+        x.inner().is_na()
+    }
+}
+
 // `NA_real_` is a `NaN` with specific bit representation.
 // Check that underlying `f64` is `NA_real_`.
-gen_trait_impl!(Rfloat, f64, |x: &Rfloat| x.inner().is_na(), f64::na());
+gen_trait_impl!(Rfloat, f64, rfloat_helpers::check_na, f64::na());
 gen_from_primitive!(Rfloat, f64);
 
 impl From<Rfloat> for Option<f64> {

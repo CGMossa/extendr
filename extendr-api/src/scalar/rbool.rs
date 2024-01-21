@@ -60,7 +60,15 @@ impl Rbool {
     }
 }
 
-gen_trait_impl!(Rbool, bool, |x: &Rbool| x.inner() == i32::MIN, i32::MIN);
+mod rbool_helpers {
+    use super::*;
+
+    pub fn check_na(x: &Rbool) -> bool {
+        x.inner() == i32::MIN
+    }
+}
+
+gen_trait_impl!(Rbool, bool, rbool_helpers::check_na, i32::MIN);
 gen_from_primitive!(Rbool, i32);
 gen_partial_ord!(Rbool, bool);
 
