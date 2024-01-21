@@ -14,5 +14,7 @@ ctor = "0.2.4"
 [features]
 default = []
 
+use-bindgen = ["libR-sys/use-bindgen"]
+
 # All features to test
 tests-all = ["libR-sys/use-bindgen"]

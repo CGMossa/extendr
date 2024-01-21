@@ -27,6 +27,9 @@ extendr-engine = { path = "../extendr-engine" }
 rstest = "0.18.1"
 
 [features]
+default = []
+
+use-bindgen = ["libR-sys/use-bindgen", "extendr-macros/use-bindgen"]
 
 # Features to modify behaviour of returning Result<T,E> from extendr to R, instead of unwrap-throw_r_error().
 # Add new features below
