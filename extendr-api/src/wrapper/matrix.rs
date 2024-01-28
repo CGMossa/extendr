@@ -31,6 +31,7 @@ pub struct RArray<T, D> {
 
     /// Dimensions of the array.
     dim: D,
+
     _data: std::marker::PhantomData<T>,
 }
 
@@ -146,14 +147,9 @@ where
         self.as_typed_slice().unwrap()
     }
 
-    /// Returns a flat mutable representation of the array in col-major.
+    /// Returns a flat, mutable representation of the array in col-major.
     pub fn data_mut(&mut self) -> &'a mut [T] {
         self.as_typed_slice_mut().unwrap()
-    }
-
-    /// Get mutable access to the underlying data
-    pub fn data_mut(&mut self) -> &mut [T] {
-        unsafe { std::slice::from_raw_parts_mut(self.data, self.robj.len()) }
     }
 
     /// Get the dimensions for this array.
