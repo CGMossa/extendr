@@ -7,37 +7,37 @@ use std::os::raw;
 pub trait Rinternals: Types + Conversions {
     /// Return true if this is the null object.
     fn is_null(&self) -> bool {
-        unsafe { Rf_isNull(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isNull(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a symbol.
     fn is_symbol(&self) -> bool {
-        unsafe { Rf_isSymbol(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isSymbol(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a boolean (`logical`) vector
     fn is_logical(&self) -> bool {
-        unsafe { Rf_isLogical(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isLogical(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a real (`f64`) vector.
     fn is_real(&self) -> bool {
-        unsafe { Rf_isReal(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isReal(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a complex vector.
     fn is_complex(&self) -> bool {
-        unsafe { Rf_isComplex(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isComplex(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is an expression.
     fn is_expressions(&self) -> bool {
-        unsafe { Rf_isExpression(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isExpression(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is an environment.
     fn is_environment(&self) -> bool {
-        unsafe { Rf_isEnvironment(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isEnvironment(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is an environment.
@@ -47,17 +47,21 @@ pub trait Rinternals: Types + Conversions {
 
     /// Return `true` if this is a string.
     fn is_string(&self) -> bool {
-        unsafe { Rf_isString(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isString(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is an object (ie. has a class attribute).
     fn is_object(&self) -> bool {
-        unsafe { Rf_isObject(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isObject(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a S4 object.
     fn is_s4(&self) -> bool {
-        unsafe { Rf_isS4(self.get()) == Rboolean_TRUE }
+        unsafe {
+            // calls IS_S4_OBJECT, returns 16 instead of 1..
+            Rf_isS4(self.get()) != Rboolean::FALSE
+            // unsafe { Rf_isS4(self.get()) == Rboolean_TRUE }
+        }
     }
 
     /// Return `true` if this is an expression.
@@ -274,7 +278,7 @@ pub trait Rinternals: Types + Conversions {
     unsafe fn register_c_finalizer(&self, func: R_CFinalizer_t) {
         // Use R_RegisterCFinalizerEx() and set onexit to 1 (TRUE) to invoke the
         // finalizer on a shutdown of the R session as well.
-        single_threaded(|| R_RegisterCFinalizerEx(self.get(), func, 1));
+        single_threaded(|| R_RegisterCFinalizerEx(self.get(), func, Rboolean::TRUE));
     }
 
     /// Copy a vector and resize it.
@@ -298,102 +302,102 @@ pub trait Rinternals: Types + Conversions {
 
     /// Return `true` if two arrays have identical dims.
     fn conformable(a: &Robj, b: &Robj) -> bool {
-        single_threaded(|| unsafe { Rf_conformable(a.get(), b.get()) == Rboolean_TRUE })
+        single_threaded(|| unsafe { Rf_conformable(a.get(), b.get()) == Rboolean::TRUE })
     }
 
     /// Return `true` if this is an array.
     fn is_array(&self) -> bool {
-        unsafe { Rf_isArray(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isArray(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is factor.
     fn is_factor(&self) -> bool {
-        unsafe { Rf_isFactor(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isFactor(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a data frame.
     fn is_frame(&self) -> bool {
-        unsafe { Rf_isFrame(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isFrame(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a function or a primitive (`CLOSXP`, `BUILTINSXP` or `SPECIALSXP`)
     fn is_function(&self) -> bool {
-        unsafe { Rf_isFunction(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isFunction(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is an integer vector (`INTSXP`) but not a factor.
     fn is_integer(&self) -> bool {
-        unsafe { Rf_isInteger(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isInteger(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a language object (`LANGSXP`).
     fn is_language(&self) -> bool {
-        unsafe { Rf_isLanguage(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isLanguage(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is `NILSXP` or `LISTSXP`.
     fn is_pairlist(&self) -> bool {
-        unsafe { Rf_isList(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isList(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a matrix.
     fn is_matrix(&self) -> bool {
-        unsafe { Rf_isMatrix(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isMatrix(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is `NILSXP` or `VECSXP`.
     fn is_list(&self) -> bool {
-        unsafe { Rf_isNewList(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isNewList(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is `INTSXP`, `LGLSXP` or `REALSXP` but not a factor.
     fn is_number(&self) -> bool {
-        unsafe { Rf_isNumber(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isNumber(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a primitive function `BUILTINSXP`, `SPECIALSXP`.
     fn is_primitive(&self) -> bool {
-        unsafe { Rf_isPrimitive(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isPrimitive(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a time series vector (see tsp).
     fn is_ts(&self) -> bool {
-        unsafe { Rf_isTs(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isTs(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a user defined binop.
     fn is_user_binop(&self) -> bool {
-        unsafe { Rf_isUserBinop(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isUserBinop(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a valid string.
     fn is_valid_string(&self) -> bool {
-        unsafe { Rf_isValidString(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isValidString(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a valid string.
     fn is_valid_string_f(&self) -> bool {
-        unsafe { Rf_isValidStringF(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isValidStringF(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a vector.
     fn is_vector(&self) -> bool {
-        unsafe { Rf_isVector(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isVector(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is an atomic vector.
     fn is_vector_atomic(&self) -> bool {
-        unsafe { Rf_isVectorAtomic(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isVectorAtomic(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is a vector list.
     fn is_vector_list(&self) -> bool {
-        unsafe { Rf_isVectorList(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isVectorList(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is can be made into a vector.
     fn is_vectorizable(&self) -> bool {
-        unsafe { Rf_isVectorizable(self.get()) == Rboolean_TRUE }
+        unsafe { Rf_isVectorizable(self.get()) == Rboolean::TRUE }
     }
 
     /// Return `true` if this is RAWSXP.
@@ -428,7 +432,7 @@ pub trait Rinternals: Types + Conversions {
     }
 
     fn is_package_env(&self) -> bool {
-        unsafe { R_IsPackageEnv(self.get()) == Rboolean_TRUE }
+        unsafe { R_IsPackageEnv(self.get()) == Rboolean::TRUE }
     }
 
     fn package_env_name(&self) -> Robj {
@@ -436,7 +440,7 @@ pub trait Rinternals: Types + Conversions {
     }
 
     fn is_namespace_env(&self) -> bool {
-        unsafe { R_IsNamespaceEnv(self.get()) == Rboolean_TRUE }
+        unsafe { R_IsNamespaceEnv(self.get()) == Rboolean::TRUE }
     }
 
     fn namespace_env_spec(&self) -> Robj {

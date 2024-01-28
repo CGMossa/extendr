@@ -1068,7 +1068,7 @@ impl PartialEq<Robj> for Robj {
             }
 
             // see https://github.com/hadley/r-internals/blob/master/misc.md
-            R_compute_identical(self.get(), rhs.get(), 16) != 0
+            R_compute_identical(self.get(), rhs.get(), 16) != Rboolean::FALSE
         }
     }
 }
