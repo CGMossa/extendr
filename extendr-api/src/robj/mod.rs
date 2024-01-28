@@ -237,7 +237,7 @@ pub trait Types: GetSexp {
     #[doc(hidden)]
     /// Get the XXXSXP type of the object.
     fn sexptype(&self) -> u32 {
-        unsafe { TYPEOF(self.get()) as u32 }
+        unsafe { TYPEOF(self.get()) }
     }
 
     /// Get the type of an R object.
@@ -795,6 +795,7 @@ make_typed_slice!(f64, REAL, REALSXP);
 make_typed_slice!(Rfloat, REAL, REALSXP);
 make_typed_slice!(u8, RAW, RAWSXP);
 make_typed_slice!(Rstr, STRING_PTR, STRSXP);
+make_typed_slice!(CString, STRING_PTR, STRSXP);
 make_typed_slice!(c64, COMPLEX, CPLXSXP);
 make_typed_slice!(Rcplx, COMPLEX, CPLXSXP);
 make_typed_slice!(Rcomplex, COMPLEX, CPLXSXP);

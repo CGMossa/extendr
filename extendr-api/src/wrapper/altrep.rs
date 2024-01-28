@@ -155,9 +155,9 @@ fn manifest(x: SEXP) -> SEXP {
     single_threaded(|| unsafe {
         Rf_protect(x);
         let len = XLENGTH_EX(x);
-        let data2 = Rf_allocVector(TYPEOF(x) as u32, len as R_xlen_t);
+        let data2 = Rf_allocVector(TYPEOF(x), len as R_xlen_t);
         Rf_protect(data2);
-        match TYPEOF(x) as u32 {
+        match TYPEOF(x) {
             INTSXP => {
                 INTEGER_GET_REGION(x, 0, len as R_xlen_t, INTEGER(data2));
             }

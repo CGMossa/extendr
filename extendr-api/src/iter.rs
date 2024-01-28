@@ -64,7 +64,7 @@ fn str_from_strsxp<'a>(sexp: SEXP, index: isize) -> &'a str {
             let charsxp = STRING_ELT(sexp, index);
             if charsxp == R_NaString {
                 <&str>::na()
-            } else if TYPEOF(charsxp) == CHARSXP as i32 {
+            } else if TYPEOF(charsxp) == CHARSXP {
                 let ptr = R_CHAR(charsxp) as *const u8;
                 let slice = std::slice::from_raw_parts(ptr, Rf_xlength(charsxp) as usize);
                 std::str::from_utf8_unchecked(slice)
@@ -89,12 +89,12 @@ impl Iterator for StrIter {
             let vector = self.vector.get();
             if i >= self.len {
                 None
-            } else if TYPEOF(vector) as u32 == STRSXP {
+            } else if TYPEOF(vector) == STRSXP {
                 Some(str_from_strsxp(vector, i as isize))
-            } else if TYPEOF(vector) as u32 == INTSXP && TYPEOF(self.levels) as u32 == STRSXP {
+            } else if TYPEOF(vector) == INTSXP && TYPEOF(self.levels) == STRSXP {
                 let j = *(INTEGER(vector).add(i));
                 Some(str_from_strsxp(self.levels, j as isize - 1))
-            } else if TYPEOF(vector) as u32 == NILSXP {
+            } else if TYPEOF(vector) == NILSXP {
                 Some(<&str>::na())
             } else {
                 None
