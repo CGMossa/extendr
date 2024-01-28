@@ -488,7 +488,7 @@ pub trait DeviceDriver: std::marker::Sized {
 
             // It seems `NA` is just treated as `true`. Probably it doesn't matter much here.
             // c.f. https://github.com/wch/r-source/blob/6b22b60126646714e0f25143ac679240be251dbe/src/library/grDevices/src/devPS.c#L4235
-            let winding = winding != 0;
+            let winding = winding != Rboolean::FALSE;
 
             data.path(coords, winding, *gc, *dd);
         }
@@ -519,7 +519,7 @@ pub trait DeviceDriver: std::marker::Sized {
                 rot,
                 // It seems `NA` is just treated as `true`. Probably it doesn't matter much here.
                 // c.f. https://github.com/wch/r-source/blob/6b22b60126646714e0f25143ac679240be251dbe/src/library/grDevices/src/devPS.c#L4062
-                interpolate != 0,
+                interpolate != Rboolean::FALSE,
                 *gc,
                 *dd,
             );
@@ -753,12 +753,12 @@ pub trait DeviceDriver: std::marker::Sized {
             (*p_dev_desc).gamma = 1.0;
 
             (*p_dev_desc).canClip = match <T>::CLIPPING_STRATEGY {
-                ClippingStrategy::Engine => 0,
-                _ => 1,
+                ClippingStrategy::Engine => Rboolean::FALSE,
+                _ => Rboolean::TRUE,
             };
 
             // As described above, gamma is not supported.
-            (*p_dev_desc).canChangeGamma = 0;
+            (*p_dev_desc).canChangeGamma = Rboolean::FALSE;
 
             (*p_dev_desc).canHAdj = CanHAdjOption::VariableAdjustment as _;
 
@@ -773,14 +773,14 @@ pub trait DeviceDriver: std::marker::Sized {
             // A raw pointer to the data specific to the device.
             (*p_dev_desc).deviceSpecific = deviceSpecific;
 
-            (*p_dev_desc).displayListOn = if <T>::USE_PLOT_HISTORY { 1 } else { 0 };
+            (*p_dev_desc).displayListOn = <T>::USE_PLOT_HISTORY.into();
 
             // These are currently not used, so just set FALSE.
-            (*p_dev_desc).canGenMouseDown = 0;
-            (*p_dev_desc).canGenMouseMove = 0;
-            (*p_dev_desc).canGenMouseUp = 0;
-            (*p_dev_desc).canGenKeybd = 0;
-            (*p_dev_desc).canGenIdle = 0;
+            (*p_dev_desc).canGenMouseDown = Rboolean::FALSE;
+            (*p_dev_desc).canGenMouseMove = Rboolean::FALSE;
+            (*p_dev_desc).canGenMouseUp = Rboolean::FALSE;
+            (*p_dev_desc).canGenKeybd = Rboolean::FALSE;
+            (*p_dev_desc).canGenIdle = Rboolean::FALSE;
 
             // The header file says:
             //
@@ -788,7 +788,7 @@ pub trait DeviceDriver: std::marker::Sized {
             //
             // It seems no implementation sets this, so this is probably what is
             // modified on the engine's side.
-            (*p_dev_desc).gettingEvent = 0;
+            (*p_dev_desc).gettingEvent = Rboolean::FALSE;
 
             (*p_dev_desc).activate = Some(device_driver_activate::<T>);
             (*p_dev_desc).circle = Some(device_driver_circle::<T>);
@@ -829,7 +829,7 @@ pub trait DeviceDriver: std::marker::Sized {
             (*p_dev_desc).newFrameConfirm = Some(device_driver_new_frame_confirm::<T>);
 
             // UTF-8 support
-            (*p_dev_desc).hasTextUTF8 = if <T>::ACCEPT_UTF8_TEXT { 1 } else { 0 };
+            (*p_dev_desc).hasTextUTF8 = <T>::ACCEPT_UTF8_TEXT.into();
             (*p_dev_desc).textUTF8 = if <T>::ACCEPT_UTF8_TEXT {
                 Some(device_driver_text::<T>)
             } else {
@@ -840,7 +840,7 @@ pub trait DeviceDriver: std::marker::Sized {
             } else {
                 None
             };
-            (*p_dev_desc).wantSymbolUTF8 = if <T>::ACCEPT_UTF8_TEXT { 1 } else { 0 };
+            (*p_dev_desc).wantSymbolUTF8 = <T>::ACCEPT_UTF8_TEXT.into();
 
             // R internals says:
             //
@@ -850,7 +850,7 @@ pub trait DeviceDriver: std::marker::Sized {
             //
             // It seems this is used only by plot3d, so FALSE should be appropriate in
             // most of the cases.
-            (*p_dev_desc).useRotatedTextInContour = 0;
+            (*p_dev_desc).useRotatedTextInContour = Rboolean::FALSE;
 
             (*p_dev_desc).eventEnv = empty_env().get();
             (*p_dev_desc).eventHelper = Some(device_driver_eventHelper::<T>);
@@ -900,8 +900,8 @@ pub trait DeviceDriver: std::marker::Sized {
                 (*p_dev_desc).deviceVersion = R_GE_definitions as _;
 
                 (*p_dev_desc).deviceClip = match <T>::CLIPPING_STRATEGY {
-                    ClippingStrategy::Device => 1,
-                    _ => 0,
+                    ClippingStrategy::Device => Rboolean::TRUE,
+                    _ => Rboolean::FALSE,
                 };
             }
 

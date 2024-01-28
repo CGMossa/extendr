@@ -693,7 +693,7 @@ impl Device {
                 yptr,
                 nper.len() as std::os::raw::c_int,
                 nperptr,
-                if winding { 1 } else { 0 },
+                winding.into(),
                 gc.context(),
                 self.inner(),
             )
@@ -724,7 +724,7 @@ impl Device {
             let raster = pixels.as_ptr() as *mut u32;
             let w = w as i32;
             let h = h as i32;
-            let interpolate = if interpolate { 1 } else { 0 };
+            let interpolate = interpolate.into();
             GERaster(
                 raster,
                 w,
