@@ -35,7 +35,7 @@ impl Symbol {
     // Internal conversion for constant symbols.
     fn from_sexp(sexp: SEXP) -> Symbol {
         unsafe {
-            assert!(TYPEOF(sexp) == SYMSXP as i32);
+            assert!(TYPEOF(sexp) == SYMSXP);
         }
         Symbol {
             robj: Robj::from_sexp(sexp),

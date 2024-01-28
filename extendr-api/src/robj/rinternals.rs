@@ -454,33 +454,33 @@ pub trait Rinternals: Types + Conversions {
 
     /// Returns `true` if this is an integer ALTREP object.
     fn is_altinteger(&self) -> bool {
-        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == INTSXP as i32 }
+        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == INTSXP }
     }
 
     /// Returns `true` if this is an real ALTREP object.
     fn is_altreal(&self) -> bool {
-        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == REALSXP as i32 }
+        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == REALSXP }
     }
 
     /// Returns `true` if this is an logical ALTREP object.
     fn is_altlogical(&self) -> bool {
-        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == LGLSXP as i32 }
+        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == LGLSXP }
     }
 
     /// Returns `true` if this is a raw ALTREP object.
     fn is_altraw(&self) -> bool {
-        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == RAWSXP as i32 }
+        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == RAWSXP }
     }
 
     /// Returns `true` if this is an integer ALTREP object.
     fn is_altstring(&self) -> bool {
-        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == STRSXP as i32 }
+        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == STRSXP }
     }
 
     /// Returns `true` if this is an integer ALTREP object.
     #[cfg(use_r_altlist)]
     fn is_altlist(&self) -> bool {
-        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == VECSXP as i32 }
+        unsafe { ALTREP(self.get()) != 0 && TYPEOF(self.get()) == VECSXP }
     }
 
     /// Generate a text representation of this object.
