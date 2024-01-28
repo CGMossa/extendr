@@ -482,17 +482,17 @@ pub unsafe fn register_call_methods(info: *mut libR_sys::DllInfo, metadata: Meta
     });
 
     single_threaded(|| {
-    libR_sys::R_registerRoutines(
-        info,
-        std::ptr::null(),
-        rmethods.as_ptr(),
-        std::ptr::null(),
-        std::ptr::null(),
-    );
+        libR_sys::R_registerRoutines(
+            info,
+            std::ptr::null(),
+            rmethods.as_ptr(),
+            std::ptr::null(),
+            std::ptr::null(),
+        );
 
-    // This seems to allow both symbols and strings,
-    libR_sys::R_useDynamicSymbols(info, 0);
-    libR_sys::R_forceSymbols(info, 0);
+        // This seems to allow both symbols and strings,
+        libR_sys::R_useDynamicSymbols(info, Rboolean::FALSE);
+        libR_sys::R_forceSymbols(info, Rboolean::FALSE);
     })
 }
 

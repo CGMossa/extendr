@@ -512,7 +512,7 @@ impl Altrep {
 
             // Use R_RegisterCFinalizerEx() and set onexit to 1 (TRUE) to invoke
             // the finalizer on a shutdown of the R session as well.
-            R_RegisterCFinalizerEx(state, Some(finalizer::<StateType>), 1);
+            R_RegisterCFinalizerEx(state, Some(finalizer::<StateType>), Rboolean::TRUE);
 
             let class_ptr = R_altrep_class_t { ptr: class.get() };
             let sexp = R_new_altrep(class_ptr, state, R_NilValue);
@@ -595,14 +595,14 @@ impl Altrep {
             x: SEXP,
             deep: Rboolean,
         ) -> SEXP {
-            <StateType>::duplicate(x, deep == 1).get()
+            <StateType>::duplicate(x, deep == Rboolean::TRUE).get()
         }
 
         unsafe extern "C" fn altrep_DuplicateEX<StateType: AltrepImpl + 'static>(
             x: SEXP,
             deep: Rboolean,
         ) -> SEXP {
-            <StateType>::duplicate_ex(x, deep == 1).get()
+            <StateType>::duplicate_ex(x, deep == Rboolean::TRUE).get()
         }
 
         unsafe extern "C" fn altrep_Inspect<StateType: AltrepImpl + 'static>(
@@ -625,7 +625,7 @@ impl Altrep {
             x: SEXP,
             writeable: Rboolean,
         ) -> *mut c_void {
-            <StateType>::dataptr(x, writeable != 0) as *mut c_void
+            <StateType>::dataptr(x, writeable != Rboolean::FALSE) as *mut c_void
         }
 
         unsafe extern "C" fn altvec_Dataptr_or_null<StateType: AltrepImpl + 'static>(
@@ -745,21 +745,27 @@ impl Altrep {
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).sum(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .sum(narm == Rboolean::TRUE)
+                    .get()
             }
 
             unsafe extern "C" fn altinteger_Min<StateType: AltIntegerImpl + 'static>(
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).min(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .min(narm == Rboolean::TRUE)
+                    .get()
             }
 
             unsafe extern "C" fn altinteger_Max<StateType: AltIntegerImpl + 'static>(
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).max(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .max(narm == Rboolean::TRUE)
+                    .get()
             }
 
             R_set_altinteger_Elt_method(class_ptr, Some(altinteger_Elt::<StateType>));
@@ -817,21 +823,27 @@ impl Altrep {
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).sum(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .sum(narm == Rboolean::TRUE)
+                    .get()
             }
 
             unsafe extern "C" fn altreal_Min<StateType: AltRealImpl + 'static>(
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).min(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .min(narm == Rboolean::TRUE)
+                    .get()
             }
 
             unsafe extern "C" fn altreal_Max<StateType: AltRealImpl + 'static>(
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).max(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .max(narm == Rboolean::TRUE)
+                    .get()
             }
 
             R_set_altreal_Elt_method(class_ptr, Some(altreal_Elt::<StateType>));
@@ -890,7 +902,9 @@ impl Altrep {
                 x: SEXP,
                 narm: Rboolean,
             ) -> SEXP {
-                Altrep::get_state::<StateType>(x).sum(narm == 1).get()
+                Altrep::get_state::<StateType>(x)
+                    .sum(narm == Rboolean::TRUE)
+                    .get()
             }
 
             R_set_altlogical_Elt_method(class_ptr, Some(altlogical_Elt::<StateType>));
