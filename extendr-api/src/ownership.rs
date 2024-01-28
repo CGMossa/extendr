@@ -125,7 +125,7 @@ impl Ownership {
             self.garbage_collect();
         }
 
-        let sexp_usize = sexp.into();
+        let send_sexp = sexp.into();
         let Ownership {
             ref mut preservation,
             ref mut cur_index,
@@ -133,7 +133,7 @@ impl Ownership {
             ref mut objects,
         } = *self;
 
-        let mut entry = objects.entry(sexp_usize);
+        let mut entry = objects.entry(send_sexp);
         let preservation_sexp = preservation.inner();
         match entry {
             Entry::Occupied(ref mut occupied) => {
@@ -157,7 +157,7 @@ impl Ownership {
     }
 
     pub unsafe fn unprotect(&mut self, sexp: SEXP) {
-        let sexp_usize = sexp.into();
+        let send_sexp = sexp.into();
         let Ownership {
             preservation,
             cur_index: _,
@@ -165,7 +165,7 @@ impl Ownership {
             ref mut objects,
         } = self;
 
-        let mut entry = objects.entry(sexp_usize);
+        let mut entry = objects.entry(send_sexp);
         match entry {
             Entry::Occupied(ref mut occupied) => {
                 let object = occupied.get_mut();
@@ -197,8 +197,8 @@ impl Ownership {
             ref mut objects,
         } = *self;
 
-        let sexp_usize = sexp.into();
-        let mut entry = objects.entry(sexp_usize);
+        let send_sexp = sexp.into();
+        let mut entry = objects.entry(send_sexp);
         match entry {
             Entry::Occupied(ref mut occupied) => occupied.get().refcount,
             Entry::Vacant(_) => 0,
