@@ -1,7 +1,7 @@
 use extendr_api::{Attributes, GetSexp};
 use extendr_engine::with_r;
 use extendr_macros::list;
-use libR_sys::{R_compute_identical, Rboolean_TRUE, Rf_PrintValue};
+use libR_sys::{R_compute_identical, Rboolean, Rf_PrintValue};
 
 #[test]
 fn test_what_is_returned_from_set_class() {
@@ -24,14 +24,14 @@ fn test_what_is_returned_from_set_class() {
             32 = !IGNORE_SRCREF
             Default from R's default: 16 = (0 + 0 + 0 + 0 + 16 + 0)
             */
-            assert!(R_compute_identical(a.get(), a_class.get(), 0) == Rboolean_TRUE);
-            // assert!(R_compute_identical(a.get(), a_class.get(), 1) == Rboolean_TRUE);
-            // assert!(R_compute_identical(a.get(), a_class.get(), 2) == Rboolean_TRUE);
-            // assert!(R_compute_identical(a.get(), a_class.get(), 4) == Rboolean_TRUE);
-            // assert!(R_compute_identical(a.get(), a_class.get(), 8) == Rboolean_TRUE);
+            assert!(R_compute_identical(a.get(), a_class.get(), 0) == Rboolean::TRUE);
+            // assert!(R_compute_identical(a.get(), a_class.get(), 1) == Rboolean::TRUE);
+            // assert!(R_compute_identical(a.get(), a_class.get(), 2) == Rboolean::TRUE);
+            // assert!(R_compute_identical(a.get(), a_class.get(), 4) == Rboolean::TRUE);
+            // assert!(R_compute_identical(a.get(), a_class.get(), 8) == Rboolean::TRUE);
             // // R default flag is 16
-            // assert!(R_compute_identical(a.get(), a_class.get(), 16) == Rboolean_TRUE);
-            // assert!(R_compute_identical(a.get(), a_class.get(), 32) == Rboolean_TRUE);
+            // assert!(R_compute_identical(a.get(), a_class.get(), 16) == Rboolean::TRUE);
+            // assert!(R_compute_identical(a.get(), a_class.get(), 32) == Rboolean::TRUE);
         }
     })
 }
