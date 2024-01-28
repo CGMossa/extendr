@@ -22,3 +22,4 @@ libR-sys = "*"
 [patch.crates-io]
 # root is `tests/extendrtests/src/rust`
 extendr-api = { path = "../../../../extendr-api/" }
+libR-sys = { path = "../../../../libR-sys/" }
