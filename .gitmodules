@@ -1,3 +1,6 @@
 [submodule "libR-sys"]
 	path = libR-sys
 	url = https://github.com/CGMossa/libR-sys
+[submodule "rextendr"]
+	path = rextendr
+	url = https://github.com/extendr/rextendr
