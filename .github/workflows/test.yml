@@ -235,7 +235,12 @@ jobs:
 
               # uncomment this line when we need to depend on the dev version of libR-sys
               #'libR-sys = { git = "https://github.com/extendr/libR-sys" }',
-
+              # use the embedded libR-sys submodule
+              paste0(
+                "libR-sys = { path = \"",
+                normalizePath(file.path(getwd(), "libR-sys"), winslash = "/"),
+                "\" }"),
+              
               sep = ";")
           
           patch.crates_io <- paste0("REXTENDR_PATCH_CRATES_IO=", patch.crates_io)
