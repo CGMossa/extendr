@@ -142,12 +142,21 @@ impl List {
             .unwrap_or_else(|| StrIter::new(self.len()).zip(self.values()))
     }
 
-    /// Get the list a slice of `Robj`s.
+    /// Get the list as a slice of `Robj`s.
     pub fn as_slice(&self) -> &[Robj] {
         unsafe {
             let data = DATAPTR(self.robj.get()) as *const Robj;
             let len = self.robj.len();
             std::slice::from_raw_parts(data, len)
+        }
+    }
+
+    /// Get the list as a mutable slice of `Robj`s.
+    pub fn as_mut_slice(&mut self) -> &mut [Robj] {
+        unsafe {
+            let data = DATAPTR(self.robj.get_mut()) as *mut Robj;
+            let len = self.robj.len();
+            std::slice::from_raw_parts_mut(data, len)
         }
     }
 
@@ -408,6 +417,13 @@ impl Deref for List {
     /// Lists behave like slices of Robj.
     fn deref(&self) -> &Self::Target {
         self.as_slice()
+    }
+}
+
+impl DerefMut for List {
+    /// Lists behave like slices of Robj.
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        self.as_mut_slice()
     }
 }
 
