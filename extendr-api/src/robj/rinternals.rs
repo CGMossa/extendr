@@ -245,6 +245,7 @@ pub trait Rinternals: Types + Conversions {
 
     /// Internal function used to implement `#[extendr]` impl
     #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
     unsafe fn make_external_ptr<T>(p: *mut T, prot: Robj) -> Robj {
         let type_name: Robj = std::any::type_name::<T>().into();
         Robj::from_sexp(single_threaded(|| {
@@ -258,23 +259,48 @@ pub trait Rinternals: Types + Conversions {
 
     /// Internal function used to implement `#[extendr]` impl
     #[doc(hidden)]
-    unsafe fn external_ptr_addr<T>(&self) -> *mut T {
-        R_ExternalPtrAddr(self.get()) as *mut T
+    #[deprecated = "use `ExternalPtr<T>` instead"]
+    unsafe fn external_ptr_addr<T>(&self) -> *const T {
+        R_ExternalPtrAddr(self.get()) as *const T
     }
 
     /// Internal function used to implement `#[extendr]` impl
     #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
+    unsafe fn external_ptr_addr_mut<T>(&mut self) -> *mut T {
+        R_ExternalPtrAddr(self.get_mut()) as *mut T
+    }
+
+    /// Internal function used to implement `#[extendr]` impl
+    #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
     unsafe fn external_ptr_tag(&self) -> Robj {
         Robj::from_sexp(R_ExternalPtrTag(self.get()))
     }
 
     /// Internal function used to implement `#[extendr]` impl
     #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
+    unsafe fn external_ptr_tag_mut(&mut self) -> Robj {
+        Robj::from_sexp(R_ExternalPtrTag(self.get_mut()))
+    }
+
+    /// Internal function used to implement `#[extendr]` impl
+    #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
     unsafe fn external_ptr_protected(&self) -> Robj {
         Robj::from_sexp(R_ExternalPtrProtected(self.get()))
     }
 
+    /// Internal function used to implement `#[extendr]` impl
     #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
+    unsafe fn external_ptr_protected_mut(&mut self) -> Robj {
+        Robj::from_sexp(R_ExternalPtrProtected(self.get_mut()))
+    }
+
+    #[doc(hidden)]
+    #[deprecated = "use `ExternalPtr<T>` instead"]
     unsafe fn register_c_finalizer(&self, func: R_CFinalizer_t) {
         // Use R_RegisterCFinalizerEx() and set onexit to 1 (TRUE) to invoke the
         // finalizer on a shutdown of the R session as well.
@@ -413,6 +439,7 @@ pub trait Rinternals: Types + Conversions {
     /// Check an external pointer tag.
     /// This is used to wrap R objects.
     #[doc(hidden)]
+    #[deprecated = "no need to check the type, as it is insufficient and unnecessary"]
     fn check_external_ptr_type<T>(&self) -> bool {
         if self.sexptype() == libR_sys::EXTPTRSXP {
             let tag = unsafe { self.external_ptr_tag() };
