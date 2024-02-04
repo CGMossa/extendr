@@ -185,7 +185,6 @@ pub fn make_function_wrappers(
             > = unsafe {
                 #( #convert_args )*
                 std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                    // Ok(extendr_api::Robj::from(#call_name(#actual_args)))
                     #return_type_conversion
                 })
             };

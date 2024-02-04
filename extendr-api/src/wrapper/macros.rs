@@ -15,13 +15,13 @@ macro_rules! gen_vector_wrapper_impl {
                 $type::new(0)
             }
         }
-        
+
         impl $type {
             #[doc = "Returns a slice of the underlying data"]
             pub fn as_slice(&self) -> &[$scalar_type] {
                 self.robj.as_typed_slice().unwrap()
             }
-            
+
             #[doc = "Returns a mutable slice of the underlying data"]
             pub fn as_slice_mut(&mut self) -> &mut [$scalar_type] {
                 self.robj.as_typed_slice_mut().unwrap()
