@@ -1,3 +1,7 @@
+//!
+//!
+//!
+//!
 use proc_macro2::Ident;
 use quote::{format_ident, quote};
 use syn::{parse_quote, punctuated::Punctuated, Expr, ExprLit, FnArg, ItemFn, Token, Type};
@@ -31,17 +35,17 @@ pub fn make_function_wrappers(
     };
 
     let mod_name = if let Some(mod_name) = opts.mod_name.as_ref() {
-        format_ident!("{}", mod_name)
+        format_ident!("{mod_name}")
     } else {
         sig.ident.clone()
     };
 
     let mod_name = sanitize_identifier(mod_name);
-    let wrap_name = format_ident!("{}{}{}", WRAP_PREFIX, prefix, mod_name);
-    let meta_name = format_ident!("{}{}{}", META_PREFIX, prefix, mod_name);
+    let wrap_name = format_ident!("{WRAP_PREFIX}{prefix}{mod_name}");
+    let meta_name = format_ident!("{META_PREFIX}{prefix}{mod_name}");
 
-    let rust_name_str = format!("{}", rust_name);
-    let c_name_str = format!("{}", mod_name);
+    let rust_name_str = format!("{rust_name}");
+    let c_name_str = format!("{mod_name}");
     let doc_string = get_doc_string(attrs);
     let return_type_string = get_return_type(sig);
 
@@ -71,6 +75,10 @@ pub fn make_function_wrappers(
         // eg. aux_func()
         quote! { #rust_name }
     };
+
+    // In the above, we don't have an indicator that we are within an
+    // impl-block. Functions without a self-arg, are regarded as any other
+    // function.
 
     let formal_args = inputs
         .iter()
@@ -120,6 +128,48 @@ pub fn make_function_wrappers(
             });)
         })
         .unwrap_or_default();
+
+    // figure out if &Self / &mut Self / inside of impl block &ImplType / &mut ImplType is used!
+    // dbg!(&rust_name_str, &sig.output);
+    let return_is_ref_self = {
+        match sig.output {
+            syn::ReturnType::Default => false,
+            syn::ReturnType::Type(_, ref return_type) => match return_type.as_ref() {
+                // matches -> Self
+                // Type::Path(type_path) => type_path.path.is_ident("Self"),
+                // matches -> &Self / -> &mut Self
+                Type::Reference(ref reference_type) => {
+                    if let Type::Path(path) = reference_type.elem.as_ref() {
+                        path.path.is_ident("Self")
+                            || self_ty
+                                .map(|x| x == reference_type.elem.as_ref())
+                                .unwrap_or(false)
+                    } else {
+                        false
+                    }
+                }
+                _ => false,
+            },
+        }
+    };
+    // dbg!(return_is_ref_self);
+
+    let return_type_conversion = if !return_is_ref_self {
+        if opts.use_try_from {
+            quote!(Ok((#call_name(#actual_args)).try_into()?))
+        } else {
+            quote!(Ok(extendr_api::Robj::from(#call_name(#actual_args))))
+        }
+    } else {
+        // instead of converting &Self / &mut Self, pass on the passed
+        // ExternalPtr<Self>
+        quote!(
+            let _return_ref_to_self = #call_name(#actual_args);
+            //FIXME: find a less hardcoded way to write `_self_robj`
+            Ok(_self_robj)
+        )
+    };
+
     wrappers.push(parse_quote!(
         #[no_mangle]
         #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
@@ -134,8 +184,9 @@ pub fn make_function_wrappers(
                 Box<dyn std::any::Any + Send>
             > = unsafe {
                 #( #convert_args )*
-                std::panic::catch_unwind(||-> std::result::Result<Robj, extendr_api::Error> {
-                    Ok(extendr_api::Robj::from(#call_name(#actual_args)))
+                std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                    // Ok(extendr_api::Robj::from(#call_name(#actual_args)))
+                    #return_type_conversion
                 })
             };
 
@@ -273,11 +324,11 @@ pub fn type_name(type_: &Type) -> String {
 pub fn translate_formal(input: &FnArg, self_ty: Option<&syn::Type>) -> syn::Result<FnArg> {
     match input {
         // function argument.
-        FnArg::Typed(ref pattype) => {
-            let pat = &pattype.pat.as_ref();
+        FnArg::Typed(pattype) => {
+            let pat = &pattype.pat;
             Ok(parse_quote! { #pat : extendr_api::SEXP })
         }
-        // &self
+        // &self / &mut self
         FnArg::Receiver(ref reciever) => {
             if !reciever.attrs.is_empty() || reciever.reference.is_none() {
                 return Err(syn::Error::new_spanned(
@@ -346,12 +397,15 @@ fn translate_meta_arg(input: &mut FnArg, self_ty: Option<&syn::Type>) -> syn::Re
 
 /// Convert `SEXP` arguments into `Robj`.
 /// This maintains the lifetime of references.
+///
+/// These conversions are from R into Rust
 fn translate_to_robj(input: &FnArg) -> syn::Result<syn::Stmt> {
     match input {
         FnArg::Typed(ref pattype) => {
             let pat = &pattype.pat.as_ref();
             if let syn::Pat::Ident(ref ident) = pat {
                 let varname = format_ident!("_{}_robj", ident.ident);
+                //TODO: no need to protect incoming data from R
                 Ok(parse_quote! { let #varname = extendr_api::robj::Robj::from_sexp(#pat); })
             } else {
                 Err(syn::Error::new_spanned(
@@ -361,6 +415,7 @@ fn translate_to_robj(input: &FnArg) -> syn::Result<syn::Stmt> {
             }
         }
         FnArg::Receiver(_) => {
+            //TODO: no need to protect incoming data from R
             Ok(parse_quote! { let mut _self_robj = extendr_api::robj::Robj::from_sexp(_self); })
         }
     }
@@ -369,9 +424,9 @@ fn translate_to_robj(input: &FnArg) -> syn::Result<syn::Stmt> {
 // Generate actual argument list for the call (ie. a list of conversions).
 fn translate_actual(opts: &ExtendrOptions, input: &FnArg) -> Option<Expr> {
     match input {
-        FnArg::Typed(ref pattype) => {
-            let pat = &pattype.pat.as_ref();
-            let ty = &pattype.ty.as_ref();
+        FnArg::Typed(pattype) => {
+            let pat = &*pattype.pat;
+            let ty = &*pattype.ty;
             if let syn::Pat::Ident(ref ident) = pat {
                 let varname = format_ident!("_{}_robj", ident.ident);
                 if opts.use_try_from {

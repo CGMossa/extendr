@@ -107,6 +107,16 @@
                   )
               }
           }
+          #[automatically_derived]
+          impl ::core::clone::Clone for MySubmoduleClass {
+              #[inline]
+              fn clone(&self) -> MySubmoduleClass {
+                  let _: ::core::clone::AssertParamIsClone<i32>;
+                  *self
+              }
+          }
+          #[automatically_derived]
+          impl ::core::marker::Copy for MySubmoduleClass {}
           /// Class for testing (exported)
           /// @examples
           /// x <- MySubmoduleClass$new()
@@ -128,8 +138,24 @@
               fn a(&self) -> i32 {
                   self.a
               }
-              /// Method for getting one's self.
-              fn me(&self) -> &Self {
+              /// Method for getting one's (by way of a copy) self.
+              fn me_owned(&self) -> Self {
+                  *self
+              }
+              /// Method for getting one's (ref) self.
+              fn me_ref(&self) -> &Self {
+                  self
+              }
+              /// Method for getting one's (ref mut) self.
+              fn me_mut(&mut self) -> &mut Self {
+                  self
+              }
+              /// Method for getting one's ref (explicit) self.
+              fn me_explicit_ref(&self) -> &MySubmoduleClass {
+                  self
+              }
+              /// Method for getting one's ref mut (explicit) self.
+              fn me_explicit_mut(&mut self) -> &mut MySubmoduleClass {
                   self
               }
           }
@@ -381,7 +407,7 @@
           }
           #[no_mangle]
           #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
-          pub extern "C" fn wrap__MySubmoduleClass__me(
+          pub extern "C" fn wrap__MySubmoduleClass__me_owned(
               _self: extendr_api::SEXP,
           ) -> extendr_api::SEXP {
               use extendr_api::robj::*;
@@ -396,7 +422,7 @@
                               extendr_api::unwrap_or_throw(
                                       <&MySubmoduleClass>::from_robj(&_self_robj),
                                   )
-                                  .me(),
+                                  .me_owned(),
                           ),
                       )
                   })
@@ -442,7 +468,9 @@
               }
           }
           #[allow(non_snake_case)]
-          fn meta__MySubmoduleClass__me(metadata: &mut Vec<extendr_api::metadata::Func>) {
+          fn meta__MySubmoduleClass__me_owned(
+              metadata: &mut Vec<extendr_api::metadata::Func>,
+          ) {
               let mut args = <[_]>::into_vec(
                   #[rustc_box]
                   ::alloc::boxed::Box::new([
@@ -455,69 +483,375 @@
               );
               metadata
                   .push(extendr_api::metadata::Func {
-                      doc: " Method for getting one's self.",
-                      rust_name: "me",
-                      r_name: "me",
-                      mod_name: "me",
+                      doc: " Method for getting one's (by way of a copy) self.",
+                      rust_name: "me_owned",
+                      r_name: "me_owned",
+                      mod_name: "me_owned",
                       args: args,
                       return_type: "Self",
-                      func_ptr: wrap__MySubmoduleClass__me as *const u8,
+                      func_ptr: wrap__MySubmoduleClass__me_owned as *const u8,
+                      hidden: false,
+                  })
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__MySubmoduleClass__me_ref(
+              _self: extendr_api::SEXP,
+          ) -> extendr_api::SEXP {
+              use extendr_api::robj::*;
+              let wrap_result_state: std::result::Result<
+                  std::result::Result<Robj, extendr_api::Error>,
+                  Box<dyn std::any::Any + Send>,
+              > = unsafe {
+                  let mut _self_robj = extendr_api::robj::Robj::from_sexp(_self);
+                  std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                      let _return_ref_to_self = extendr_api::unwrap_or_throw(
+                              <&MySubmoduleClass>::from_robj(&_self_robj),
+                          )
+                          .me_ref();
+                      Ok(_self_robj)
+                  })
+              };
+              match wrap_result_state {
+                  Ok(Ok(zz)) => {
+                      return unsafe { zz.get() };
+                  }
+                  Ok(Err(conversion_err)) => {
+                      let err_string = conversion_err.to_string();
+                      drop(conversion_err);
+                      extendr_api::throw_r_error(&err_string);
+                  }
+                  Err(unwind_err) => {
+                      drop(unwind_err);
+                      let err_string = {
+                          let res = ::alloc::fmt::format(
+                              format_args!("user function panicked: {0}\0", "me_ref"),
+                          );
+                          res
+                      };
+                      extendr_api::handle_panic(
+                          err_string.as_str(),
+                          || {
+                              #[cold]
+                              #[track_caller]
+                              #[inline(never)]
+                              const fn panic_cold_explicit() -> ! {
+                                  ::core::panicking::panic_explicit()
+                              }
+                              panic_cold_explicit();
+                          },
+                      );
+                  }
+              }
+              {
+                  ::core::panicking::panic_fmt(
+                      format_args!(
+                          "internal error: entered unreachable code: {0}",
+                          format_args!("internal extendr error, this should never happen."),
+                      ),
+                  );
+              }
+          }
+          #[allow(non_snake_case)]
+          fn meta__MySubmoduleClass__me_ref(metadata: &mut Vec<extendr_api::metadata::Func>) {
+              let mut args = <[_]>::into_vec(
+                  #[rustc_box]
+                  ::alloc::boxed::Box::new([
+                      extendr_api::metadata::Arg {
+                          name: "self",
+                          arg_type: "MySubmoduleClass",
+                          default: None,
+                      },
+                  ]),
+              );
+              metadata
+                  .push(extendr_api::metadata::Func {
+                      doc: " Method for getting one's (ref) self.",
+                      rust_name: "me_ref",
+                      r_name: "me_ref",
+                      mod_name: "me_ref",
+                      args: args,
+                      return_type: "Self",
+                      func_ptr: wrap__MySubmoduleClass__me_ref as *const u8,
+                      hidden: false,
+                  })
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__MySubmoduleClass__me_mut(
+              _self: extendr_api::SEXP,
+          ) -> extendr_api::SEXP {
+              use extendr_api::robj::*;
+              let wrap_result_state: std::result::Result<
+                  std::result::Result<Robj, extendr_api::Error>,
+                  Box<dyn std::any::Any + Send>,
+              > = unsafe {
+                  let mut _self_robj = extendr_api::robj::Robj::from_sexp(_self);
+                  std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                      let _return_ref_to_self = extendr_api::unwrap_or_throw(
+                              <&mut MySubmoduleClass>::from_robj(&_self_robj),
+                          )
+                          .me_mut();
+                      Ok(_self_robj)
+                  })
+              };
+              match wrap_result_state {
+                  Ok(Ok(zz)) => {
+                      return unsafe { zz.get() };
+                  }
+                  Ok(Err(conversion_err)) => {
+                      let err_string = conversion_err.to_string();
+                      drop(conversion_err);
+                      extendr_api::throw_r_error(&err_string);
+                  }
+                  Err(unwind_err) => {
+                      drop(unwind_err);
+                      let err_string = {
+                          let res = ::alloc::fmt::format(
+                              format_args!("user function panicked: {0}\0", "me_mut"),
+                          );
+                          res
+                      };
+                      extendr_api::handle_panic(
+                          err_string.as_str(),
+                          || {
+                              #[cold]
+                              #[track_caller]
+                              #[inline(never)]
+                              const fn panic_cold_explicit() -> ! {
+                                  ::core::panicking::panic_explicit()
+                              }
+                              panic_cold_explicit();
+                          },
+                      );
+                  }
+              }
+              {
+                  ::core::panicking::panic_fmt(
+                      format_args!(
+                          "internal error: entered unreachable code: {0}",
+                          format_args!("internal extendr error, this should never happen."),
+                      ),
+                  );
+              }
+          }
+          #[allow(non_snake_case)]
+          fn meta__MySubmoduleClass__me_mut(metadata: &mut Vec<extendr_api::metadata::Func>) {
+              let mut args = <[_]>::into_vec(
+                  #[rustc_box]
+                  ::alloc::boxed::Box::new([
+                      extendr_api::metadata::Arg {
+                          name: "self",
+                          arg_type: "MySubmoduleClass",
+                          default: None,
+                      },
+                  ]),
+              );
+              metadata
+                  .push(extendr_api::metadata::Func {
+                      doc: " Method for getting one's (ref mut) self.",
+                      rust_name: "me_mut",
+                      r_name: "me_mut",
+                      mod_name: "me_mut",
+                      args: args,
+                      return_type: "Self",
+                      func_ptr: wrap__MySubmoduleClass__me_mut as *const u8,
+                      hidden: false,
+                  })
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__MySubmoduleClass__me_explicit_ref(
+              _self: extendr_api::SEXP,
+          ) -> extendr_api::SEXP {
+              use extendr_api::robj::*;
+              let wrap_result_state: std::result::Result<
+                  std::result::Result<Robj, extendr_api::Error>,
+                  Box<dyn std::any::Any + Send>,
+              > = unsafe {
+                  let mut _self_robj = extendr_api::robj::Robj::from_sexp(_self);
+                  std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                      let _return_ref_to_self = extendr_api::unwrap_or_throw(
+                              <&MySubmoduleClass>::from_robj(&_self_robj),
+                          )
+                          .me_explicit_ref();
+                      Ok(_self_robj)
+                  })
+              };
+              match wrap_result_state {
+                  Ok(Ok(zz)) => {
+                      return unsafe { zz.get() };
+                  }
+                  Ok(Err(conversion_err)) => {
+                      let err_string = conversion_err.to_string();
+                      drop(conversion_err);
+                      extendr_api::throw_r_error(&err_string);
+                  }
+                  Err(unwind_err) => {
+                      drop(unwind_err);
+                      let err_string = {
+                          let res = ::alloc::fmt::format(
+                              format_args!("user function panicked: {0}\0", "me_explicit_ref"),
+                          );
+                          res
+                      };
+                      extendr_api::handle_panic(
+                          err_string.as_str(),
+                          || {
+                              #[cold]
+                              #[track_caller]
+                              #[inline(never)]
+                              const fn panic_cold_explicit() -> ! {
+                                  ::core::panicking::panic_explicit()
+                              }
+                              panic_cold_explicit();
+                          },
+                      );
+                  }
+              }
+              {
+                  ::core::panicking::panic_fmt(
+                      format_args!(
+                          "internal error: entered unreachable code: {0}",
+                          format_args!("internal extendr error, this should never happen."),
+                      ),
+                  );
+              }
+          }
+          #[allow(non_snake_case)]
+          fn meta__MySubmoduleClass__me_explicit_ref(
+              metadata: &mut Vec<extendr_api::metadata::Func>,
+          ) {
+              let mut args = <[_]>::into_vec(
+                  #[rustc_box]
+                  ::alloc::boxed::Box::new([
+                      extendr_api::metadata::Arg {
+                          name: "self",
+                          arg_type: "MySubmoduleClass",
+                          default: None,
+                      },
+                  ]),
+              );
+              metadata
+                  .push(extendr_api::metadata::Func {
+                      doc: " Method for getting one's ref (explicit) self.",
+                      rust_name: "me_explicit_ref",
+                      r_name: "me_explicit_ref",
+                      mod_name: "me_explicit_ref",
+                      args: args,
+                      return_type: "MySubmoduleClass",
+                      func_ptr: wrap__MySubmoduleClass__me_explicit_ref as *const u8,
+                      hidden: false,
+                  })
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__MySubmoduleClass__me_explicit_mut(
+              _self: extendr_api::SEXP,
+          ) -> extendr_api::SEXP {
+              use extendr_api::robj::*;
+              let wrap_result_state: std::result::Result<
+                  std::result::Result<Robj, extendr_api::Error>,
+                  Box<dyn std::any::Any + Send>,
+              > = unsafe {
+                  let mut _self_robj = extendr_api::robj::Robj::from_sexp(_self);
+                  std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                      let _return_ref_to_self = extendr_api::unwrap_or_throw(
+                              <&mut MySubmoduleClass>::from_robj(&_self_robj),
+                          )
+                          .me_explicit_mut();
+                      Ok(_self_robj)
+                  })
+              };
+              match wrap_result_state {
+                  Ok(Ok(zz)) => {
+                      return unsafe { zz.get() };
+                  }
+                  Ok(Err(conversion_err)) => {
+                      let err_string = conversion_err.to_string();
+                      drop(conversion_err);
+                      extendr_api::throw_r_error(&err_string);
+                  }
+                  Err(unwind_err) => {
+                      drop(unwind_err);
+                      let err_string = {
+                          let res = ::alloc::fmt::format(
+                              format_args!("user function panicked: {0}\0", "me_explicit_mut"),
+                          );
+                          res
+                      };
+                      extendr_api::handle_panic(
+                          err_string.as_str(),
+                          || {
+                              #[cold]
+                              #[track_caller]
+                              #[inline(never)]
+                              const fn panic_cold_explicit() -> ! {
+                                  ::core::panicking::panic_explicit()
+                              }
+                              panic_cold_explicit();
+                          },
+                      );
+                  }
+              }
+              {
+                  ::core::panicking::panic_fmt(
+                      format_args!(
+                          "internal error: entered unreachable code: {0}",
+                          format_args!("internal extendr error, this should never happen."),
+                      ),
+                  );
+              }
+          }
+          #[allow(non_snake_case)]
+          fn meta__MySubmoduleClass__me_explicit_mut(
+              metadata: &mut Vec<extendr_api::metadata::Func>,
+          ) {
+              let mut args = <[_]>::into_vec(
+                  #[rustc_box]
+                  ::alloc::boxed::Box::new([
+                      extendr_api::metadata::Arg {
+                          name: "self",
+                          arg_type: "MySubmoduleClass",
+                          default: None,
+                      },
+                  ]),
+              );
+              metadata
+                  .push(extendr_api::metadata::Func {
+                      doc: " Method for getting one's ref mut (explicit) self.",
+                      rust_name: "me_explicit_mut",
+                      r_name: "me_explicit_mut",
+                      mod_name: "me_explicit_mut",
+                      args: args,
+                      return_type: "MySubmoduleClass",
+                      func_ptr: wrap__MySubmoduleClass__me_explicit_mut as *const u8,
                       hidden: false,
                   })
           }
           impl<'a> extendr_api::FromRobj<'a> for &MySubmoduleClass {
               fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  if robj.check_external_ptr_type::<MySubmoduleClass>() {
-                      #[allow(clippy::transmute_ptr_to_ref)]
-                      Ok(unsafe {
-                          std::mem::transmute(robj.external_ptr_addr::<MySubmoduleClass>())
-                      })
-                  } else {
-                      Err("expected MySubmoduleClass")
+                  use libR_sys::*;
+                  unsafe {
+                      let ptr = R_ExternalPtrAddr(robj.get()) as *const MySubmoduleClass;
+                      Ok(&*ptr)
                   }
               }
           }
           impl<'a> extendr_api::FromRobj<'a> for &mut MySubmoduleClass {
               fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  if robj.check_external_ptr_type::<MySubmoduleClass>() {
-                      #[allow(clippy::transmute_ptr_to_ref)]
-                      Ok(unsafe {
-                          std::mem::transmute(robj.external_ptr_addr::<MySubmoduleClass>())
-                      })
-                  } else {
-                      Err("expected MySubmoduleClass")
+                  use libR_sys::*;
+                  unsafe {
+                      let ptr = R_ExternalPtrAddr(robj.get()) as *mut MySubmoduleClass;
+                      Ok(&mut *ptr)
                   }
               }
           }
           impl From<MySubmoduleClass> for Robj {
               fn from(value: MySubmoduleClass) -> Self {
-                  unsafe {
-                      let ptr = Box::into_raw(Box::new(value));
-                      let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                      res.set_attrib(class_symbol(), "MySubmoduleClass").unwrap();
-                      res.register_c_finalizer(Some(__finalize__MySubmoduleClass));
-                      res
-                  }
-              }
-          }
-          impl<'a> From<&'a MySubmoduleClass> for Robj {
-              fn from(value: &'a MySubmoduleClass) -> Self {
-                  unsafe {
-                      let ptr = Box::into_raw(Box::new(value));
-                      let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                      res.set_attrib(class_symbol(), "MySubmoduleClass").unwrap();
-                      res.register_c_finalizer(Some(__finalize__MySubmoduleClass));
-                      res
-                  }
-              }
-          }
-          extern "C" fn __finalize__MySubmoduleClass(sexp: extendr_api::SEXP) {
-              unsafe {
-                  let robj = extendr_api::robj::Robj::from_sexp(sexp);
-                  if robj.check_external_ptr_type::<MySubmoduleClass>() {
-                      let ptr = robj.external_ptr_addr::<MySubmoduleClass>();
-                      drop(Box::from_raw(ptr));
-                  }
+                  let mut res: Robj = ExternalPtr::new(value).into();
+                  res.set_attrib(class_symbol(), "MySubmoduleClass").unwrap();
+                  res
               }
           }
           #[allow(non_snake_case)]
@@ -526,7 +860,11 @@
               meta__MySubmoduleClass__new(&mut methods);
               meta__MySubmoduleClass__set_a(&mut methods);
               meta__MySubmoduleClass__a(&mut methods);
-              meta__MySubmoduleClass__me(&mut methods);
+              meta__MySubmoduleClass__me_owned(&mut methods);
+              meta__MySubmoduleClass__me_ref(&mut methods);
+              meta__MySubmoduleClass__me_mut(&mut methods);
+              meta__MySubmoduleClass__me_explicit_ref(&mut methods);
+              meta__MySubmoduleClass__me_explicit_mut(&mut methods);
               impls
                   .push(extendr_api::metadata::Impl {
                       doc: " Class for testing (exported)\n @examples\n x <- MySubmoduleClass$new()\n x$a()\n x$set_a(10)\n x$a()\n @export",
@@ -2264,53 +2602,27 @@
           impl VecUsize {}
           impl<'a> extendr_api::FromRobj<'a> for &VecUsize {
               fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  if robj.check_external_ptr_type::<VecUsize>() {
-                      #[allow(clippy::transmute_ptr_to_ref)]
-                      Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<VecUsize>()) })
-                  } else {
-                      Err("expected VecUsize")
+                  use libR_sys::*;
+                  unsafe {
+                      let ptr = R_ExternalPtrAddr(robj.get()) as *const VecUsize;
+                      Ok(&*ptr)
                   }
               }
           }
           impl<'a> extendr_api::FromRobj<'a> for &mut VecUsize {
               fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  if robj.check_external_ptr_type::<VecUsize>() {
-                      #[allow(clippy::transmute_ptr_to_ref)]
-                      Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<VecUsize>()) })
-                  } else {
-                      Err("expected VecUsize")
+                  use libR_sys::*;
+                  unsafe {
+                      let ptr = R_ExternalPtrAddr(robj.get()) as *mut VecUsize;
+                      Ok(&mut *ptr)
                   }
               }
           }
           impl From<VecUsize> for Robj {
               fn from(value: VecUsize) -> Self {
-                  unsafe {
-                      let ptr = Box::into_raw(Box::new(value));
-                      let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                      res.set_attrib(class_symbol(), "VecUsize").unwrap();
-                      res.register_c_finalizer(Some(__finalize__VecUsize));
-                      res
-                  }
-              }
-          }
-          impl<'a> From<&'a VecUsize> for Robj {
-              fn from(value: &'a VecUsize) -> Self {
-                  unsafe {
-                      let ptr = Box::into_raw(Box::new(value));
-                      let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                      res.set_attrib(class_symbol(), "VecUsize").unwrap();
-                      res.register_c_finalizer(Some(__finalize__VecUsize));
-                      res
-                  }
-              }
-          }
-          extern "C" fn __finalize__VecUsize(sexp: extendr_api::SEXP) {
-              unsafe {
-                  let robj = extendr_api::robj::Robj::from_sexp(sexp);
-                  if robj.check_external_ptr_type::<VecUsize>() {
-                      let ptr = robj.external_ptr_addr::<VecUsize>();
-                      drop(Box::from_raw(ptr));
-                  }
+                  let mut res: Robj = ExternalPtr::new(value).into();
+                  res.set_attrib(class_symbol(), "VecUsize").unwrap();
+                  res
               }
           }
           #[allow(non_snake_case)]
@@ -2326,7 +2638,7 @@
           #[cfg(use_r_altlist)]
           impl AltListImpl for VecUsize {
               fn elt(&self, index: usize) -> Robj {
-                  self.into_robj()
+                  self.0.get(index).unwrap().into_robj()
               }
           }
           #[cfg(use_r_altlist)]
@@ -5144,11 +5456,11 @@
           > = unsafe {
               let mut _self_robj = extendr_api::robj::Robj::from_sexp(_self);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(
-                      extendr_api::Robj::from(
-                          extendr_api::unwrap_or_throw(<&MyClass>::from_robj(&_self_robj)).me(),
-                      ),
-                  )
+                  let _return_ref_to_self = extendr_api::unwrap_or_throw(
+                          <&MyClass>::from_robj(&_self_robj),
+                      )
+                      .me();
+                  Ok(_self_robj)
               })
           };
           match wrap_result_state {
@@ -5383,53 +5695,27 @@
       }
       impl<'a> extendr_api::FromRobj<'a> for &MyClass {
           fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              if robj.check_external_ptr_type::<MyClass>() {
-                  #[allow(clippy::transmute_ptr_to_ref)]
-                  Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<MyClass>()) })
-              } else {
-                  Err("expected MyClass")
+              use libR_sys::*;
+              unsafe {
+                  let ptr = R_ExternalPtrAddr(robj.get()) as *const MyClass;
+                  Ok(&*ptr)
               }
           }
       }
       impl<'a> extendr_api::FromRobj<'a> for &mut MyClass {
           fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              if robj.check_external_ptr_type::<MyClass>() {
-                  #[allow(clippy::transmute_ptr_to_ref)]
-                  Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<MyClass>()) })
-              } else {
-                  Err("expected MyClass")
+              use libR_sys::*;
+              unsafe {
+                  let ptr = R_ExternalPtrAddr(robj.get()) as *mut MyClass;
+                  Ok(&mut *ptr)
               }
           }
       }
       impl From<MyClass> for Robj {
           fn from(value: MyClass) -> Self {
-              unsafe {
-                  let ptr = Box::into_raw(Box::new(value));
-                  let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                  res.set_attrib(class_symbol(), "MyClass").unwrap();
-                  res.register_c_finalizer(Some(__finalize__MyClass));
-                  res
-              }
-          }
-      }
-      impl<'a> From<&'a MyClass> for Robj {
-          fn from(value: &'a MyClass) -> Self {
-              unsafe {
-                  let ptr = Box::into_raw(Box::new(value));
-                  let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                  res.set_attrib(class_symbol(), "MyClass").unwrap();
-                  res.register_c_finalizer(Some(__finalize__MyClass));
-                  res
-              }
-          }
-      }
-      extern "C" fn __finalize__MyClass(sexp: extendr_api::SEXP) {
-          unsafe {
-              let robj = extendr_api::robj::Robj::from_sexp(sexp);
-              if robj.check_external_ptr_type::<MyClass>() {
-                  let ptr = robj.external_ptr_addr::<MyClass>();
-                  drop(Box::from_raw(ptr));
-              }
+              let mut res: Robj = ExternalPtr::new(value).into();
+              res.set_attrib(class_symbol(), "MyClass").unwrap();
+              res
           }
       }
       #[allow(non_snake_case)]
@@ -5624,53 +5910,27 @@
       }
       impl<'a> extendr_api::FromRobj<'a> for &__MyClass {
           fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              if robj.check_external_ptr_type::<__MyClass>() {
-                  #[allow(clippy::transmute_ptr_to_ref)]
-                  Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<__MyClass>()) })
-              } else {
-                  Err("expected __MyClass")
+              use libR_sys::*;
+              unsafe {
+                  let ptr = R_ExternalPtrAddr(robj.get()) as *const __MyClass;
+                  Ok(&*ptr)
               }
           }
       }
       impl<'a> extendr_api::FromRobj<'a> for &mut __MyClass {
           fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              if robj.check_external_ptr_type::<__MyClass>() {
-                  #[allow(clippy::transmute_ptr_to_ref)]
-                  Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<__MyClass>()) })
-              } else {
-                  Err("expected __MyClass")
+              use libR_sys::*;
+              unsafe {
+                  let ptr = R_ExternalPtrAddr(robj.get()) as *mut __MyClass;
+                  Ok(&mut *ptr)
               }
           }
       }
       impl From<__MyClass> for Robj {
           fn from(value: __MyClass) -> Self {
-              unsafe {
-                  let ptr = Box::into_raw(Box::new(value));
-                  let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                  res.set_attrib(class_symbol(), "__MyClass").unwrap();
-                  res.register_c_finalizer(Some(__finalize____MyClass));
-                  res
-              }
-          }
-      }
-      impl<'a> From<&'a __MyClass> for Robj {
-          fn from(value: &'a __MyClass) -> Self {
-              unsafe {
-                  let ptr = Box::into_raw(Box::new(value));
-                  let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                  res.set_attrib(class_symbol(), "__MyClass").unwrap();
-                  res.register_c_finalizer(Some(__finalize____MyClass));
-                  res
-              }
-          }
-      }
-      extern "C" fn __finalize____MyClass(sexp: extendr_api::SEXP) {
-          unsafe {
-              let robj = extendr_api::robj::Robj::from_sexp(sexp);
-              if robj.check_external_ptr_type::<__MyClass>() {
-                  let ptr = robj.external_ptr_addr::<__MyClass>();
-                  drop(Box::from_raw(ptr));
-              }
+              let mut res: Robj = ExternalPtr::new(value).into();
+              res.set_attrib(class_symbol(), "__MyClass").unwrap();
+              res
           }
       }
       #[allow(non_snake_case)]
@@ -5875,57 +6135,27 @@
       }
       impl<'a> extendr_api::FromRobj<'a> for &MyClassUnexported {
           fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              if robj.check_external_ptr_type::<MyClassUnexported>() {
-                  #[allow(clippy::transmute_ptr_to_ref)]
-                  Ok(unsafe {
-                      std::mem::transmute(robj.external_ptr_addr::<MyClassUnexported>())
-                  })
-              } else {
-                  Err("expected MyClassUnexported")
+              use libR_sys::*;
+              unsafe {
+                  let ptr = R_ExternalPtrAddr(robj.get()) as *const MyClassUnexported;
+                  Ok(&*ptr)
               }
           }
       }
       impl<'a> extendr_api::FromRobj<'a> for &mut MyClassUnexported {
           fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              if robj.check_external_ptr_type::<MyClassUnexported>() {
-                  #[allow(clippy::transmute_ptr_to_ref)]
-                  Ok(unsafe {
-                      std::mem::transmute(robj.external_ptr_addr::<MyClassUnexported>())
-                  })
-              } else {
-                  Err("expected MyClassUnexported")
+              use libR_sys::*;
+              unsafe {
+                  let ptr = R_ExternalPtrAddr(robj.get()) as *mut MyClassUnexported;
+                  Ok(&mut *ptr)
               }
           }
       }
       impl From<MyClassUnexported> for Robj {
           fn from(value: MyClassUnexported) -> Self {
-              unsafe {
-                  let ptr = Box::into_raw(Box::new(value));
-                  let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                  res.set_attrib(class_symbol(), "MyClassUnexported").unwrap();
-                  res.register_c_finalizer(Some(__finalize__MyClassUnexported));
-                  res
-              }
-          }
-      }
-      impl<'a> From<&'a MyClassUnexported> for Robj {
-          fn from(value: &'a MyClassUnexported) -> Self {
-              unsafe {
-                  let ptr = Box::into_raw(Box::new(value));
-                  let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                  res.set_attrib(class_symbol(), "MyClassUnexported").unwrap();
-                  res.register_c_finalizer(Some(__finalize__MyClassUnexported));
-                  res
-              }
-          }
-      }
-      extern "C" fn __finalize__MyClassUnexported(sexp: extendr_api::SEXP) {
-          unsafe {
-              let robj = extendr_api::robj::Robj::from_sexp(sexp);
-              if robj.check_external_ptr_type::<MyClassUnexported>() {
-                  let ptr = robj.external_ptr_addr::<MyClassUnexported>();
-                  drop(Box::from_raw(ptr));
-              }
+              let mut res: Robj = ExternalPtr::new(value).into();
+              res.set_attrib(class_symbol(), "MyClassUnexported").unwrap();
+              res
           }
       }
       #[allow(non_snake_case)]

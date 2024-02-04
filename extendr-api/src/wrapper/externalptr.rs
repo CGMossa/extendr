@@ -92,9 +92,16 @@ impl<T: Any + Debug> ExternalPtr<T> {
 
             // This constructs an external pointer to our boxed data.
             // into_raw() converts the box to a malloced pointer.
-            let robj = Robj::make_external_ptr(Box::into_raw(boxed), r!(()));
+            let robj = {
+                let p = Box::into_raw(boxed);
+                let prot = R_NilValue;
+                let type_name: Robj = std::any::type_name::<T>().into();
+                Robj::from_sexp({
+                    R_MakeExternalPtr(p as *mut std::os::raw::c_void, type_name.get(), prot)
+                })
+            };
 
-            extern "C" fn finalizer<T>(x: SEXP) {
+            unsafe extern "C" fn finalizer<T>(x: SEXP) {
                 unsafe {
                     let ptr = R_ExternalPtrAddr(x) as *mut T;
 
@@ -105,13 +112,15 @@ impl<T: Any + Debug> ExternalPtr<T> {
                     // This frees up the memory we have used and calls the "T::drop" method if there is one.
                     drop(Box::from_raw(ptr));
 
-                    // Now set the pointer in ExternalPTR to C `NULL`
+                    // Now set the pointer in ExternalPtr to C `NULL`
                     R_ClearExternalPtr(x);
                 }
             }
 
             // Tell R about our finalizer
-            robj.register_c_finalizer(Some(finalizer::<T>));
+            // Use R_RegisterCFinalizerEx() and set onexit to 1 (TRUE) to invoke the
+            // finalizer on a shutdown of the R session as well.
+            R_RegisterCFinalizerEx(robj.get(), Some(finalizer::<T>), Rboolean::TRUE);
 
             // Return an object in a wrapper.
             Self {
@@ -138,7 +147,7 @@ impl<T: Any + Debug> ExternalPtr<T> {
     pub fn addr<'a>(&self) -> &'a T {
         unsafe {
             let ptr = R_ExternalPtrAddr(self.robj.get()) as *const T;
-            &*ptr as &'a T
+            ptr.as_ref().unwrap()
         }
     }
 
@@ -146,8 +155,8 @@ impl<T: Any + Debug> ExternalPtr<T> {
     /// Normally, we will use DerefMut to do this.
     pub fn addr_mut(&mut self) -> &mut T {
         unsafe {
-            let ptr = R_ExternalPtrAddr(self.robj.get()) as *mut T;
-            &mut *ptr as &mut T
+            let ptr = R_ExternalPtrAddr(self.robj.get_mut()) as *mut T;
+            ptr.as_mut().unwrap()
         }
     }
 }
@@ -158,19 +167,17 @@ impl<T: Any + Debug> TryFrom<&Robj> for ExternalPtr<T> {
     fn try_from(robj: &Robj) -> Result<Self> {
         let clone = robj.clone();
         if clone.rtype() != Rtype::ExternalPtr {
-            Err(Error::ExpectedExternalPtr(clone))
-        } else if clone.check_external_ptr_type::<T>() {
-            let res = ExternalPtr::<T> {
-                robj: clone,
-                marker: std::marker::PhantomData,
-            };
-            Ok(res)
-        } else {
-            Err(Error::ExpectedExternalPtrType(
-                clone,
-                std::any::type_name::<T>().into(),
-            ))
+            return Err(Error::ExpectedExternalPtr(clone));
         }
+
+        // NOTE: omitting type checking because it is unnecessary and inaccurate.
+
+        let res = ExternalPtr::<T> {
+            robj: clone,
+            marker: std::marker::PhantomData,
+        };
+
+        Ok(res)
     }
 }
 

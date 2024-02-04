@@ -116,9 +116,7 @@ pub fn extendr_impl(mut item_impl: ItemImpl) -> syn::Result<TokenStream> {
         }
     }
 
-    let meta_name = format_ident!("{}{}", wrappers::META_PREFIX, self_ty_name);
-
-    let finalizer_name = format_ident!("__finalize__{}", self_ty_name);
+    let meta_name = format_ident!("{}{self_ty_name}", wrappers::META_PREFIX);
 
     let expanded = TokenStream::from(quote! {
         // The impl itself copied from the source.
@@ -130,62 +128,44 @@ pub fn extendr_impl(mut item_impl: ItemImpl) -> syn::Result<TokenStream> {
         // Input conversion function for this type.
         impl<'a> extendr_api::FromRobj<'a> for &#self_ty {
             fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                if robj.check_external_ptr_type::<#self_ty>() {
-                    #[allow(clippy::transmute_ptr_to_ref)]
-                    Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<#self_ty>()) })
-                } else {
-                    Err(concat!("expected ", #self_ty_name))
+                use libR_sys::*;
+                unsafe {
+                    let ptr = R_ExternalPtrAddr(robj.get()) as *const #self_ty;
+                    // assume it is not C NULL
+                    Ok(&*ptr)
                 }
             }
         }
 
-        // Input conversion function for a reference to this type.
+        // Input conversion function for a mutable reference to this type.
         impl<'a> extendr_api::FromRobj<'a> for &mut #self_ty {
             fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                if robj.check_external_ptr_type::<#self_ty>() {
-                    #[allow(clippy::transmute_ptr_to_ref)]
-                    Ok(unsafe { std::mem::transmute(robj.external_ptr_addr::<#self_ty>()) })
-                } else {
-                    Err(concat!("expected ", #self_ty_name))
+                use libR_sys::*;
+                unsafe {
+                    //FIXME: it should be `get_mut` instead of `get`
+                    // let ptr = R_ExternalPtrAddr(robj.get_mut()) as *mut #self_ty;
+                    let ptr = R_ExternalPtrAddr(robj.get()) as *mut #self_ty;
+                    // assume it is not C NULL
+                    Ok(&mut *ptr)
                 }
             }
         }
+
+        //FIXME: where is this used?
+        // impl extendr_api::IntoRobj for #self_ty {
+        //     fn into_robj(self) -> Robj {
+        //         let res = ExternalPtr::new(self).into();
+        //         res.set_attrib(class_symbol(), #self_ty_name).unwrap();
+        //         res
+        //     }
+        // }
 
         // Output conversion function for this type.
         impl From<#self_ty> for Robj {
             fn from(value: #self_ty) -> Self {
-                unsafe {
-                    let ptr = Box::into_raw(Box::new(value));
-                    let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                    res.set_attrib(class_symbol(), #self_ty_name).unwrap();
-                    res.register_c_finalizer(Some(#finalizer_name));
-                    res
-                }
-            }
-        }
-
-        // Output conversion function for this type.
-        impl<'a> From<&'a #self_ty> for Robj {
-            fn from(value: &'a #self_ty) -> Self {
-                unsafe {
-                    let ptr = Box::into_raw(Box::new(value));
-                    let mut res = Robj::make_external_ptr(ptr, Robj::from(()));
-                    res.set_attrib(class_symbol(), #self_ty_name).unwrap();
-                    res.register_c_finalizer(Some(#finalizer_name));
-                    res
-                }
-            }
-        }
-
-        // Function to free memory for this type.
-        extern "C" fn #finalizer_name (sexp: extendr_api::SEXP) {
-            unsafe {
-                let robj = extendr_api::robj::Robj::from_sexp(sexp);
-                if robj.check_external_ptr_type::<#self_ty>() {
-                    //eprintln!("finalize {}", #self_ty_name);
-                    let ptr = robj.external_ptr_addr::<#self_ty>();
-                    drop(Box::from_raw(ptr));
-                }
+                let mut res: Robj = ExternalPtr::new(value).into();
+                res.set_attrib(class_symbol(), #self_ty_name).unwrap();
+                res
             }
         }
 
