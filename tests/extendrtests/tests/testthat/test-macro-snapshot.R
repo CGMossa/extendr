@@ -24,7 +24,7 @@ test_that("Macro expansion of lib.rs", {
 
   result <- processx::run(
     "cargo",
-    args = c("expand", "--manifest-path", cargo_toml_path)
+    args = c("expand", "--lib", "--manifest-path", cargo_toml_path)
   )
   expect_equal(result$status, 0, info = "cargo expand failed")
   expect_snapshot(cat(result$stdout), cran = TRUE)
