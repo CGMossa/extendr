@@ -219,6 +219,7 @@ pub trait Length: GetSexp {
 impl Length for Robj {}
 
 impl Robj {
+    #[allow(clippy::not_unsafe_ptr_arg_deref)]
     pub fn from_sexp(sexp: SEXP) -> Self {
         single_threaded(|| {
             unsafe { ownership::protect(sexp) };
