@@ -1,6 +1,8 @@
 use crate::scalar::*;
 use crate::*;
 
+use crate as extendr_api;
+
 #[test]
 fn test_from_robj() {
     test! {

@@ -10,6 +10,7 @@ pub(crate) fn str_to_character(s: &str) -> SEXP {
             R_NaString
         } else {
             single_threaded(|| {
+                // this function embeds a terminating NULL
                 Rf_mkCharLenCE(
                     s.as_ptr() as *const raw::c_char,
                     s.len() as i32,
@@ -709,6 +710,7 @@ impl From<Vec<Rstr>> for Robj {
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate as extendr_api;
 
     #[test]
     fn test_vec_rint_to_robj() {

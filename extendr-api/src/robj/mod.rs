@@ -329,7 +329,7 @@ pub trait Types: GetSexp {
 impl Types for Robj {}
 
 impl Robj {
-    /// Is this object is an `NA` scalar?
+    /// Is this object an `NA` scalar?
     /// Works for character, integer and numeric types.
     ///
     /// ```
@@ -348,6 +348,9 @@ impl Robj {
             unsafe {
                 let sexp = self.get();
                 match self.sexptype() {
+                    // a character vector contains `CHARSXP`, and thus you
+                    // seldomly have `Robj`'s that are `CHARSXP` themselves
+                    CHARSXP => sexp == libR_sys::R_NaString,
                     STRSXP => STRING_ELT(sexp, 0) == libR_sys::R_NaString,
                     INTSXP => *(INTEGER(sexp)) == libR_sys::R_NaInt,
                     LGLSXP => *(LOGICAL(sexp)) == libR_sys::R_NaInt,
@@ -588,18 +591,26 @@ impl Robj {
     /// ```
     pub fn as_str<'a>(&self) -> Option<&'a str> {
         unsafe {
-            match self.sexptype() {
+            let charsxp = match self.sexptype() {
                 STRSXP => {
                     if self.len() != 1 {
-                        None
-                    } else {
-                        Some(to_str(R_CHAR(STRING_ELT(self.get(), 0)) as *const u8))
+                        return None;
                     }
+                    Some(STRING_ELT(self.get(), 0))
                 }
-                // CHARSXP => Some(to_str(R_CHAR(self.get()) as *const u8)),
-                // SYMSXP => Some(to_str(R_CHAR(PRINTNAME(self.get())) as *const u8)),
+                CHARSXP => Some(self.get()),
+                SYMSXP => Some(PRINTNAME(self.get())),
                 _ => None,
+            };
+
+            let charsxp = charsxp?;
+            if charsxp == R_NaString {
+                return Some(<&str>::na());
             }
+
+            let length = Rf_xlength(charsxp);
+            let all_bytes = std::slice::from_raw_parts(R_CHAR(charsxp) as _, length as _);
+            Some(std::str::from_utf8_unchecked(all_bytes))
         }
     }
 
@@ -1073,20 +1084,6 @@ impl PartialEq<Robj> for Robj {
             R_compute_identical(self.get(), rhs.get(), 16) != Rboolean::FALSE
         }
     }
-}
-
-// Internal utf8 to str conversion.
-// Lets not worry about non-ascii/unicode strings for now (or ever).
-pub(crate) unsafe fn to_str<'a>(ptr: *const u8) -> &'a str {
-    let mut len = 0;
-    loop {
-        if *ptr.offset(len) == 0 {
-            break;
-        }
-        len += 1;
-    }
-    let slice = std::slice::from_raw_parts(ptr, len as usize);
-    std::str::from_utf8_unchecked(slice)
 }
 
 /// Release any owned objects.

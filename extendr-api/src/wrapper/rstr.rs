@@ -1,6 +1,6 @@
 use super::*;
 
-/// Wrapper for creating CHARSXP objects.
+/// Wrapper for creating `CHARSXP` objects.
 /// These are used only as the contents of a character
 /// vector.
 ///
@@ -17,14 +17,6 @@ pub struct Rstr {
     pub(crate) robj: Robj,
 }
 
-pub(crate) unsafe fn sexp_to_str(sexp: SEXP) -> &'static str {
-    if sexp == R_NaString {
-        <&str>::na()
-    } else {
-        std::mem::transmute(to_str(R_CHAR(sexp) as *const u8))
-    }
-}
-
 impl Rstr {
     /// Make a character object from a string.
     pub fn from_string(val: &str) -> Self {
@@ -36,26 +28,30 @@ impl Rstr {
     /// Get the string from a character object.
     /// If the string is NA, then the special na_str() is returned.
     pub fn as_str(&self) -> &str {
-        unsafe { sexp_to_str(self.robj.get()) }
+        if unsafe { self.robj.get() == R_NaString } {
+            <&str>::na()
+        } else {
+            self.into()
+        }
     }
 }
 
 impl AsRef<str> for Rstr {
-    /// Treat a Rstr as a string slice.
+    /// Treat a `Rstr` as a string slice.
     fn as_ref(&self) -> &str {
         self.as_str()
     }
 }
 
 impl From<String> for Rstr {
-    /// Convert a String to a Rstr.
+    /// Convert a `String` to a `Rstr`.
     fn from(s: String) -> Self {
         Rstr::from_string(&s)
     }
 }
 
 impl From<&str> for Rstr {
-    /// Convert a string slice to a Rstr.
+    /// Convert a `String` slice to a `Rstr`.
     fn from(s: &str) -> Self {
         Rstr::from_string(s)
     }
@@ -67,6 +63,25 @@ impl From<Option<String>> for Rstr {
             Self::from(string)
         } else {
             Self { robj: na_string() }
+        }
+    }
+}
+
+impl From<&Rstr> for &str {
+    fn from(value: &Rstr) -> Self {
+        unsafe {
+            let sexp = value.robj.get();
+            if sexp == R_NaString { 
+                return Self::na();
+            }
+            if sexp == R_BlankString {
+                return "";
+            }
+            // if `CHARSXP`, then length is number of non-null bytes.
+            assert_eq!(TYPEOF(sexp), CHARSXP);
+            let length = Rf_xlength(sexp);
+            let all_bytes = std::slice::from_raw_parts(R_CHAR(sexp) as _, length as _);
+            std::str::from_utf8_unchecked(all_bytes)
         }
     }
 }
