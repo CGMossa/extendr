@@ -127,6 +127,10 @@ tst_altstring <- function() .Call(wrap__tst_altstring)
 
 tst_altinteger <- function() .Call(wrap__tst_altinteger)
 
+tst_enum_wrapper <- function(`_x`, enum_fct) invisible(.Call(wrap__tst_enum_wrapper, `_x`, enum_fct))
+
+my_enum <- function(e) .Call(wrap__my_enum, e)
+
 #' Class for testing (exported)
 #' @examples
 #' x <- MyClass$new()

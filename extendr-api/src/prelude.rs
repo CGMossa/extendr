@@ -78,3 +78,5 @@ pub use ::ndarray::*;
 
 #[cfg(feature = "either")]
 pub use ::either::*;
+
+pub use once_cell;

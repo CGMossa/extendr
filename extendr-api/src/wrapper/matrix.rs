@@ -448,10 +448,10 @@ impl<T, D> DerefMut for RArray<T, D> {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use crate as extendr_api;
     use extendr_engine::with_r;
     use prelude::{Rcplx, Rfloat, Rint};
-
-    use super::*;
 
     #[test]
     #[ignore]

@@ -14,6 +14,8 @@ mod memory_leaks;
 
 mod altrep;
 
+mod enum_as_factor;
+
 // Return string `"Hello world!"` to R.
 #[extendr]
 fn hello_world() -> &'static str {
@@ -366,4 +368,5 @@ extendr_module! {
     use raw_identifiers;
     use memory_leaks;
     use altrep;
+    use enum_as_factor;
 }

@@ -62,7 +62,7 @@ fn str_from_strsxp<'a>(sexp: SEXP, index: isize) -> &'a str {
         //TODO: this can be replaced with Robj::as_str, but it isn't
         // because of the allocation-protection mechanism that would be
         // unnecessary. Use when RawRobj is a thing
-        if charsxp == R_NaString { 
+        if charsxp == R_NaString {
             return <&str>::na();
         }
         if charsxp == R_BlankString {

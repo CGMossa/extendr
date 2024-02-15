@@ -71,7 +71,7 @@ impl From<&Rstr> for &str {
     fn from(value: &Rstr) -> Self {
         unsafe {
             let sexp = value.robj.get();
-            if sexp == R_NaString { 
+            if sexp == R_NaString {
                 return Self::na();
             }
             if sexp == R_BlankString {

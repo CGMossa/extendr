@@ -58,6 +58,7 @@
 mod R;
 mod call;
 mod dataframe;
+mod extendr_enum;
 mod extendr_function;
 mod extendr_impl;
 mod extendr_module;
@@ -84,6 +85,8 @@ pub fn extendr(attr: TokenStream, item: TokenStream) -> TokenStream {
             Ok(result) => result,
             Err(e) => e.into_compile_error().into(),
         },
+        // FIXME: do the same with extendr_enum!
+        Item::Enum(item_enum) => extendr_enum::extendr_enum(item_enum),
         other_item => TokenStream::from(quote! {#other_item}),
     }
 }

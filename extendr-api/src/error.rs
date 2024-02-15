@@ -77,6 +77,9 @@ pub enum Error {
     NamespaceNotFound(Robj),
     NoGraphicsDevices(Robj),
 
+    ExpectedFactor(Robj),
+    ExpectedScalarFactor(Robj),
+    InvalidLevels(Robj, Robj),
     ExpectedExternalPtrType(Robj, String),
     Other(String),
 
@@ -158,6 +161,21 @@ impl std::fmt::Display for Error {
             Error::TypeMismatch(_robj) => write!(f, "Type mismatch"),
 
             Error::NamespaceNotFound(robj) => write!(f, "Namespace {:?} not found", robj),
+            // factor conversion errors
+            Error::ExpectedFactor(robj) => write!(f, "Expected factor, got {:?}", robj),
+            Error::ExpectedScalarFactor(robj) => {
+                write!(
+                    f,
+                    "Expected scalar factor, got {:?}, of length {} instead of 1",
+                    robj,
+                    crate::Length::len(robj)
+                )
+            }
+            Error::InvalidLevels(source_levels, target_levels) => write!(
+                f,
+                "Expected levels: {:?}, received levels: {:?}",
+                target_levels, source_levels
+            ),
             Error::ExpectedExternalPtrType(_robj, type_name) => {
                 write!(f, "Incorrect external pointer type {}", type_name)
             }
