@@ -171,30 +171,5 @@ pub(crate) fn extendr_enum(item_enum: syn::ItemEnum) -> proc_macro::TokenStream 
                 Ok(result)
             }
         }
-
-        // impl TryFrom<Robj> for Vec<#enum_name> {
-        //     type Error = extendr_api::Error;
-        //     fn try_from(robj: Robj) -> Result<Self> {
-        //         assert!(robj.is_factor());
-
-        //         let levels = robj.get_attrib(levels_symbol()).unwrap();
-        //         let levels: Strings = levels.try_into().unwrap();
-
-        //         // same levels as enum?
-        //         #enum_levels_name_strings.with(|x|{
-        //             let x = extendr_api::prelude::once_cell::unsync::Lazy::get(x).unwrap();
-        //             assert_eq!(&levels, x);
-        //         });
-
-        //         use extendr_api::AsTypedSlice;
-        //         let robj: &[Rint] = robj.as_typed_slice().unwrap();
-        //         // assert_eq!(robj.len(), 1, "scalar factor expected");
-
-        //         // let result: #enum_name = robj[0].into();
-        //         let result = robj.map(|x|x.into());
-
-        //         Ok(result)
-        //     }
-        // }
     ).into()
 }
