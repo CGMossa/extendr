@@ -152,11 +152,10 @@ pub fn make_function_wrappers(
             },
         }
     };
-    // dbg!(return_is_ref_self);
-
+    
     let return_type_conversion = if !return_is_ref_self {
         if opts.use_try_from {
-            quote!(Ok((#call_name(#actual_args)).try_into()?))
+            quote!(Ok(#call_name(#actual_args).try_into()?))
         } else {
             quote!(Ok(extendr_api::Robj::from(#call_name(#actual_args))))
         }
