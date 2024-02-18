@@ -1,5 +1,18 @@
 # Developer Guide for ExtendR
 
+## Common `target` directory
+
+You might have a user-level `~/.cargo/config.toml` that sets a common
+`target-dir = "~/common_cargo_target_dir`. This causes some issues, particularly
+when running commands in `tests/extendrtests` like `devtools::test()` or
+`devtools::load_all()`. Therefore, make sure that `.cargo/config.toml` has defined
+
+```toml
+[build]
+target-dir = "target"
+```
+
+
 ## Debugging Rust Macros
 
 In `.cargo/config.toml`, you can place
