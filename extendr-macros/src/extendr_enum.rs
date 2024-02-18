@@ -1,16 +1,23 @@
 use quote::{format_ident, quote};
 
+use crate::extendr_options::ExtendrOptions;
+
 //TODO: Variants with Named structs, that happens to be ExternalPtr<NamedStruct>
 // could be supported. The API needs investigation though..
 
 /// Adds the ability to take an `enum` of plain variants and turn them into
 /// an R factor.
 ///
+/// an R factor.
+///
 /// The order of the enums listed in Rust dictates the order in `levels`.
 /// We do not use the discriminant value (if specified) for anything.
 ///
 ///
-pub(crate) fn extendr_enum(item_enum: syn::ItemEnum) -> proc_macro::TokenStream {
+pub(crate) fn extendr_enum(
+    item_enum: syn::ItemEnum,
+    opts: &ExtendrOptions,
+) -> proc_macro::TokenStream {
     //TODO: error on opts that isn't used here:
     // first, inherent &opts, and see if any value is provided..
 

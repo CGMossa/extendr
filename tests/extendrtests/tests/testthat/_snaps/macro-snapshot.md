@@ -1067,7 +1067,7 @@
               > = unsafe {
                   let _a_robj = extendr_api::robj::Robj::from_sexp(a);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok((euclidean_dist(_a_robj.try_into()?)).try_into()?)
+                      Ok(euclidean_dist(_a_robj.try_into()?).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1262,7 +1262,7 @@
               > = unsafe {
                   let _input_robj = extendr_api::robj::Robj::from_sexp(input);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok((type_aware_sum(_input_robj.try_into()?)).try_into()?)
+                      Ok(type_aware_sum(_input_robj.try_into()?).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1433,7 +1433,7 @@
               > = unsafe {
                   let _type_robj = extendr_api::robj::Robj::from_sexp(r#type);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok((raw_identifier_in_fn_args(_type_robj.try_into()?)).try_into()?)
+                      Ok(raw_identifier_in_fn_args(_type_robj.try_into()?).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1518,7 +1518,7 @@
                   Box<dyn std::any::Any + Send>,
               > = unsafe {
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok((r#true()).try_into()?)
+                      Ok(r#true().try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1593,7 +1593,7 @@
               > = unsafe {
                   let _type_robj = extendr_api::robj::Robj::from_sexp(r#type);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                      Ok((r#false(_type_robj.try_into()?)).try_into()?)
+                      Ok(r#false(_type_robj.try_into()?).try_into()?)
                   })
               };
               match wrap_result_state {
@@ -1943,10 +1943,10 @@
                   let _x_robj = extendr_api::robj::Robj::from_sexp(x);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                       Ok(
-                          (leak_arg2_try_implicit_strings(
-                              __y_robj.try_into()?,
-                              _x_robj.try_into()?,
-                          ))
+                          leak_arg2_try_implicit_strings(
+                                  __y_robj.try_into()?,
+                                  _x_robj.try_into()?,
+                              )
                               .try_into()?,
                       )
                   })
@@ -2043,10 +2043,10 @@
                   let _x_robj = extendr_api::robj::Robj::from_sexp(x);
                   std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                       Ok(
-                          (leak_arg2_try_implicit_doubles(
-                              __y_robj.try_into()?,
-                              _x_robj.try_into()?,
-                          ))
+                          leak_arg2_try_implicit_doubles(
+                                  __y_robj.try_into()?,
+                                  _x_robj.try_into()?,
+                              )
                               .try_into()?,
                       )
                   })
@@ -3050,6 +3050,461 @@
               unsafe { extendr_api::register_call_methods(info, get_altrep_metadata()) };
           }
       }
+      mod enum_as_factor {
+          use extendr_api::prelude::*;
+          enum Model {
+              A,
+              B,
+              C,
+          }
+          #[automatically_derived]
+          impl ::core::fmt::Debug for Model {
+              #[inline]
+              fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+                  ::core::fmt::Formatter::write_str(
+                      f,
+                      match self {
+                          Model::A => "A",
+                          Model::B => "B",
+                          Model::C => "C",
+                      },
+                  )
+              }
+          }
+          #[automatically_derived]
+          impl ::core::marker::Copy for Model {}
+          #[automatically_derived]
+          impl ::core::clone::Clone for Model {
+              #[inline]
+              fn clone(&self) -> Model {
+                  *self
+              }
+          }
+          #[doc(hidden)]
+          const fn is_clone<T: Clone>() {}
+          #[doc(hidden)]
+          const _: () = is_clone::<Model>();
+          #[doc(hidden)]
+          const __MODEL_LEVELS: [Model; 3usize] = [Model::A, Model::B, Model::C];
+          #[doc(hidden)]
+          const __MODEL_LEVELS_STR: [&str; 3usize] = ["A", "B", "C"];
+          const __MODEL_R_LEVELS: ::std::thread::LocalKey<
+              extendr_api::prelude::once_cell::unsync::Lazy<extendr_api::Strings>,
+          > = {
+              #[inline]
+              fn __init() -> extendr_api::prelude::once_cell::unsync::Lazy<
+                  extendr_api::Strings,
+              > {
+                  once_cell::unsync::Lazy::new(|| { Strings::from_values(__MODEL_LEVELS_STR) })
+              }
+              #[inline]
+              unsafe fn __getit(
+                  init: ::std::option::Option<
+                      &mut ::std::option::Option<
+                          extendr_api::prelude::once_cell::unsync::Lazy<extendr_api::Strings>,
+                      >,
+                  >,
+              ) -> ::std::option::Option<
+                  &'static extendr_api::prelude::once_cell::unsync::Lazy<extendr_api::Strings>,
+              > {
+                  #[thread_local]
+                  static __KEY: ::std::thread::local_impl::Key<
+                      extendr_api::prelude::once_cell::unsync::Lazy<extendr_api::Strings>,
+                  > = ::std::thread::local_impl::Key::<
+                      extendr_api::prelude::once_cell::unsync::Lazy<extendr_api::Strings>,
+                  >::new();
+                  unsafe {
+                      __KEY
+                          .get(move || {
+                              if let ::std::option::Option::Some(init) = init {
+                                  if let ::std::option::Option::Some(value) = init.take() {
+                                      return value;
+                                  } else if true {
+                                      {
+                                          ::core::panicking::panic_fmt(
+                                              format_args!(
+                                                  "internal error: entered unreachable code: {0}",
+                                                  format_args!("missing default value"),
+                                              ),
+                                          );
+                                      };
+                                  }
+                              }
+                              __init()
+                          })
+                  }
+              }
+              unsafe { ::std::thread::LocalKey::new(__getit) }
+          };
+          impl From<Rint> for Model {
+              fn from(value: Rint) -> Self {
+                  let value = value.inner();
+                  match (&(value), &(0)) {
+                      (left_val, right_val) => {
+                          if *left_val == *right_val {
+                              let kind = ::core::panicking::AssertKind::Ne;
+                              ::core::panicking::assert_failed(
+                                  kind,
+                                  &*left_val,
+                                  &*right_val,
+                                  ::core::option::Option::Some(
+                                      format_args!("zero index for factor is invalid"),
+                                  ),
+                              );
+                          }
+                      }
+                  };
+                  __MODEL_LEVELS[(value - 1) as usize]
+              }
+          }
+          impl From<Model> for Rint {
+              fn from(value: Model) -> Self {
+                  match value {
+                      Model::A => Rint::new((0usize + 1) as _),
+                      Model::B => Rint::new((1usize + 1) as _),
+                      Model::C => Rint::new((2usize + 1) as _),
+                  }
+              }
+          }
+          impl TryFrom<Model> for Robj {
+              type Error = extendr_api::Error;
+              fn try_from(value: Model) -> Result<Self> {
+                  let rint: Rint = value.into();
+                  let mut robj: Robj = rint.try_into()?;
+                  unsafe {
+                      __MODEL_R_LEVELS
+                          .with(|strings_enum| {
+                              let strings_enum = once_cell::unsync::Lazy::force(strings_enum);
+                              libR_sys::Rf_setAttrib(
+                                  robj.get_mut(),
+                                  libR_sys::R_LevelsSymbol,
+                                  strings_enum.get(),
+                              );
+                          });
+                      extendr_api::R_FactorSymbol
+                          .with(|factor_class| {
+                              let factor_class = once_cell::unsync::Lazy::force(factor_class);
+                              libR_sys::Rf_setAttrib(
+                                  robj.get_mut(),
+                                  libR_sys::R_ClassSymbol,
+                                  libR_sys::Rf_ScalarString(libR_sys::PRINTNAME(*factor_class)),
+                              );
+                          });
+                  }
+                  Ok(robj)
+              }
+          }
+          impl TryFrom<Robj> for Model {
+              type Error = extendr_api::Error;
+              fn try_from(robj: Robj) -> Result<Self> {
+                  Self::try_from(&robj)
+              }
+          }
+          impl TryFrom<&Robj> for Model {
+              type Error = extendr_api::Error;
+              fn try_from(robj: &Robj) -> Result<Self> {
+                  if !robj.is_factor() {
+                      return Err(Error::ExpectedFactor(robj.clone()));
+                  }
+                  let levels = robj.get_attrib(levels_symbol()).unwrap();
+                  let levels: Strings = levels.try_into().unwrap();
+                  let levels_cmp_flag = __MODEL_R_LEVELS
+                      .with(|x| {
+                          let target_levels = extendr_api::prelude::once_cell::unsync::Lazy::force(
+                              x,
+                          );
+                          if &levels == target_levels {
+                              None
+                          } else {
+                              Some(Error::InvalidLevels(levels.into(), target_levels.into()))
+                          }
+                      });
+                  if let Some(levels_err) = levels_cmp_flag {
+                      return Err(levels_err);
+                  }
+                  use extendr_api::AsTypedSlice;
+                  let int_vector: &[Rint] = robj.as_typed_slice().unwrap();
+                  if int_vector.len() != 1 {
+                      return Err(Error::ExpectedScalarFactor(robj.clone()));
+                  }
+                  let result: Model = int_vector[0].into();
+                  Ok(result)
+              }
+          }
+          fn tst_enum_wrapper(_x: Robj, enum_fct: Model) {
+              match enum_fct {
+                  a => {
+                      print_r_output({
+                          let res = ::alloc::fmt::format(
+                              format_args!(
+                                  "Successfully processed `enum_fct` with value {0:?}",
+                                  a,
+                              ),
+                          );
+                          res
+                      });
+                      print_r_output("\n");
+                  }
+              };
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__tst_enum_wrapper(
+              _x: extendr_api::SEXP,
+              enum_fct: extendr_api::SEXP,
+          ) -> extendr_api::SEXP {
+              use extendr_api::robj::*;
+              let wrap_result_state: std::result::Result<
+                  std::result::Result<Robj, extendr_api::Error>,
+                  Box<dyn std::any::Any + Send>,
+              > = unsafe {
+                  let __x_robj = extendr_api::robj::Robj::from_sexp(_x);
+                  let _enum_fct_robj = extendr_api::robj::Robj::from_sexp(enum_fct);
+                  std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                      Ok(
+                          tst_enum_wrapper(__x_robj.try_into()?, _enum_fct_robj.try_into()?)
+                              .try_into()?,
+                      )
+                  })
+              };
+              match wrap_result_state {
+                  Ok(Ok(zz)) => {
+                      return unsafe { zz.get() };
+                  }
+                  Ok(Err(conversion_err)) => {
+                      let err_string = conversion_err.to_string();
+                      drop(conversion_err);
+                      extendr_api::throw_r_error(&err_string);
+                  }
+                  Err(unwind_err) => {
+                      drop(unwind_err);
+                      let err_string = {
+                          let res = ::alloc::fmt::format(
+                              format_args!("user function panicked: {0}", "tst_enum_wrapper"),
+                          );
+                          res
+                      };
+                      extendr_api::handle_panic(
+                          err_string.as_str(),
+                          || {
+                              #[cold]
+                              #[track_caller]
+                              #[inline(never)]
+                              const fn panic_cold_explicit() -> ! {
+                                  ::core::panicking::panic_explicit()
+                              }
+                              panic_cold_explicit();
+                          },
+                      );
+                  }
+              }
+              {
+                  ::core::panicking::panic_fmt(
+                      format_args!(
+                          "internal error: entered unreachable code: {0}",
+                          format_args!("internal extendr error, this should never happen."),
+                      ),
+                  );
+              }
+          }
+          #[allow(non_snake_case)]
+          fn meta__tst_enum_wrapper(metadata: &mut Vec<extendr_api::metadata::Func>) {
+              let mut args = <[_]>::into_vec(
+                  #[rustc_box]
+                  ::alloc::boxed::Box::new([
+                      extendr_api::metadata::Arg {
+                          name: "_x",
+                          arg_type: "Robj",
+                          default: None,
+                      },
+                      extendr_api::metadata::Arg {
+                          name: "enum_fct",
+                          arg_type: "Model",
+                          default: None,
+                      },
+                  ]),
+              );
+              metadata
+                  .push(extendr_api::metadata::Func {
+                      doc: "",
+                      rust_name: "tst_enum_wrapper",
+                      r_name: "tst_enum_wrapper",
+                      mod_name: "tst_enum_wrapper",
+                      args: args,
+                      return_type: "()",
+                      func_ptr: wrap__tst_enum_wrapper as *const u8,
+                      hidden: false,
+                  })
+          }
+          fn my_enum(e: &str) -> Model {
+              match e.to_uppercase().as_str() {
+                  "A" => Model::A,
+                  "B" => Model::B,
+                  "C" => Model::C,
+                  _ => ::core::panicking::panic("not implemented"),
+              }
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__my_enum(e: extendr_api::SEXP) -> extendr_api::SEXP {
+              use extendr_api::robj::*;
+              let wrap_result_state: std::result::Result<
+                  std::result::Result<Robj, extendr_api::Error>,
+                  Box<dyn std::any::Any + Send>,
+              > = unsafe {
+                  let _e_robj = extendr_api::robj::Robj::from_sexp(e);
+                  std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
+                      Ok(my_enum(_e_robj.try_into()?).try_into()?)
+                  })
+              };
+              match wrap_result_state {
+                  Ok(Ok(zz)) => {
+                      return unsafe { zz.get() };
+                  }
+                  Ok(Err(conversion_err)) => {
+                      let err_string = conversion_err.to_string();
+                      drop(conversion_err);
+                      extendr_api::throw_r_error(&err_string);
+                  }
+                  Err(unwind_err) => {
+                      drop(unwind_err);
+                      let err_string = {
+                          let res = ::alloc::fmt::format(
+                              format_args!("user function panicked: {0}", "my_enum"),
+                          );
+                          res
+                      };
+                      extendr_api::handle_panic(
+                          err_string.as_str(),
+                          || {
+                              #[cold]
+                              #[track_caller]
+                              #[inline(never)]
+                              const fn panic_cold_explicit() -> ! {
+                                  ::core::panicking::panic_explicit()
+                              }
+                              panic_cold_explicit();
+                          },
+                      );
+                  }
+              }
+              {
+                  ::core::panicking::panic_fmt(
+                      format_args!(
+                          "internal error: entered unreachable code: {0}",
+                          format_args!("internal extendr error, this should never happen."),
+                      ),
+                  );
+              }
+          }
+          #[allow(non_snake_case)]
+          fn meta__my_enum(metadata: &mut Vec<extendr_api::metadata::Func>) {
+              let mut args = <[_]>::into_vec(
+                  #[rustc_box]
+                  ::alloc::boxed::Box::new([
+                      extendr_api::metadata::Arg {
+                          name: "e",
+                          arg_type: "str",
+                          default: None,
+                      },
+                  ]),
+              );
+              metadata
+                  .push(extendr_api::metadata::Func {
+                      doc: "",
+                      rust_name: "my_enum",
+                      r_name: "my_enum",
+                      mod_name: "my_enum",
+                      args: args,
+                      return_type: "Model",
+                      func_ptr: wrap__my_enum as *const u8,
+                      hidden: false,
+                  })
+          }
+          #[no_mangle]
+          #[allow(non_snake_case)]
+          pub fn get_enum_as_factor_metadata() -> extendr_api::metadata::Metadata {
+              let mut functions = Vec::new();
+              let mut impls = Vec::new();
+              meta__tst_enum_wrapper(&mut functions);
+              meta__my_enum(&mut functions);
+              functions
+                  .push(extendr_api::metadata::Func {
+                      doc: "Metadata access function.",
+                      rust_name: "get_enum_as_factor_metadata",
+                      mod_name: "get_enum_as_factor_metadata",
+                      r_name: "get_enum_as_factor_metadata",
+                      args: Vec::new(),
+                      return_type: "Metadata",
+                      func_ptr: wrap__get_enum_as_factor_metadata as *const u8,
+                      hidden: true,
+                  });
+              functions
+                  .push(extendr_api::metadata::Func {
+                      doc: "Wrapper generator.",
+                      rust_name: "make_enum_as_factor_wrappers",
+                      mod_name: "make_enum_as_factor_wrappers",
+                      r_name: "make_enum_as_factor_wrappers",
+                      args: <[_]>::into_vec(
+                          #[rustc_box]
+                          ::alloc::boxed::Box::new([
+                              extendr_api::metadata::Arg {
+                                  name: "use_symbols",
+                                  arg_type: "bool",
+                                  default: None,
+                              },
+                              extendr_api::metadata::Arg {
+                                  name: "package_name",
+                                  arg_type: "&str",
+                                  default: None,
+                              },
+                          ]),
+                      ),
+                      return_type: "String",
+                      func_ptr: wrap__make_enum_as_factor_wrappers as *const u8,
+                      hidden: true,
+                  });
+              extendr_api::metadata::Metadata {
+                  name: "enum_as_factor",
+                  functions,
+                  impls,
+              }
+          }
+          #[no_mangle]
+          #[allow(non_snake_case)]
+          pub extern "C" fn wrap__get_enum_as_factor_metadata() -> extendr_api::SEXP {
+              use extendr_api::GetSexp;
+              unsafe { extendr_api::Robj::from(get_enum_as_factor_metadata()).get() }
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn wrap__make_enum_as_factor_wrappers(
+              use_symbols_sexp: extendr_api::SEXP,
+              package_name_sexp: extendr_api::SEXP,
+          ) -> extendr_api::SEXP {
+              unsafe {
+                  use extendr_api::robj::*;
+                  use extendr_api::GetSexp;
+                  let robj = Robj::from_sexp(use_symbols_sexp);
+                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let robj = Robj::from_sexp(package_name_sexp);
+                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  extendr_api::Robj::from(
+                          get_enum_as_factor_metadata()
+                              .make_r_wrappers(use_symbols, package_name)
+                              .unwrap(),
+                      )
+                      .get()
+              }
+          }
+          #[no_mangle]
+          #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]
+          pub extern "C" fn R_init_enum_as_factor_extendr(info: *mut extendr_api::DllInfo) {
+              unsafe {
+                  extendr_api::register_call_methods(info, get_enum_as_factor_metadata())
+              };
+          }
+      }
       fn hello_world() -> &'static str {
           "Hello world!"
       }
@@ -3680,7 +4135,7 @@
               Box<dyn std::any::Any + Send>,
           > = unsafe {
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((try_rfloat_na()).try_into()?)
+                  Ok(try_rfloat_na().try_into()?)
               })
           };
           match wrap_result_state {
@@ -3750,7 +4205,7 @@
               Box<dyn std::any::Any + Send>,
           > = unsafe {
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((try_rint_na()).try_into()?)
+                  Ok(try_rint_na().try_into()?)
               })
           };
           match wrap_result_state {
@@ -3821,7 +4276,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((check_rfloat_na(_x_robj.try_into()?)).try_into()?)
+                  Ok(check_rfloat_na(_x_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -3901,7 +4356,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((check_rint_na(_x_robj.try_into()?)).try_into()?)
+                  Ok(check_rint_na(_x_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -3981,7 +4436,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((try_double_vec(_x_robj.try_into()?)).try_into()?)
+                  Ok(try_double_vec(_x_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4065,10 +4520,7 @@
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               let _i_robj = extendr_api::robj::Robj::from_sexp(i);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok(
-                      (get_doubles_element(_x_robj.try_into()?, _i_robj.try_into()?))
-                          .try_into()?,
-                  )
+                  Ok(get_doubles_element(_x_robj.try_into()?, _i_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4158,7 +4610,7 @@
               let _i_robj = extendr_api::robj::Robj::from_sexp(i);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                   Ok(
-                      (get_integers_element(_x_robj.try_into()?, _i_robj.try_into()?))
+                      get_integers_element(_x_robj.try_into()?, _i_robj.try_into()?)
                           .try_into()?,
                   )
               })
@@ -4250,7 +4702,7 @@
               let _i_robj = extendr_api::robj::Robj::from_sexp(i);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
                   Ok(
-                      (get_logicals_element(_x_robj.try_into()?, _i_robj.try_into()?))
+                      get_logicals_element(_x_robj.try_into()?, _i_robj.try_into()?)
                           .try_into()?,
                   )
               })
@@ -4341,7 +4793,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((doubles_square(_input_robj.try_into()?)).try_into()?)
+                  Ok(doubles_square(_input_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4425,7 +4877,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((complexes_square(_input_robj.try_into()?)).try_into()?)
+                  Ok(complexes_square(_input_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4509,7 +4961,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((integers_square(_input_robj.try_into()?)).try_into()?)
+                  Ok(integers_square(_input_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4593,7 +5045,7 @@
           > = unsafe {
               let _input_robj = extendr_api::robj::Robj::from_sexp(input);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((logicals_not(_input_robj.try_into()?)).try_into()?)
+                  Ok(logicals_not(_input_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4673,7 +5125,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((check_default(_x_robj.try_into()?)).try_into()?)
+                  Ok(check_default(_x_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -4928,7 +5380,7 @@
               Box<dyn std::any::Any + Send>,
           > = unsafe {
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((test_rename()).try_into()?)
+                  Ok(test_rename().try_into()?)
               })
           };
           match wrap_result_state {
@@ -5079,7 +5531,7 @@
           > = unsafe {
               let _x_robj = extendr_api::robj::Robj::from_sexp(x);
               std::panic::catch_unwind(|| -> std::result::Result<Robj, extendr_api::Error> {
-                  Ok((add_5_if_not_null(_x_robj.try_into()?)).try_into()?)
+                  Ok(add_5_if_not_null(_x_robj.try_into()?).try_into()?)
               })
           };
           match wrap_result_state {
@@ -6297,12 +6749,14 @@
           functions.extend(raw_identifiers::get_raw_identifiers_metadata().functions);
           functions.extend(memory_leaks::get_memory_leaks_metadata().functions);
           functions.extend(altrep::get_altrep_metadata().functions);
+          functions.extend(enum_as_factor::get_enum_as_factor_metadata().functions);
           impls.extend(submodule::get_submodule_metadata().impls);
           impls.extend(optional_ndarray::get_optional_ndarray_metadata().impls);
           impls.extend(optional_either::get_optional_either_metadata().impls);
           impls.extend(raw_identifiers::get_raw_identifiers_metadata().impls);
           impls.extend(memory_leaks::get_memory_leaks_metadata().impls);
           impls.extend(altrep::get_altrep_metadata().impls);
+          impls.extend(enum_as_factor::get_enum_as_factor_metadata().impls);
           functions
               .push(extendr_api::metadata::Func {
                   doc: "Metadata access function.",

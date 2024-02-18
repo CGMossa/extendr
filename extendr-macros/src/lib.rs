@@ -58,10 +58,13 @@
 mod R;
 mod call;
 mod dataframe;
+// region: #[extendr] macro
 mod extendr_enum;
 mod extendr_function;
 mod extendr_impl;
 mod extendr_module;
+mod extendr_options;
+// endregion
 mod list;
 mod list_struct;
 mod pairlist;
@@ -74,19 +77,20 @@ use syn::{parse_macro_input, Item};
 
 #[proc_macro_attribute]
 pub fn extendr(attr: TokenStream, item: TokenStream) -> TokenStream {
-    let mut opts = wrappers::ExtendrOptions::default();
+    let item = parse_macro_input!(item as Item);
+    let mut opts = extendr_options::ExtendrOptions::default();
 
     let extendr_opts_parser = syn::meta::parser(|meta| opts.parse(meta));
     parse_macro_input!(attr with extendr_opts_parser);
 
-    match parse_macro_input!(item as Item) {
+    match item {
         Item::Fn(func) => extendr_function::extendr_function(func, &opts),
-        Item::Impl(item_impl) => match extendr_impl::extendr_impl(item_impl) {
+        Item::Impl(item_impl) => match extendr_impl::extendr_impl(item_impl, &opts) {
             Ok(result) => result,
             Err(e) => e.into_compile_error().into(),
         },
         // FIXME: do the same with extendr_enum!
-        Item::Enum(item_enum) => extendr_enum::extendr_enum(item_enum),
+        Item::Enum(item_enum) => extendr_enum::extendr_enum(item_enum, &opts),
         other_item => TokenStream::from(quote! {#other_item}),
     }
 }

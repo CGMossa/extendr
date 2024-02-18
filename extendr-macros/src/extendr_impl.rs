@@ -3,7 +3,7 @@ use proc_macro::TokenStream;
 use quote::{format_ident, quote};
 use syn::{ItemFn, ItemImpl};
 
-use crate::wrappers;
+use crate::{extendr_options::ExtendrOptions, wrappers};
 
 /// Handle trait implementations.
 ///
@@ -36,7 +36,7 @@ use crate::wrappers;
 ///     fn aux_func;
 /// }
 /// ```
-pub fn extendr_impl(mut item_impl: ItemImpl) -> syn::Result<TokenStream> {
+pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Result<TokenStream> {
     // Only `impl name { }` allowed
     if item_impl.defaultness.is_some() {
         return Err(syn::Error::new_spanned(
@@ -77,7 +77,7 @@ pub fn extendr_impl(mut item_impl: ItemImpl) -> syn::Result<TokenStream> {
         ));
     }
 
-    let opts = wrappers::ExtendrOptions::default();
+    let opts = ExtendrOptions::default();
     let self_ty = item_impl.self_ty.as_ref();
     let self_ty_name = wrappers::type_name(self_ty);
     let prefix = format!("{}__", self_ty_name);
@@ -118,6 +118,8 @@ pub fn extendr_impl(mut item_impl: ItemImpl) -> syn::Result<TokenStream> {
 
     let meta_name = format_ident!("{}{self_ty_name}", wrappers::META_PREFIX);
 
+    //FIXME: use `opts` and `use_try_from` here!
+
     let expanded = TokenStream::from(quote! {
         // The impl itself copied from the source.
         #item_impl
@@ -150,15 +152,6 @@ pub fn extendr_impl(mut item_impl: ItemImpl) -> syn::Result<TokenStream> {
                 }
             }
         }
-
-        //FIXME: where is this used?
-        // impl extendr_api::IntoRobj for #self_ty {
-        //     fn into_robj(self) -> Robj {
-        //         let res = ExternalPtr::new(self).into();
-        //         res.set_attrib(class_symbol(), #self_ty_name).unwrap();
-        //         res
-        //     }
-        // }
 
         // Output conversion function for this type.
         impl From<#self_ty> for Robj {
