@@ -187,7 +187,7 @@ macro_rules! reprintln {
 
 /// Macro for running tests.
 ///
-/// This starts up the underlying `extendr_engine` so that interactions with R will work.
+/// This starts up the underlying [extendr-engine] so that interactions with R will work.
 /// Additionally, this allows us to use `?` in example code instead of `unwrap()`.
 ///
 /// **Note:** This macro is meant to be used in test code (annotated with
