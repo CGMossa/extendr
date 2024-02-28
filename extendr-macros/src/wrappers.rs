@@ -317,8 +317,12 @@ pub fn translate_formal(input: &FnArg, self_ty: Option<&syn::Type>) -> syn::Resu
     match input {
         // function argument.
         FnArg::Typed(pattype) => {
-            let pat = &pattype.pat;
-            Ok(parse_quote! { #pat : extendr_api::SEXP })
+            let pat = pattype.pat.as_ref();
+            let pat_ident = match pat {
+                syn::Pat::Ident(ref pat_ident) => &pat_ident.ident,
+                _ => todo!(),
+            };
+            Ok(parse_quote! { #pat_ident : extendr_api::SEXP })
         }
         // &self / &mut self
         FnArg::Receiver(ref receiver) => {
@@ -345,7 +349,12 @@ fn translate_meta_arg(input: &mut FnArg, self_ty: Option<&syn::Type>) -> syn::Re
         FnArg::Typed(ref mut pattype) => {
             let pat = pattype.pat.as_ref();
             let ty = pattype.ty.as_ref();
-            let name_string = quote! { #pat }.to_string();
+            let pat_ident = if let syn::Pat::Ident(ref pat_ident) = pat {
+                &pat_ident.ident
+            } else {
+                panic!()
+            };
+            let name_string = quote! { #pat_ident }.to_string();
             let type_string = type_name(ty);
             let default = if let Some(default) = get_named_lit(&mut pattype.attrs, "default") {
                 quote!(Some(#default))
@@ -396,9 +405,10 @@ fn translate_to_robj(input: &FnArg) -> syn::Result<syn::Stmt> {
         FnArg::Typed(ref pattype) => {
             let pat = &pattype.pat.as_ref();
             if let syn::Pat::Ident(ref ident) = pat {
-                let varname = format_ident!("_{}_robj", ident.ident);
+                let ident = &ident.ident;
+                let varname = format_ident!("_{}_robj", ident);
                 //TODO: no need to protect incoming data from R
-                Ok(parse_quote! { let #varname = extendr_api::robj::Robj::from_sexp(#pat); })
+                Ok(parse_quote! { let #varname = extendr_api::robj::Robj::from_sexp(#ident); })
             } else {
                 Err(syn::Error::new_spanned(
                     input,
