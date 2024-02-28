@@ -75,6 +75,18 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Item};
 
+/// The `#[extendr]`-macro may be placed on three items
+///
+/// - `fn` for wrapped rust-functions, see [`extendr-fn`]
+/// - `impl`-blocks, see [`extendr-impl`]
+/// - `Rust enum`s as R factors, see [`extendr-enum`]
+///
+/// [`extendr-fn`]: extendr-macros/extendr_function/fn.extendr_function.html
+/// [`extendr-impl`]: extendr_impl/fn.extendr_impl.html
+/// [`extendr-enum`]: extendr_enum/fn.extendr_enum.html
+///
+/// There is also [extendr_module!], which is used for defining what rust
+/// wrapped items should be visible to the surrounding R-package.
 #[proc_macro_attribute]
 pub fn extendr(attr: TokenStream, item: TokenStream) -> TokenStream {
     let item = parse_macro_input!(item as Item);

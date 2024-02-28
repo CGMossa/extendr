@@ -36,6 +36,7 @@ use crate::{extendr_options::ExtendrOptions, wrappers};
 ///     fn aux_func;
 /// }
 /// ```
+#[doc(alias = "extendr-impl")]
 pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Result<TokenStream> {
     // Only `impl name { }` allowed
     if item_impl.defaultness.is_some() {
