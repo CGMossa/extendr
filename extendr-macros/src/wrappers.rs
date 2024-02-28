@@ -48,7 +48,7 @@ pub fn make_function_wrappers(
 
     let call_name = if has_self {
         let is_mut = match inputs.iter().next() {
-            Some(FnArg::Receiver(ref reciever)) => reciever.mutability.is_some(),
+            Some(FnArg::Receiver(ref receiver)) => receiver.mutability.is_some(),
             _ => false,
         };
         if is_mut {
@@ -321,8 +321,8 @@ pub fn translate_formal(input: &FnArg, self_ty: Option<&syn::Type>) -> syn::Resu
             Ok(parse_quote! { #pat : extendr_api::SEXP })
         }
         // &self / &mut self
-        FnArg::Receiver(ref reciever) => {
-            if !reciever.attrs.is_empty() || reciever.reference.is_none() {
+        FnArg::Receiver(ref receiver) => {
+            if !receiver.attrs.is_empty() || receiver.reference.is_none() {
                 return Err(syn::Error::new_spanned(
                     input,
                     "expected &self or &mut self",
@@ -361,8 +361,8 @@ fn translate_meta_arg(input: &mut FnArg, self_ty: Option<&syn::Type>) -> syn::Re
             })
         }
         // &self
-        FnArg::Receiver(ref reciever) => {
-            if !reciever.attrs.is_empty() || reciever.reference.is_none() {
+        FnArg::Receiver(ref receiver) => {
+            if !receiver.attrs.is_empty() || receiver.reference.is_none() {
                 return Err(syn::Error::new_spanned(
                     input,
                     "expected &self or &mut self",
