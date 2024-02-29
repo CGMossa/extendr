@@ -44,24 +44,6 @@ impl<T: Debug + 'static> robj::GetSexp for ExternalPtr<T> {
     }
 }
 
-/// len() and is_empty()
-impl<T: Debug + 'static> Length for ExternalPtr<T> {}
-
-/// rtype() and rany()
-impl<T: Debug + 'static> Types for ExternalPtr<T> {}
-
-/// as_*()
-impl<T: Debug + 'static> Conversions for ExternalPtr<T> {}
-
-/// find_var() etc.
-impl<T: Debug + 'static> Rinternals for ExternalPtr<T> {}
-
-/// as_typed_slice_raw() etc.
-impl<T: Debug + 'static> Slices for ExternalPtr<T> {}
-
-/// dollar() etc.
-impl<T: Debug + 'static> Operators for ExternalPtr<T> {}
-
 impl<T: Debug + 'static> Deref for ExternalPtr<T> {
     type Target = T;
 

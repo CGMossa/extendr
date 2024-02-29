@@ -526,4 +526,4 @@ pub trait Rinternals: Types + Conversions {
     }
 }
 
-impl Rinternals for Robj {}
+impl<T: ?Sized + Types + Conversions> Rinternals for T {}

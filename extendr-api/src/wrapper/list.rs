@@ -406,8 +406,6 @@ impl<T: Into<Robj>> FromIterator<T> for List {
     }
 }
 
-impl Attributes for List {}
-
 impl Deref for List {
     type Target = [Robj];
 

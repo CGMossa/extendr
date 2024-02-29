@@ -1,7 +1,5 @@
 //! Wrappers are lightweight proxies for references to R datatypes.
-//! They do not contain an Robj (see array.rs for an example of this).
-
-use crate::robj::Rinternals;
+//! They do not contain an [Robj] (see array.rs for an example of this).
 use crate::*;
 use libR_sys::*;
 
@@ -151,26 +149,6 @@ macro_rules! make_getsexp {
                 &mut self.robj
             }
         }
-
-        // These traits all derive from GetSexp
-
-        /// len() and is_empty()
-        $($impl)* Length for $typename {}
-
-        /// rtype() and rany()
-        $($impl)* Types for $typename {}
-
-        /// as_*()
-        $($impl)* Conversions for $typename {}
-
-        /// find_var() etc.
-        $($impl)* Rinternals for $typename {}
-
-        /// as_typed_slice_raw() etc.
-        $($impl)* Slices for $typename {}
-
-        /// dollar() etc.
-        $($impl)* Operators for $typename {}
     };
 }
 
@@ -373,7 +351,7 @@ pub trait Conversions: GetSexp {
     }
 }
 
-impl Conversions for Robj {}
+impl<T: GetSexp + ?Sized> Conversions for T {}
 
 pub trait SymPair {
     fn sym_pair(self) -> (Option<Robj>, Robj);

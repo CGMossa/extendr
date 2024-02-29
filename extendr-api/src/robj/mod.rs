@@ -185,7 +185,7 @@ pub trait Slices: GetSexp {
     }
 }
 
-impl Slices for Robj {}
+impl<T: GetSexp + ?Sized> Slices for T {}
 
 pub trait Length: GetSexp {
     /// Get the extended length of the object.
@@ -215,7 +215,7 @@ pub trait Length: GetSexp {
     }
 }
 
-impl Length for Robj {}
+impl<T: ?Sized + GetSexp> Length for T {}
 
 impl Robj {
     #[allow(clippy::not_unsafe_ptr_arg_deref)]
@@ -325,7 +325,7 @@ pub trait Types: GetSexp {
     }
 }
 
-impl Types for Robj {}
+impl<T: GetSexp + ?Sized> Types for T {}
 
 impl Robj {
     /// Is this object an `NA` scalar?
@@ -1085,7 +1085,7 @@ pub trait Attributes: Types + Length {
     }
 }
 
-impl Attributes for Robj {}
+impl<T: ?Sized + Types + Length> Attributes for T {}
 
 /// Compare equality with integer slices.
 impl PartialEq<[i32]> for Robj {

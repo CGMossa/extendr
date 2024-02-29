@@ -39,8 +39,6 @@ impl<T> Dataframe<T> {
     }
 }
 
-impl<T> Attributes for Dataframe<T> {}
-
 impl<T> std::fmt::Debug for Dataframe<T>
 where
     T: std::fmt::Debug,

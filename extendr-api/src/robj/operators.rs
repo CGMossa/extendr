@@ -111,6 +111,8 @@ pub trait Operators: Rinternals {
     }
 }
 
+impl<T: Rinternals + ?Sized> Operators for T {}
+
 impl<Rhs> Add<Rhs> for Robj
 where
     Rhs: Into<Robj>,
@@ -238,8 +240,6 @@ where
         call!("`/`", self, rhs.into()).expect("Robj divide failed")
     }
 }
-
-impl Operators for Robj {}
 
 // Calls are still experimental.
 //
