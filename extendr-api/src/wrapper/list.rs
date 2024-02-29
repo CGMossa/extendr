@@ -142,7 +142,7 @@ impl List {
     /// Get the list as a slice of `Robj`s.
     pub fn as_slice(&self) -> &[Robj] {
         unsafe {
-            let data = DATAPTR(self.robj.get()) as *const Robj;
+            let data = DATAPTR(self.robj.get()).cast();
             let len = self.robj.len();
             std::slice::from_raw_parts(data, len)
         }
@@ -151,7 +151,7 @@ impl List {
     /// Get the list as a mutable slice of `Robj`s.
     pub fn as_mut_slice(&mut self) -> &mut [Robj] {
         unsafe {
-            let data = DATAPTR(self.robj.get_mut()) as *mut Robj;
+            let data = DATAPTR(self.robj.get_mut()).cast();
             let len = self.robj.len();
             std::slice::from_raw_parts_mut(data, len)
         }

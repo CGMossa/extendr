@@ -64,7 +64,7 @@ impl Deref for Doubles {
     /// Treat Doubles as if it is a slice, like `Vec<Rfloat>`
     fn deref(&self) -> &Self::Target {
         unsafe {
-            let ptr = DATAPTR_RO(self.get()) as *const Rfloat;
+            let ptr = DATAPTR_RO(self.get()).cast();
             std::slice::from_raw_parts(ptr, self.len())
         }
     }
@@ -74,7 +74,7 @@ impl DerefMut for Doubles {
     /// Treat Doubles as if it is a mutable slice, like `Vec<Rfloat>`
     fn deref_mut(&mut self) -> &mut Self::Target {
         unsafe {
-            let ptr = DATAPTR(self.get_mut()) as *mut Rfloat;
+            let ptr = DATAPTR(self.get_mut()).cast();
             std::slice::from_raw_parts_mut(ptr, self.len())
         }
     }

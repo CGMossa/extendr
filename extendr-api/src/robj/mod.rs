@@ -166,9 +166,8 @@ pub trait Slices: GetSexp {
     /// Unless the type is correct, this will cause undefined behaviour.
     /// Creating this slice will also instantiate and Altrep objects.
     unsafe fn as_typed_slice_raw<T>(&self) -> &[T] {
-        let len = XLENGTH(self.get()) as usize;
-        let data = DATAPTR_RO(self.get()) as *const T;
-        std::slice::from_raw_parts(data, len)
+        let data = DATAPTR_RO(self.get()).cast();
+        std::slice::from_raw_parts(data, self.len())
     }
 
     /// Get a mutable slice to this object's data.
@@ -179,9 +178,8 @@ pub trait Slices: GetSexp {
     /// Creating this slice will also instantiate and AltRep objects.
     /// Not all objects (especially not list and strings) support this.
     unsafe fn as_typed_slice_raw_mut<T>(&mut self) -> &mut [T] {
-        let len = XLENGTH(self.get()) as usize;
-        let data = DATAPTR(self.get_mut()) as *mut T;
-        std::slice::from_raw_parts_mut(data, len)
+        let data = DATAPTR(self.get_mut()).cast();
+        std::slice::from_raw_parts_mut(data, self.len())
     }
 }
 
