@@ -2,7 +2,6 @@ use crate::scalar::macros::*;
 use crate::scalar::Scalar;
 use crate::*;
 use std::cmp::Ordering::*;
-use std::convert::TryFrom;
 use std::ops::{Add, Div, Mul, Neg, Not, Sub};
 use std::ops::{AddAssign, DivAssign, MulAssign, SubAssign};
 

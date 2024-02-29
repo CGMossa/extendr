@@ -1,7 +1,6 @@
 //! Wrappers for matrices with deferred arithmetic.
 
 use super::*;
-use crate::robj::GetSexp;
 use crate::scalar::Scalar;
 use std::ops::{Index, IndexMut};
 

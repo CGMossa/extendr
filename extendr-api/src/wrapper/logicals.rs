@@ -1,6 +1,5 @@
-use super::scalar::{Rbool, Scalar};
+use super::scalar::Scalar;
 use super::*;
-use std::iter::FromIterator;
 
 /// An obscure `NA`-aware wrapper for R's logical vectors.
 /// Can be used to iterate over vectors obtained from R

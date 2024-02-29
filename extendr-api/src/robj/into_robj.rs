@@ -1,6 +1,5 @@
 use super::*;
 use crate::scalar::Scalar;
-use crate::single_threaded;
 
 mod repeat_into_robj;
 

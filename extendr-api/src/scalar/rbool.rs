@@ -1,7 +1,6 @@
 use crate::scalar::macros::*;
 use crate::scalar::Scalar;
 use crate::*;
-use std::convert::TryFrom;
 
 /// `Rbool` is a wrapper for `i32` in the context of an R's logical vector.
 ///

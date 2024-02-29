@@ -17,7 +17,6 @@ use crate::*;
 
 use crate::scalar::{Rbool, Rfloat, Rint};
 use std::collections::HashMap;
-use std::iter::IntoIterator;
 use std::ops::{Range, RangeInclusive};
 
 // deprecated

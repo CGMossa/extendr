@@ -1,6 +1,5 @@
 use super::scalar::{c64, Rcplx};
 use super::*;
-use std::iter::FromIterator;
 
 /// An obscure `NA`-aware wrapper for R's complex vectors.
 /// Can be used to iterate over vectors obtained from R

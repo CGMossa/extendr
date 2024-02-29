@@ -162,7 +162,7 @@ pub fn make_function_wrappers(
             Ok(_self_robj)
         )
     };
-
+    // TODO: the unsafe in here is unnecessary
     wrappers.push(parse_quote!(
         #[no_mangle]
         #[allow(non_snake_case, clippy::not_unsafe_ptr_arg_deref)]

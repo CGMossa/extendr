@@ -1,6 +1,5 @@
 use super::scalar::{Rfloat, Scalar};
 use super::*;
-use std::iter::FromIterator;
 
 /// An obscure `NA`-aware wrapper for R's double vectors.
 /// Can be used to iterate over vectors obtained from R

@@ -1,6 +1,5 @@
 use super::scalar::{Rint, Scalar};
 use super::*;
-use std::iter::FromIterator;
 
 /// An obscure `NA`-aware wrapper for R's integer vectors.
 /// Can be used to iterate over vectors obtained from R

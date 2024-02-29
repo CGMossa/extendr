@@ -280,7 +280,6 @@ impl Ownership {
 mod test {
     use super::*;
     use crate::*;
-    use libR_sys::{Rf_ScalarInteger, Rf_protect, Rf_unprotect};
 
     #[test]
     fn basic_test() {
