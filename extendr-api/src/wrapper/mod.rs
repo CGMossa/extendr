@@ -240,7 +240,7 @@ pub trait Conversions: GetSexp {
         Symbol::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert a CHARSXP object to a Rstr wrapper.
+    /// Convert a `CHARSXP` object to a `Rstr` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -252,7 +252,7 @@ pub trait Conversions: GetSexp {
         Rstr::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert a raw object to a Rstr wrapper.
+    /// Convert a raw object to a `Rstr` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -265,7 +265,7 @@ pub trait Conversions: GetSexp {
         Raw::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert a language object to a Language wrapper.
+    /// Convert a language object to a `Language` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -278,7 +278,7 @@ pub trait Conversions: GetSexp {
         Language::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert a pair list object (LISTSXP) to a Pairlist wrapper.
+    /// Convert a pair list object (`LISTSXP`) to a `Pairlist` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -292,7 +292,7 @@ pub trait Conversions: GetSexp {
         Pairlist::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert a list object (VECSXP) to a List wrapper.
+    /// Convert a list object (`VECSXP`) to a `List` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -304,7 +304,7 @@ pub trait Conversions: GetSexp {
         List::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert an expression object (EXPRSXP) to a Expr wrapper.
+    /// Convert an expression object (`EXPRSXP`) to a Expr wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -317,7 +317,7 @@ pub trait Conversions: GetSexp {
         Expressions::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert an environment object (ENVSXP) to a Env wrapper.
+    /// Convert an environment object (`ENVSXP`) to a `Env` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -333,7 +333,7 @@ pub trait Conversions: GetSexp {
         Environment::try_from(self.as_robj().clone()).ok()
     }
 
-    /// Convert a function object (CLOSXP) to a Function wrapper.
+    /// Convert a function object (`CLOSXP`) to a `Function` wrapper.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
