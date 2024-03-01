@@ -785,66 +785,132 @@ pub trait AsTypedSlice<'a, T>
 where
     Self: 'a,
 {
-    fn as_typed_slice(&self) -> Option<&'a [T]>
-    where
-        Self: 'a,
-    {
-        None
-    }
+    fn as_typed_slice(&self) -> Option<&'a [T]>;
 
-    fn as_typed_slice_mut(&mut self) -> Option<&'a mut [T]>
-    where
-        Self: 'a,
-    {
-        None
+    fn as_typed_slice_mut(&mut self) -> Option<&'a mut [T]>;
+}
+
+/// Trait for providing rust with a typed pointer to an R scalar/vector type.
+///
+/// R data are hidden behind [`SEXP`] opaque pointers with an identifier
+/// for the underlying r storage type. Thus this trait is only meaningful for
+/// [`SEXP`]-wrappers.
+///
+/// [`SEXP`]: libR_sys::SEXP
+/// Marker for the R object modes / types represented as a value.
+trait SexpAsPtr: Sized {
+    /// See [`Rtype`] for reference.
+    const R_TYPE_ID: u32;
+    /// Corresponding rust type to the type in C (in R's C-API)
+    type CType;
+    /// Returns a typed mutable pointer to the underlying value
+    unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
+        DATAPTR(x).cast()
+    }
+    unsafe fn as_ptr(x: SEXP) -> *const Self {
+        unsafe { DATAPTR(x).cast() }
     }
 }
 
-macro_rules! make_typed_slice {
-    ($type: ty, $fn: tt, $($sexp: tt),* ) => {
-        impl<'a> AsTypedSlice<'a, $type> for Robj
-        where
-            Self : 'a,
-        {
-            fn as_typed_slice(&self) -> Option<&'a [$type]> {
-                match self.sexptype() {
-                    $( $sexp )|* => {
-                        unsafe {
-                            let ptr = $fn(self.get()) as *const $type;
-                            Some(std::slice::from_raw_parts(ptr, self.len()))
-                        }
-                    }
-                    _ => None
-                }
-            }
+impl SexpAsPtr for Rbool {
+    /// Corresponds to `logical` in R
+    const R_TYPE_ID: u32 = LGLSXP;
+    type CType = raw::c_int;
+}
+impl SexpAsPtr for i32 {
+    /// Corresponds to `integer` in R
+    const R_TYPE_ID: u32 = INTSXP;
+    type CType = raw::c_int;
+}
+impl SexpAsPtr for u32 {
+    /// Corresponds to `integer` in R
+    const R_TYPE_ID: u32 = INTSXP;
+    type CType = raw::c_int;
+}
+impl SexpAsPtr for Rint {
+    /// Corresponds to `integer` in R
+    const R_TYPE_ID: u32 = INTSXP;
+    type CType = raw::c_int;
+}
+impl SexpAsPtr for f64 {
+    /// Corresponds to `numeric` in R
+    const R_TYPE_ID: u32 = REALSXP;
+    type CType = Self;
+}
+impl SexpAsPtr for Rfloat {
+    /// Corresponds to `numeric` in R
+    const R_TYPE_ID: u32 = REALSXP;
+    type CType = f64;
+}
+impl SexpAsPtr for u8 {
+    const R_TYPE_ID: u32 = RAWSXP;
+    type CType = Rbyte;
+}
+impl SexpAsPtr for Rstr {
+    /// Corresponds to `character` in R
+    const R_TYPE_ID: u32 = STRSXP;
+    type CType = SEXP;
+    unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
+        unsafe { STRING_PTR(x).cast() }
+    }
+    unsafe fn as_ptr(x: SEXP) -> *const Self {
+        unsafe { STRING_PTR(x).cast() }
+    }
+}
+impl SexpAsPtr for CString {
+    /// Corresponds to `character` in R
+    const R_TYPE_ID: u32 = STRSXP;
+    type CType = SEXP;
+    unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
+        unsafe { STRING_PTR(x).cast() }
+    }
+    unsafe fn as_ptr(x: SEXP) -> *const Self {
+        unsafe { STRING_PTR(x).cast() }
+    }
+}
+impl SexpAsPtr for c64 {
+    /// Corresponds to `complex` in R
+    const R_TYPE_ID: u32 = CPLXSXP;
+    type CType = Rcomplex;
+}
+impl SexpAsPtr for Rcplx {
+    /// Corresponds to `complex` in R
+    const R_TYPE_ID: u32 = CPLXSXP;
+    type CType = Rcomplex;
+}
+impl SexpAsPtr for Rcomplex {
+    /// Corresponds to `complex` in R
+    const R_TYPE_ID: u32 = CPLXSXP;
+    type CType = Rcomplex;
+}
 
-            fn as_typed_slice_mut(&mut self) -> Option<&'a mut [$type]> {
-                match self.sexptype() {
-                    $( $sexp )|* => {
-                        unsafe {
-                            let ptr = $fn(self.get_mut()) as *mut $type;
-                            Some(std::slice::from_raw_parts_mut(ptr, self.len()))
-                        }
-                    }
-                    _ => None
-                }
+impl<'a, T> AsTypedSlice<'a, T> for Robj
+where
+    Self: 'a,
+    T: SexpAsPtr,
+{
+    fn as_typed_slice(&self) -> Option<&'a [T]> {
+        if self.sexptype() == <T as SexpAsPtr>::R_TYPE_ID {
+            unsafe {
+                let ptr = <T as SexpAsPtr>::as_ptr(self.get());
+                Some(std::slice::from_raw_parts(ptr, self.len()))
             }
+        } else {
+            None
+        }
+    }
+
+    fn as_typed_slice_mut(&mut self) -> Option<&'a mut [T]> {
+        if self.sexptype() == <T as SexpAsPtr>::R_TYPE_ID {
+            unsafe {
+                let ptr = <T as SexpAsPtr>::as_mut_ptr(self.get_mut());
+                Some(std::slice::from_raw_parts_mut(ptr, self.len()))
+            }
+        } else {
+            None
         }
     }
 }
-
-make_typed_slice!(Rbool, INTEGER, LGLSXP);
-make_typed_slice!(i32, INTEGER, INTSXP);
-make_typed_slice!(u32, INTEGER, INTSXP);
-make_typed_slice!(Rint, INTEGER, INTSXP);
-make_typed_slice!(f64, REAL, REALSXP);
-make_typed_slice!(Rfloat, REAL, REALSXP);
-make_typed_slice!(u8, RAW, RAWSXP);
-make_typed_slice!(Rstr, STRING_PTR, STRSXP);
-make_typed_slice!(CString, STRING_PTR, STRSXP);
-make_typed_slice!(c64, COMPLEX, CPLXSXP);
-make_typed_slice!(Rcplx, COMPLEX, CPLXSXP);
-make_typed_slice!(Rcomplex, COMPLEX, CPLXSXP);
 
 /// These are helper functions which give access to common properties of R objects.
 #[allow(non_snake_case)]
