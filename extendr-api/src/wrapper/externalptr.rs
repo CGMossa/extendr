@@ -12,7 +12,6 @@
 //!  
 
 use super::*;
-use std::any::Any;
 use std::fmt::Debug;
 
 /// Wrapper for creating R objects containing any Rust object.
@@ -73,7 +72,7 @@ impl<T: Debug + 'static> DerefMut for ExternalPtr<T> {
     }
 }
 
-impl<T: Any + Debug> ExternalPtr<T> {
+impl<T: Debug> ExternalPtr<T> {
     /// Construct an external pointer object from any type T.
     /// In this case, the R object owns the data and will drop the Rust object
     /// when the last reference is removed via register_c_finalizer.
@@ -159,7 +158,7 @@ impl<T: Any + Debug> ExternalPtr<T> {
     }
 }
 
-impl<T: Any + Debug> TryFrom<&Robj> for ExternalPtr<T> {
+impl<T: Debug> TryFrom<&mut Robj> for &mut ExternalPtr<T> {
     type Error = Error;
 
     fn try_from(robj: &Robj) -> Result<Self> {
@@ -180,7 +179,7 @@ impl<T: Any + Debug> TryFrom<&Robj> for ExternalPtr<T> {
     }
 }
 
-impl<T: Any + Debug> TryFrom<Robj> for ExternalPtr<T> {
+impl<T: Debug> TryFrom<Robj> for ExternalPtr<T> {
     type Error = Error;
 
     fn try_from(robj: Robj) -> Result<Self> {
@@ -188,7 +187,7 @@ impl<T: Any + Debug> TryFrom<Robj> for ExternalPtr<T> {
     }
 }
 
-impl<T: Any + Debug> From<ExternalPtr<T>> for Robj {
+impl<T: Debug> From<ExternalPtr<T>> for Robj {
     fn from(val: ExternalPtr<T>) -> Self {
         val.robj
     }
