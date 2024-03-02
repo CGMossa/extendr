@@ -133,9 +133,13 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
             fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
                 use libR_sys::*;
                 unsafe {
-                    let ptr = R_ExternalPtrAddr(robj.get()) as *const #self_ty;
+                    let ptr = R_ExternalPtrAddr(robj.get()).cast::<#self_ty>();
                     // assume it is not C NULL
+                    if ptr.is_null() {
+                        Err("stored externalptr is invalid / NULL")
+                    } else {
                     Ok(&*ptr)
+                    }
                 }
             }
         }
@@ -147,9 +151,13 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
                 unsafe {
                     //FIXME: it should be `get_mut` instead of `get`
                     // let ptr = R_ExternalPtrAddr(robj.get_mut()) as *mut #self_ty;
-                    let ptr = R_ExternalPtrAddr(robj.get()) as *mut #self_ty;
+                    let ptr = R_ExternalPtrAddr(robj.get()).cast::<#self_ty>();
                     // assume it is not C NULL
+                    if ptr.is_null() {
+                        Err("stored externalptr is invalid / NULL")
+                    } else {
                     Ok(&mut *ptr)
+                    }
                 }
             }
         }

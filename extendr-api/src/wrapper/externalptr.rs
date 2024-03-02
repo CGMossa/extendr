@@ -1,3 +1,16 @@
+//! `ExternalPtr` is a way to leak Rust allocated data to R, forego deallocation
+//! to R and its GC strategy.
+//!
+//! An `ExternalPtr` encompasses three values, an owned pointer to the Rust
+//! type, a `tag` and a `prot`. Tag is a helpful naming of the type, but
+//! it doesn't offer any solid type-checking capability. And `prot` is meant
+//! to be R values, that are supposed to be kept together with the `ExternalPtr`.
+//!
+//! Neither `tag` nor `prot` are attributes, therefore to use `ExternalPtr` as
+//! a class in R, you must decorate it with a class-attribute manually.
+//!
+//!  
+
 use super::*;
 use std::any::Any;
 use std::fmt::Debug;
@@ -49,14 +62,14 @@ impl<T: Debug + 'static> Deref for ExternalPtr<T> {
 
     /// This allows us to treat the Robj as if it is the type T.
     fn deref(&self) -> &Self::Target {
-        self.addr()
+        self.as_ref().unwrap()
     }
 }
 
 impl<T: Debug + 'static> DerefMut for ExternalPtr<T> {
     /// This allows us to treat the Robj as if it is the mutable type T.
     fn deref_mut(&mut self) -> &mut Self::Target {
-        self.addr_mut()
+        self.as_mut().unwrap()
     }
 }
 
@@ -85,14 +98,17 @@ impl<T: Any + Debug> ExternalPtr<T> {
 
             unsafe extern "C" fn finalizer<T>(x: SEXP) {
                 unsafe {
-                    let ptr = R_ExternalPtrAddr(x) as *mut T;
+                    let ptr = R_ExternalPtrAddr(x);
 
                     // Free the `tag`, which is the type-name
                     R_SetExternalPtrTag(x, R_NilValue);
 
-                    // Convert the pointer to a box and drop it implictly.
+                    // Convert the pointer to a box and drop it implicitly.
                     // This frees up the memory we have used and calls the "T::drop" method if there is one.
-                    drop(Box::from_raw(ptr));
+                    if !ptr.is_null() {
+                        let ptr = ptr.cast::<T>();
+                        drop(Box::from_raw(ptr));
+                    }
 
                     // Now set the pointer in ExternalPtr to C `NULL`
                     R_ClearExternalPtr(x);
@@ -100,7 +116,7 @@ impl<T: Any + Debug> ExternalPtr<T> {
             }
 
             // Tell R about our finalizer
-            // Use R_RegisterCFinalizerEx() and set onexit to 1 (TRUE) to invoke the
+            // Use R_RegisterCFinalizerEx() and set `onexit` to 1 (TRUE) to invoke the
             // finalizer on a shutdown of the R session as well.
             R_RegisterCFinalizerEx(robj.get(), Some(finalizer::<T>), Rboolean::TRUE);
 
@@ -124,21 +140,21 @@ impl<T: Any + Debug> ExternalPtr<T> {
         unsafe { Robj::from_sexp(R_ExternalPtrProtected(self.robj.get())) }
     }
 
-    /// Get the "address" field of an external pointer.
-    /// Normally, we will use Deref to do this.
-    pub fn addr<'a>(&self) -> &'a T {
+    /// Return a reference by way of the stored owned pointer,
+    /// otherwise if pointer is C-`NULL`, returns `None`.
+    pub fn as_ref<'a>(&self) -> Option<&'a T> {
         unsafe {
-            let ptr = R_ExternalPtrAddr(self.robj.get()) as *const T;
-            ptr.as_ref().unwrap()
+            let ptr = R_ExternalPtrAddr(self.robj.get()).cast::<T>();
+            ptr.as_ref()
         }
     }
 
-    /// Get the "address" field of an external pointer as a mutable reference.
-    /// Normally, we will use DerefMut to do this.
-    pub fn addr_mut(&mut self) -> &mut T {
+    /// Return a mutable reference by way of the stored owned pointer,
+    /// otherwise if pointer is C-`NULL`, returns `None`.
+    pub fn as_mut(&mut self) -> Option<&mut T> {
         unsafe {
-            let ptr = R_ExternalPtrAddr(self.robj.get_mut()) as *mut T;
-            ptr.as_mut().unwrap()
+            let ptr = R_ExternalPtrAddr(self.robj.get_mut()).cast::<T>();
+            ptr.as_mut()
         }
     }
 }
@@ -154,10 +170,11 @@ impl<T: Any + Debug> TryFrom<&Robj> for ExternalPtr<T> {
 
         // NOTE: omitting type checking because it is unnecessary and inaccurate.
 
-        let res = ExternalPtr::<T> {
-            robj: clone,
-            marker: std::marker::PhantomData,
-        };
+        // check if the embedded pointer is C NULL
+        let res: ExternalPtr<T> = unsafe { std::mem::transmute(clone) };
+        if res.as_ref().is_none() {
+            return Err(Error::ExpectedExternalNonNullPtr(robj.clone()));
+        }
 
         Ok(res)
     }
