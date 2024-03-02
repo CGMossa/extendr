@@ -34,3 +34,9 @@ extendr.Rproj
 **/extendrtests.Rcheck/
 **/extendrtests_[0-9].[0-9].[0-9].tar.gz
 .vscode/settings.json
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride

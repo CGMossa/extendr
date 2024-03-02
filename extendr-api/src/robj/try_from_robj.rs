@@ -433,11 +433,10 @@ impl_try_from_robj_ref!(
     &str String
 );
 
-
 // region: mutable
 
 // Convert `TryFrom<&mut Robj>` into `TryFrom<Robj>`.
-// TODO: Try with GATS now? 
+// TODO: Try with GATS now?
 // Sadly, we are unable to make a blanket
 // conversion using `GetSexp` with the current version of Rust.
 
@@ -446,8 +445,7 @@ impl_try_from_robj_ref!(
 // specifically expects owned, ref, and ref mut together with type.
 //
 // ($t:ty) (mut $t:ty) (&mut $t:ty) (&$t:ty)
-// 
-
+//
 
 macro_rules! impl_try_from_robj_mut {
     ($($type : ty)*) => {
@@ -482,7 +480,6 @@ macro_rules! impl_try_from_robj_mut {
         )*
     }
 }
-
 
 impl TryFrom<&mut Robj> for &mut str {
     type Error = Error;
@@ -582,7 +579,6 @@ impl TryFrom<&mut Robj> for &mut [f64] {
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
     }
 }
-
 
 impl_try_from_robj_mut!(
     &mut [Rint] &mut [Rfloat] &mut [Rbool] &mut [Rcplx] &mut [u8] &mut [i32] &mut [f64]
