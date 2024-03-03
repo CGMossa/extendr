@@ -280,3 +280,46 @@ fn test_altlist() {
         assert!(li.inherits("VecUsize"));
     })
 }
+
+#[test]
+#[cfg(use_r_altlist)]
+fn test_altlist_use_try_from() {
+    use extendr_api::AltListImpl;
+    with_r(|| {
+        #[derive(Debug, Clone)]
+        pub struct VecUsize(pub Vec<Option<usize>>);
+
+        // need to make the VecUsize object `.into_robj()`-able
+        #[extendr(use_try_from = true)]
+        impl VecUsize {}
+
+        impl AltrepImpl for VecUsize {
+            fn length(&self) -> usize {
+                self.0.len()
+            }
+        }
+
+        impl AltListImpl for VecUsize {
+            fn elt(&self, index: usize) -> Robj {
+                Self(vec![self.0[index]]).try_into().unwrap()
+            }
+        }
+
+        let vu = VecUsize(vec![Some(1), None, Some(10)]);
+
+        let class = Altrep::make_altlist_class::<VecUsize>("li", "mypkg");
+        let obj = Altrep::from_state_and_class(vu, class, false);
+
+        // confirm it is altlist
+        assert!(obj.is_altlist());
+
+        // confirm method is accurate
+        assert_eq!(obj.len(), 3);
+
+        // convert to a list and test the .elt() method
+        let l = List::try_from(obj.into_robj()).unwrap();
+        let li = l.elt(1).unwrap();
+
+        assert!(li.inherits("VecUsize"));
+    })
+}

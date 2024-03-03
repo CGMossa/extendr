@@ -852,6 +852,28 @@ mod tests {
             self.name.as_str()
         }
     }
+    #[derive(Debug)]
+    struct Person2 {
+        pub name: String,
+    }
+
+    #[extendr(use_try_from = true)]
+    /// impl comment.
+    impl Person2 {
+        fn new() -> Self {
+            Self {
+                name: "".to_string(),
+            }
+        }
+
+        fn set_name(&mut self, name: &str) {
+            self.name = name.to_string();
+        }
+
+        fn name(&self) -> &str {
+            self.name.as_str()
+        }
+    }
 
     // see metadata_test for the following comments.
 
@@ -870,6 +892,7 @@ mod tests {
         mod my_module;
         fn aux_func;
         impl Person;
+        impl Person2;
     }
 
     #[test]
@@ -934,6 +957,21 @@ mod tests {
             let person2 = <&Person>::from_robj(&robj).unwrap();
             assert_eq!(person2.name(), "fred");
         }
+    }
+
+    #[test]
+    fn class_wrapper_use_try_from_test() {
+        extendr_engine::with_r(|| {
+            let mut person = Person2::new();
+            person.set_name("fred");
+            let robj = r!(person);
+            // alternatively:
+            // let robj: Robj = person.try_into().unwrap();
+            assert_eq!(robj.check_external_ptr_type::<Person2>(), true);
+            let person2 = <&Person2>::try_from(&robj).unwrap();
+            dbg!(person2.name());
+            assert_eq!(person2.name(), "fred");
+        })
     }
 
     #[test]
@@ -1042,7 +1080,8 @@ mod tests {
             let functions = robj.dollar("functions").unwrap();
             let impls = robj.dollar("impls").unwrap();
             assert_eq!(functions.len(), 3);
-            assert_eq!(impls.len(), 1);
+            //FIXME: why did this increase from 1 to 2?
+            assert_eq!(impls.len(), 2);
         }
     }
 

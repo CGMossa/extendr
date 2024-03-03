@@ -29,7 +29,7 @@
 #[macro_export]
 macro_rules! r {
     ($e: expr) => {
-        Robj::from($e)
+        Robj::try_from($e).unwrap()
     };
 }
 

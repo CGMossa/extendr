@@ -28,6 +28,7 @@ use std::fmt::Debug;
 /// ```
 ///
 #[derive(PartialEq, Clone)]
+#[repr(transparent)]
 pub struct ExternalPtr<T: Debug + 'static> {
     /// This is the contained Robj.
     pub(crate) robj: Robj,
@@ -161,16 +162,36 @@ impl<T: Debug> ExternalPtr<T> {
 impl<T: Debug> TryFrom<&mut Robj> for &mut ExternalPtr<T> {
     type Error = Error;
 
-    fn try_from(robj: &Robj) -> Result<Self> {
-        let clone = robj.clone();
-        if clone.rtype() != Rtype::ExternalPtr {
-            return Err(Error::ExpectedExternalPtr(clone));
+    fn try_from(robj: &mut Robj) -> Result<Self> {
+        if robj.rtype() != Rtype::ExternalPtr {
+            return Err(Error::ExpectedExternalPtr(robj.clone()));
         }
 
         // NOTE: omitting type checking because it is unnecessary and inaccurate.
 
         // check if the embedded pointer is C NULL
-        let res: ExternalPtr<T> = unsafe { std::mem::transmute(clone) };
+        let res: Self = unsafe { std::mem::transmute(robj) };
+        if res.as_ref().is_none() {
+            return Err(Error::ExpectedExternalNonNullPtr(res.robj.clone()));
+        }
+
+        Ok(res)
+    }
+}
+
+impl<T: Debug> TryFrom<&Robj> for &ExternalPtr<T> {
+    type Error = Error;
+
+    fn try_from(robj: &Robj) -> Result<Self> {
+        // let clone = robj.clone();
+        if robj.rtype() != Rtype::ExternalPtr {
+            return Err(Error::ExpectedExternalPtr(robj.clone()));
+        }
+
+        // NOTE: omitting type checking because it is unnecessary and inaccurate.
+
+        // check if the embedded pointer is C NULL
+        let res: Self = unsafe { std::mem::transmute(robj) };
         if res.as_ref().is_none() {
             return Err(Error::ExpectedExternalNonNullPtr(robj.clone()));
         }
@@ -183,7 +204,19 @@ impl<T: Debug> TryFrom<Robj> for ExternalPtr<T> {
     type Error = Error;
 
     fn try_from(robj: Robj) -> Result<Self> {
-        <ExternalPtr<T>>::try_from(&robj)
+        if robj.rtype() != Rtype::ExternalPtr {
+            return Err(Error::ExpectedExternalPtr(robj));
+        }
+
+        // NOTE: omitting type checking because it is unnecessary and inaccurate.
+
+        // check if the embedded pointer is C NULL
+        let res: Self = unsafe { std::mem::transmute(robj) };
+        if res.as_ref().is_none() {
+            return Err(Error::ExpectedExternalNonNullPtr(res.robj.clone()));
+        }
+
+        Ok(res)
     }
 }
 

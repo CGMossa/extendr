@@ -221,6 +221,12 @@ struct MyClass {
     a: i32,
 }
 
+// Class for testing (use_try_from)
+#[derive(Default, Debug)]
+struct MyClass2 {
+    a: i32,
+}
+
 /// Class for testing (exported)
 /// @examples
 /// x <- MyClass$new()
@@ -230,6 +236,49 @@ struct MyClass {
 /// @export
 #[extendr]
 impl MyClass {
+    /// Method for making a new object.
+    fn new() -> Self {
+        Self { a: 0 }
+    }
+
+    /// Method for setting stuff.
+    /// @param x a number
+    fn set_a(&mut self, x: i32) {
+        self.a = x;
+    }
+
+    /// Method for getting stuff.
+    fn a(&self) -> i32 {
+        self.a
+    }
+
+    /// Method for getting one's self.
+    fn me(&self) -> &Self {
+        self
+    }
+
+    // https://github.com/extendr/extendr/issues/431
+    fn restore_from_robj(robj: Robj) -> Self {
+        let res: ExternalPtr<MyClass> = robj.try_into().unwrap();
+        Self { a: res.a }
+    }
+
+    // https://github.com/extendr/extendr/issues/435
+    fn get_default_value(#[default = "42"] x: i32) -> i32 {
+        x
+    }
+}
+
+
+/// Class for testing (exported) (use_try_from)
+/// @examples
+/// x <- MyClass2$new()
+/// x$a()
+/// x$set_a(10)
+/// x$a()
+/// @export
+#[extendr(use_try_from = true)]
+impl MyClass2 {
     /// Method for making a new object.
     fn new() -> Self {
         Self { a: 0 }
@@ -357,6 +406,7 @@ extendr_module! {
     fn add_5_if_not_null;
 
     impl MyClass;
+    impl MyClass2;
     impl __MyClass;
     impl MyClassUnexported;
 

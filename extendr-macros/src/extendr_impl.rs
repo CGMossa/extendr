@@ -78,7 +78,6 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
         ));
     }
 
-    let opts = ExtendrOptions::default();
     let self_ty = item_impl.self_ty.as_ref();
     let self_ty_name = wrappers::type_name(self_ty);
     let prefix = format!("{}__", self_ty_name);
@@ -119,7 +118,82 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
 
     let meta_name = format_ident!("{}{self_ty_name}", wrappers::META_PREFIX);
 
-    //FIXME: use `opts` and `use_try_from` here!
+    let conversion_impls = if opts.use_try_from {
+        quote!(
+            // Output conversion function for this type.
+            impl TryFrom<#self_ty> for Robj {
+                type Error = Error;
+                fn try_from(value: #self_ty) -> Result<Self> {
+                    let mut res: Robj = ExternalPtr::new(value).try_into()?;
+                    res.set_attrib(class_symbol(), #self_ty_name)?;
+                    Ok(res)
+                }
+            }
+
+            // Output conversion function for this type.
+            impl TryFrom<&Robj> for &#self_ty {
+                type Error = Error;
+                fn try_from(robj: &Robj) -> Result<Self> {
+                    let external_ptr: &ExternalPtr<#self_ty> = robj.try_into()?;
+                    external_ptr.as_ref().ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+                }
+            }
+
+            // Input conversion function for a mutable reference to this type.
+            impl TryFrom<&mut Robj> for &mut #self_ty {
+                type Error = Error;
+                fn try_from(robj: &mut Robj) -> Result<Self> {
+                    let external_ptr: &mut ExternalPtr<#self_ty> = robj.try_into()?;
+                    external_ptr.as_mut().ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+                }
+            }
+        )
+    } else {
+        quote!(
+            // Input conversion function for this type.
+            impl<'a> extendr_api::FromRobj<'a> for &#self_ty {
+                fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
+                    use libR_sys::*;
+                    unsafe {
+                        let ptr = R_ExternalPtrAddr(robj.get()).cast::<#self_ty>();
+                        // assume it is not C NULL
+                        if ptr.is_null() {
+                            Err("stored externalptr is invalid / NULL")
+                        } else {
+                        Ok(&*ptr)
+                        }
+                    }
+                }
+            }
+
+            // Input conversion function for a mutable reference to this type.
+            impl<'a> extendr_api::FromRobj<'a> for &mut #self_ty {
+                fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
+                    use libR_sys::*;
+                    unsafe {
+                        //FIXME: it should be `get_mut` instead of `get`
+                        // let ptr = R_ExternalPtrAddr(robj.get_mut()) as *mut #self_ty;
+                        let ptr = R_ExternalPtrAddr(robj.get()).cast::<#self_ty>();
+                        // assume it is not C NULL
+                        if ptr.is_null() {
+                            Err("stored externalptr is invalid / NULL")
+                        } else {
+                        Ok(&mut *ptr)
+                        }
+                    }
+                }
+            }
+
+            // Output conversion function for this type.
+            impl From<#self_ty> for Robj {
+                fn from(value: #self_ty) -> Self {
+                    let mut res: Robj = ExternalPtr::new(value).into();
+                    res.set_attrib(class_symbol(), #self_ty_name).unwrap();
+                    res
+                }
+            }
+        )
+    };
 
     let expanded = TokenStream::from(quote! {
         // The impl itself copied from the source.
@@ -128,48 +202,7 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
         // Function wrappers
         #( #wrappers )*
 
-        // Input conversion function for this type.
-        impl<'a> extendr_api::FromRobj<'a> for &#self_ty {
-            fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                use libR_sys::*;
-                unsafe {
-                    let ptr = R_ExternalPtrAddr(robj.get()).cast::<#self_ty>();
-                    // assume it is not C NULL
-                    if ptr.is_null() {
-                        Err("stored externalptr is invalid / NULL")
-                    } else {
-                    Ok(&*ptr)
-                    }
-                }
-            }
-        }
-
-        // Input conversion function for a mutable reference to this type.
-        impl<'a> extendr_api::FromRobj<'a> for &mut #self_ty {
-            fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                use libR_sys::*;
-                unsafe {
-                    //FIXME: it should be `get_mut` instead of `get`
-                    // let ptr = R_ExternalPtrAddr(robj.get_mut()) as *mut #self_ty;
-                    let ptr = R_ExternalPtrAddr(robj.get()).cast::<#self_ty>();
-                    // assume it is not C NULL
-                    if ptr.is_null() {
-                        Err("stored externalptr is invalid / NULL")
-                    } else {
-                    Ok(&mut *ptr)
-                    }
-                }
-            }
-        }
-
-        // Output conversion function for this type.
-        impl From<#self_ty> for Robj {
-            fn from(value: #self_ty) -> Self {
-                let mut res: Robj = ExternalPtr::new(value).into();
-                res.set_attrib(class_symbol(), #self_ty_name).unwrap();
-                res
-            }
-        }
+        #conversion_impls
 
         #[allow(non_snake_case)]
         fn #meta_name(impls: &mut Vec<extendr_api::metadata::Impl>) {

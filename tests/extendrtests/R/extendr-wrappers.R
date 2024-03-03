@@ -160,6 +160,35 @@ MyClass$get_default_value <- function(x = 42) .Call(wrap__MyClass__get_default_v
 #' @export
 `[[.MyClass` <- `$.MyClass`
 
+#' Class for testing (exported) (use_try_from)
+#' @examples
+#' x <- MyClass2$new()
+#' x$a()
+#' x$set_a(10)
+#' x$a()
+#' @export
+MyClass2 <- new.env(parent = emptyenv())
+
+MyClass2$new <- function() .Call(wrap__MyClass2__new)
+
+MyClass2$set_a <- function(x) invisible(.Call(wrap__MyClass2__set_a, self, x))
+
+MyClass2$a <- function() .Call(wrap__MyClass2__a, self)
+
+MyClass2$me <- function() .Call(wrap__MyClass2__me, self)
+
+MyClass2$restore_from_robj <- function(robj) .Call(wrap__MyClass2__restore_from_robj, robj)
+
+MyClass2$get_default_value <- function(x = 42) .Call(wrap__MyClass2__get_default_value, x)
+
+#' @rdname MyClass2
+#' @usage NULL
+#' @export
+`$.MyClass2` <- function (self, name) { func <- MyClass2[[name]]; environment(func) <- environment(); func }
+
+#' @export
+`[[.MyClass2` <- `$.MyClass2`
+
 `__MyClass` <- new.env(parent = emptyenv())
 
 `__MyClass`$new <- function() .Call(wrap____MyClass__new)
