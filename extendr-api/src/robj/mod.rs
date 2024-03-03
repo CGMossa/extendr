@@ -164,7 +164,7 @@ pub trait Slices: GetSexp {
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instantiate and Altrep objects.
+    /// Creating this slice will also instantiate and AltRep objects.
     unsafe fn as_typed_slice_raw<T>(&self) -> &[T] {
         let data = DATAPTR_RO(self.get()).cast();
         std::slice::from_raw_parts(data, self.len())
