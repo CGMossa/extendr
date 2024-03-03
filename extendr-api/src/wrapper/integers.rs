@@ -63,20 +63,14 @@ impl Deref for Integers {
 
     /// Treat Integers as if it is a slice, like `Vec<Rint>`
     fn deref(&self) -> &Self::Target {
-        unsafe {
-            let ptr = DATAPTR_RO(self.get()).cast();
-            std::slice::from_raw_parts(ptr, self.len())
-        }
+        unsafe { self.as_typed_slice_raw() }
     }
 }
 
 impl DerefMut for Integers {
     /// Treat Integers as if it is a mutable slice, like `Vec<Rint>`
     fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe {
-            let ptr = DATAPTR(self.get_mut()).cast();
-            std::slice::from_raw_parts_mut(ptr, self.len())
-        }
+        unsafe { self.as_typed_slice_raw_mut() }
     }
 }
 

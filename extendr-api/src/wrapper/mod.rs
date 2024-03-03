@@ -218,15 +218,6 @@ make_conversions!(Strings, ExpectedString, is_string, "Not a string vector");
 
 make_getsexp!(Dataframe<T>, impl<T>);
 
-//FIXME: why is this commented out?
-// impl Deref for Integers {
-//     type Target = [Rint];
-
-//     fn deref(&self) -> &Self::Target {
-//         unsafe { self.as_typed_slice_raw() }
-//     }
-// }
-
 pub trait Conversions: GetSexp {
     /// Convert a symbol object to a Symbol wrapper.
     /// ```
