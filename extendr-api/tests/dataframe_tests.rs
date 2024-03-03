@@ -1,16 +1,14 @@
 use extendr_api::prelude::*;
 
+#[derive(Debug, IntoDataFrameRow)]
+struct MyStruct {
+    x: Rint,
+    y: Rstr,
+}
+
 #[test]
 fn test_derive_into_dataframe() {
     test! {
-        use extendr_api::prelude::*;
-
-        #[derive(Debug, IntoDataFrameRow)]
-        struct MyStruct {
-            x: Rint,
-            y: Rstr,
-        }
-
         let v = vec![MyStruct { x: 0.into(), y: "abc".into() }, MyStruct { x: 1.into(), y: "xyz".into() }];
         let df = v.into_dataframe()?;
 

@@ -1,23 +1,27 @@
 // TODO: On a crate with `proc_macro = true`, Rust doesn't allow
 // cross-compilation, so this test cannot be executed on Windows as long as it
-// requires corss-compilation.
+// requires cross-compilation.
 //
 // c.f. https://github.com/extendr/extendr/issues/372
+
+use extendr_api::prelude::*;
+#[cfg(not(target_os = "windows"))]
+use extendr_macros::{IntoRobj, TryFromRobj};
+
+#[cfg(not(target_os = "windows"))]
+#[derive(TryFromRobj, IntoRobj, PartialEq, Debug)]
+struct Foo {
+    a: u16,
+    b: String,
+    c: Vec<f64>,
+    // This demonstrates the use of wrapper types
+    d: List,
+}
+
 #[cfg(not(target_os = "windows"))]
 #[test]
 fn test_derive_list() {
-    use extendr_api::prelude::*;
-    use extendr_macros::{IntoRobj, TryFromRobj};
-
     test! {
-        #[derive(TryFromRobj, IntoRobj, PartialEq, Debug)]
-        struct Foo {
-            a: u16,
-            b: String,
-            c: Vec<f64>,
-            // This demonstrates the use of wrapper types
-            d: List
-        }
 
         // We define the objects "natively", ie the struct in Rust, and the list in R
         let native_rust = Foo {
