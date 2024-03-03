@@ -4,7 +4,11 @@ use quote::quote;
 use syn::{Data, DeriveInput};
 
 /// Implementation of the TryFromRobj macro. Refer to the documentation there
-pub fn derive_try_from_robj(item: TokenStream) -> syn::parse::Result<TokenStream> {
+pub fn derive_try_from_robj(item: TokenStream) -> syn::Result<TokenStream> {
+    // TODO: have an option on each field to `r_name`
+
+    // FIXME: reject fields with r# field names or similar
+
     // Parse the tokens into a Struct
     let ast = syn::parse::<DeriveInput>(item)?;
     let inside = if let Data::Struct(inner) = ast.data {
@@ -20,6 +24,11 @@ pub fn derive_try_from_robj(item: TokenStream) -> syn::parse::Result<TokenStream
         let field_name = field.ident.as_ref().unwrap();
         let field_str = field_name.to_string();
         // This is like `value$foo` in R
+
+        //TODO: forming these strings is costly, even if R does interning,
+        // we still need an R-string to compare by pointer directly.
+        // Can't the STRSXP, must be the CHARSXP that is being compared directly.
+
         tokens.push(quote!(
             #field_name: value.dollar(#field_str)?.try_into()?
         ));
@@ -41,6 +50,7 @@ pub fn derive_try_from_robj(item: TokenStream) -> syn::parse::Result<TokenStream
             type Error = extendr_api::Error;
 
             fn try_from(value: Robj) -> extendr_api::Result<Self> {
+                //TODO: remove this, and just piggyback on the &Robj implementation above
                 Ok(#struct_name {
                     #(#tokens),*
                 })
@@ -50,7 +60,11 @@ pub fn derive_try_from_robj(item: TokenStream) -> syn::parse::Result<TokenStream
 }
 
 /// Implementation of the IntoRobj macro. Refer to the documentation there
-pub fn derive_into_robj(item: TokenStream) -> syn::parse::Result<TokenStream> {
+pub fn derive_into_robj(item: TokenStream) -> syn::Result<TokenStream> {
+    // TODO: have an option on each field to `r_name`
+
+    // FIXME: reject fields with r# field names or similar
+
     // Parse the tokens into a Struct
     let ast = syn::parse::<DeriveInput>(item)?;
     let inside = if let Data::Struct(inner) = ast.data {
@@ -71,6 +85,8 @@ pub fn derive_into_robj(item: TokenStream) -> syn::parse::Result<TokenStream> {
             (#field_str, (&value.#field_name).into())
         ));
     }
+
+    // FIXME: these should really be implementing -> List and not -> Robj.
 
     // The only thing we emit from this macro is the conversion trait impl
     Ok(TokenStream::from(quote!(

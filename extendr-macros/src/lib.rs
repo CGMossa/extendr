@@ -153,7 +153,7 @@ pub fn list(item: TokenStream) -> TokenStream {
 
 /// Call a function or primitive defined by a text expression with arbitrary parameters.
 /// This currently works by parsing and evaluating the string in R, but will probably acquire
-/// some shortcuts for simple expessions, for example by caching symbols and constant values.
+/// some shortcuts for simple expressions, for example by caching symbols and constant values.
 ///
 /// ```ignore
 ///     assert_eq!(call!("`+`", 1, 2), r!(3));
