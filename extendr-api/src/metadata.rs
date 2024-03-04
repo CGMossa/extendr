@@ -76,16 +76,17 @@ impl From<&Arg> for RArg {
 
 impl From<Arg> for Robj {
     fn from(val: Arg) -> Self {
-        List::from_values(&[r!(val.name), r!(val.arg_type)])
-            .into_robj()
-            .set_names(&["name", "arg_type"])
+        let mut robj: Robj = List::from_values(&[r!(val.name), r!(val.arg_type)])
+            .try_into()
+            .unwrap();
+        robj.set_names(&["name", "arg_type"])
             .expect("From<Arg> failed")
     }
 }
 
 impl From<Func> for Robj {
     fn from(val: Func) -> Self {
-        List::from_values(&[
+        let mut robj: Robj = List::from_values(&[
             r!(val.doc),
             r!(val.rust_name),
             r!(val.mod_name),
@@ -94,8 +95,9 @@ impl From<Func> for Robj {
             r!(val.return_type),
             r!(val.hidden),
         ])
-        .into_robj()
-        .set_names(&[
+        .try_into()
+        .unwrap();
+        robj.set_names(&[
             "doc",
             "rust_name",
             "mod_name",
@@ -110,27 +112,29 @@ impl From<Func> for Robj {
 
 impl From<Impl> for Robj {
     fn from(val: Impl) -> Self {
-        List::from_values(&[
+        let mut robj: Robj = List::from_values(&[
             r!(val.doc),
             r!(val.name),
             r!(List::from_values(val.methods)),
         ])
-        .into_robj()
-        .set_names(&["doc", "name", "methods"])
-        .expect("From<Impl> failed")
+        .try_into()
+        .unwrap();
+        robj.set_names(&["doc", "name", "methods"])
+            .expect("From<Impl> failed")
     }
 }
 
 impl From<Metadata> for Robj {
     fn from(val: Metadata) -> Self {
-        List::from_values(&[
+        let mut robj: Robj = List::from_values(&[
             r!(val.name),
             r!(List::from_values(val.functions)),
             r!(List::from_values(val.impls)),
         ])
-        .into_robj()
-        .set_names(&["name", "functions", "impls"])
-        .expect("From<Metadata> failed")
+        .try_into()
+        .unwrap();
+        robj.set_names(&["name", "functions", "impls"])
+            .expect("From<Metadata> failed")
     }
 }
 

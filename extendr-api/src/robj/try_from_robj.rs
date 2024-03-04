@@ -586,3 +586,26 @@ impl_try_from_robj_mut!(
 );
 
 // endregion
+
+impl TryFrom<&Robj> for HashMap<String, Robj> {
+    type Error = Error;
+    fn try_from(robj: &Robj) -> Result<Self> {
+        Ok(robj
+            .as_list()
+            .map(|l| l.iter())
+            .ok_or_else(|| Error::ExpectedList(robj.clone()))?
+            .map(|(k, v)| (k.to_string(), v))
+            .collect::<HashMap<String, Robj>>())
+    }
+}
+
+impl TryFrom<&Robj> for HashMap<&str, Robj> {
+    type Error = Error;
+    fn try_from(robj: &Robj) -> Result<Self> {
+        Ok(robj
+            .as_list()
+            .map(|l| l.iter())
+            .ok_or_else(|| Error::ExpectedList(robj.clone()))?
+            .collect::<HashMap<&str, Robj>>())
+    }
+}

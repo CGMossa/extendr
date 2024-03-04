@@ -257,7 +257,7 @@ mod tests {
 
     impl AltListImpl for VecUsize {
         fn elt(&self, index: usize) -> Robj {
-            Self(vec![self.0[index]]).into_robj()
+            Self(vec![self.0[index]]).try_into().unwrap()
         }
     }
 
@@ -277,7 +277,8 @@ mod tests {
             assert_eq!(obj.len(), 3);
 
             // convert to a list and test the .elt() method
-            let l = List::try_from(obj.into_robj()).unwrap();
+            let robj: Robj = obj.try_into().unwrap();
+            let l = List::try_from(robj).unwrap();
             let li = l.elt(1).unwrap();
 
             assert!(li.inherits("VecUsize"));
@@ -324,7 +325,8 @@ mod tests_use_try_from {
             assert_eq!(obj.len(), 3);
 
             // convert to a list and test the .elt() method
-            let l = List::try_from(obj.into_robj()).unwrap();
+            let robj: Robj = obj.try_into().unwrap();
+            let l = List::try_from(robj).unwrap();
             let li = l.elt(1).unwrap();
 
             assert!(li.inherits("VecUsize"));

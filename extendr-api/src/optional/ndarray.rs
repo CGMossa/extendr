@@ -56,24 +56,10 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
 */
 #[doc(hidden)]
 use ndarray::prelude::*;
-use ndarray::{Data, ShapeBuilder};
+use ndarray::Data;
 
 use crate::prelude::{c64, dim_symbol, Rcplx, Rfloat, Rint};
 use crate::*;
-
-impl<'a, T> FromRobj<'a> for ArrayView1<'a, T>
-where
-    Robj: AsTypedSlice<'a, T>,
-{
-    /// Convert an R object to a `ndarray` ArrayView1.
-    fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-        if let Some(v) = robj.as_typed_slice() {
-            Ok(ArrayView1::<'a, T>::from(v))
-        } else {
-            Err("Not a vector of the correct type.")
-        }
-    }
-}
 
 macro_rules! make_array_view_1 {
     ($type: ty, $error_fn: expr) => {
@@ -101,13 +87,6 @@ macro_rules! make_array_view_1 {
 
 macro_rules! make_array_view_2 {
     ($type: ty, $error_str: expr, $error_fn: expr) => {
-        impl<'a> FromRobj<'a> for ArrayView2<'a, $type> {
-            /// Convert an R object to a `ndarray` ArrayView2.
-            fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                <ArrayView2<'a, $type>>::try_from(robj).map_err(|_| $error_str)
-            }
-        }
-
         impl<'a> TryFrom<&'_ Robj> for ArrayView2<'a, $type> {
             type Error = crate::Error;
             fn try_from(robj: &Robj) -> Result<Self> {
@@ -216,7 +195,7 @@ where
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::FromRobj;
+    use crate as extendr_api;
     use ndarray::array;
     use rstest::rstest;
 
@@ -252,19 +231,21 @@ mod test {
         "matrix(c(T, T, T, T, F, F, F, F), ncol=2, nrow=4)",
         <Array2<Rbool>>::from_shape_vec((4, 2).f(), vec![true.into(), true.into(), true.into(), true.into(), false.into(), false.into(), false.into(), false.into()]).unwrap()
     )]
-    fn test_from_robj<DataType, DimType>(
+    fn test_from_robj<DataType, DimType, Error>(
         #[case] left: &'static str,
         #[case] right: ArrayBase<DataType, DimType>,
     ) where
         DataType: Data,
-        for<'a> ArrayView<'a, <DataType as ndarray::RawData>::Elem, DimType>: FromRobj<'a>,
+        for<'a> ArrayView<'a, <DataType as ndarray::RawData>::Elem, DimType>:
+            TryFrom<&'a Robj, Error = Error>,
         DimType: Dimension,
+        Error: std::fmt::Debug,
         <DataType as ndarray::RawData>::Elem: PartialEq + std::fmt::Debug,
     {
         // Tests for the R → Rust conversion
         test! {
             let left_robj = eval_string(left).unwrap();
-            let left_array = <ArrayView<DataType::Elem, DimType>>::from_robj(&left_robj).unwrap();
+            let left_array = <ArrayView<DataType::Elem, DimType>>::try_from(&left_robj).unwrap();
             assert_eq!( left_array, right );
         }
     }
@@ -337,7 +318,7 @@ mod test {
             ];
             for rval in rvals {
                 let rval = rval.unwrap();
-                let rust_arr= <ArrayView2<i32>>::from_robj(&rval).unwrap();
+                let rust_arr= <ArrayView2<i32>>::try_from(&rval).unwrap();
                 let r_arr: Robj = (&rust_arr).try_into().unwrap();
                 assert_eq!(
                     rval,

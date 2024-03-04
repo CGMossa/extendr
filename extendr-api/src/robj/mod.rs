@@ -19,9 +19,6 @@ use crate::scalar::{Rbool, Rfloat, Rint};
 use std::collections::HashMap;
 use std::ops::{Range, RangeInclusive};
 
-// deprecated
-mod from_robj;
-
 mod debug;
 mod into_robj;
 mod operators;
@@ -31,7 +28,6 @@ mod try_from_robj;
 #[cfg(test)]
 mod tests;
 
-pub use from_robj::*;
 pub use into_robj::*;
 pub use iter::*;
 pub use operators::Operators;

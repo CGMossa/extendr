@@ -1,7 +1,6 @@
 use crate::scalar::macros::*;
 use crate::scalar::{Rfloat, Scalar};
 use crate::*;
-use std::convert::TryFrom;
 use std::ops::{Add, Div, Mul, Neg, Sub};
 use std::ops::{AddAssign, DivAssign, MulAssign, SubAssign};
 

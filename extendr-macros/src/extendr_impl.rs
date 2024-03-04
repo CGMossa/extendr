@@ -130,6 +130,22 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
                 }
             }
 
+            impl TryFrom<Robj> for &#self_ty {
+                type Error = Error;
+
+                fn try_from(robj: Robj) -> Result<Self> {
+                    Self::try_from(&robj)
+                }
+            }
+
+            impl TryFrom<Robj> for &mut #self_ty {
+                type Error = Error;
+
+                fn try_from(mut robj: Robj) -> Result<Self> {
+                    Self::try_from(&mut robj)
+                }
+            }
+
             // Output conversion function for this type.
             impl TryFrom<&Robj> for &#self_ty {
                 type Error = Error;

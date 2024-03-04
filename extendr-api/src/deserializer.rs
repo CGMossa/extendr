@@ -11,7 +11,6 @@ use serde::de::{
     Visitor,
 };
 use serde::forward_to_deserialize_any;
-use std::convert::TryFrom;
 
 /// Convert any R object to a Deserialize object.
 pub fn from_robj<'de, T>(robj: &'de Robj) -> Result<T>

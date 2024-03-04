@@ -95,6 +95,7 @@ pub fn extendr(attr: TokenStream, item: TokenStream) -> TokenStream {
     let extendr_opts_parser = syn::meta::parser(|meta| opts.parse(meta));
     parse_macro_input!(attr with extendr_opts_parser);
 
+    opts.use_try_from = true;
     match item {
         Item::Fn(func) => extendr_function::extendr_function(func, &opts),
         Item::Impl(item_impl) => match extendr_impl::extendr_impl(item_impl, &opts) {

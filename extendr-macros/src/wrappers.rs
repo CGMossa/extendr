@@ -136,7 +136,6 @@ pub fn make_function_wrappers(
         .unwrap_or_default();
 
     // figure out if &Self / &mut Self / inside of impl block &ImplType / &mut ImplType is used!
-    // dbg!(&rust_name_str, &sig.output);
     let return_is_ref_self = {
         match sig.output {
             syn::ReturnType::Default => false,

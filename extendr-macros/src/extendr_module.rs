@@ -102,10 +102,10 @@ pub fn extendr_module(item: TokenStream) -> TokenStream {
                 use extendr_api::robj::*;
                 use extendr_api::GetSexp;
                 let robj = Robj::from_sexp(use_symbols_sexp);
-                let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                let use_symbols: bool = <bool>::try_from(&robj).unwrap();
 
                 let robj = Robj::from_sexp(package_name_sexp);
-                let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                let package_name: &str = <&str>::try_from(&robj).unwrap();
 
                 extendr_api::Robj::from(
                     #module_metadata_name()
