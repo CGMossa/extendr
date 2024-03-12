@@ -8,8 +8,6 @@ use crate::extendr_options::ExtendrOptions;
 /// Adds the ability to take an `enum` of plain variants and turn them into
 /// an R factor.
 ///
-/// an R factor.
-///
 /// The order of the enums listed in Rust dictates the order in `levels`.
 /// We do not use the discriminant value (if specified) for anything.
 ///
