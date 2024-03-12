@@ -269,7 +269,6 @@ impl MyClass {
     }
 }
 
-
 /// Class for testing (exported) (use_try_from)
 /// @examples
 /// x <- MyClass2$new()

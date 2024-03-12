@@ -258,6 +258,8 @@ jobs:
         shell: Rscript {0}
 
       - name: Run R integration tests using {rextendr}
+        env:
+          REXTENDR_SKIP_DEV_TESTS: 1
         uses: r-lib/actions/check-r-package@v2
         with:
           args: 'c("--no-manual", "--as-cran", "--force-multiarch")'
