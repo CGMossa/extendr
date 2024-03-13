@@ -28,7 +28,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > { Ok(extendr_api::Robj::from(hello_submodule())) }),
+                      > { Ok(hello_submodule().try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -174,7 +174,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > { Ok(extendr_api::Robj::from(<MySubmoduleClass>::new())) }),
+                      > { Ok(<MySubmoduleClass>::new().try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -251,12 +251,11 @@
                           extendr_api::Error,
                       > {
                           Ok(
-                              extendr_api::Robj::from(
-                                  extendr_api::unwrap_or_throw(
-                                          <&mut MySubmoduleClass>::from_robj(&_self_robj),
-                                      )
-                                      .set_a(<i32>::from_robj(&_x_robj)?),
-                              ),
+                              extendr_api::unwrap_or_throw_error(
+                                      <&mut MySubmoduleClass>::try_from(&mut _self_robj),
+                                  )
+                                  .set_a(_x_robj.try_into()?)
+                                  .try_into()?,
                           )
                       }),
                   )
@@ -347,12 +346,11 @@
                           extendr_api::Error,
                       > {
                           Ok(
-                              extendr_api::Robj::from(
-                                  extendr_api::unwrap_or_throw(
-                                          <&MySubmoduleClass>::from_robj(&_self_robj),
-                                      )
-                                      .a(),
-                              ),
+                              extendr_api::unwrap_or_throw_error(
+                                      <&MySubmoduleClass>::try_from(&_self_robj),
+                                  )
+                                  .a()
+                                  .try_into()?,
                           )
                       }),
                   )
@@ -438,12 +436,11 @@
                           extendr_api::Error,
                       > {
                           Ok(
-                              extendr_api::Robj::from(
-                                  extendr_api::unwrap_or_throw(
-                                          <&MySubmoduleClass>::from_robj(&_self_robj),
-                                      )
-                                      .me_owned(),
-                              ),
+                              extendr_api::unwrap_or_throw_error(
+                                      <&MySubmoduleClass>::try_from(&_self_robj),
+                                  )
+                                  .me_owned()
+                                  .try_into()?,
                           )
                       }),
                   )
@@ -530,8 +527,8 @@
                           Robj,
                           extendr_api::Error,
                       > {
-                          let _return_ref_to_self = extendr_api::unwrap_or_throw(
-                                  <&MySubmoduleClass>::from_robj(&_self_robj),
+                          let _return_ref_to_self = extendr_api::unwrap_or_throw_error(
+                                  <&MySubmoduleClass>::try_from(&_self_robj),
                               )
                               .me_ref();
                           Ok(_self_robj)
@@ -618,8 +615,8 @@
                           Robj,
                           extendr_api::Error,
                       > {
-                          let _return_ref_to_self = extendr_api::unwrap_or_throw(
-                                  <&mut MySubmoduleClass>::from_robj(&_self_robj),
+                          let _return_ref_to_self = extendr_api::unwrap_or_throw_error(
+                                  <&mut MySubmoduleClass>::try_from(&mut _self_robj),
                               )
                               .me_mut();
                           Ok(_self_robj)
@@ -706,8 +703,8 @@
                           Robj,
                           extendr_api::Error,
                       > {
-                          let _return_ref_to_self = extendr_api::unwrap_or_throw(
-                                  <&MySubmoduleClass>::from_robj(&_self_robj),
+                          let _return_ref_to_self = extendr_api::unwrap_or_throw_error(
+                                  <&MySubmoduleClass>::try_from(&_self_robj),
                               )
                               .me_explicit_ref();
                           Ok(_self_robj)
@@ -796,8 +793,8 @@
                           Robj,
                           extendr_api::Error,
                       > {
-                          let _return_ref_to_self = extendr_api::unwrap_or_throw(
-                                  <&mut MySubmoduleClass>::from_robj(&_self_robj),
+                          let _return_ref_to_self = extendr_api::unwrap_or_throw_error(
+                                  <&mut MySubmoduleClass>::try_from(&mut _self_robj),
                               )
                               .me_explicit_mut();
                           Ok(_self_robj)
@@ -870,37 +867,42 @@
                       hidden: false,
                   })
           }
-          impl<'a> extendr_api::FromRobj<'a> for &MySubmoduleClass {
-              fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  use libR_sys::*;
-                  unsafe {
-                      let ptr = R_ExternalPtrAddr(robj.get()).cast::<MySubmoduleClass>();
-                      if ptr.is_null() {
-                          Err("stored externalptr is invalid / NULL")
-                      } else {
-                          Ok(&*ptr)
-                      }
-                  }
+          impl TryFrom<MySubmoduleClass> for Robj {
+              type Error = Error;
+              fn try_from(value: MySubmoduleClass) -> Result<Self> {
+                  let mut res: Robj = ExternalPtr::new(value).try_into()?;
+                  res.set_attrib(class_symbol(), "MySubmoduleClass")?;
+                  Ok(res)
               }
           }
-          impl<'a> extendr_api::FromRobj<'a> for &mut MySubmoduleClass {
-              fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  use libR_sys::*;
-                  unsafe {
-                      let ptr = R_ExternalPtrAddr(robj.get()).cast::<MySubmoduleClass>();
-                      if ptr.is_null() {
-                          Err("stored externalptr is invalid / NULL")
-                      } else {
-                          Ok(&mut *ptr)
-                      }
-                  }
+          impl TryFrom<Robj> for &MySubmoduleClass {
+              type Error = Error;
+              fn try_from(robj: Robj) -> Result<Self> {
+                  Self::try_from(&robj)
               }
           }
-          impl From<MySubmoduleClass> for Robj {
-              fn from(value: MySubmoduleClass) -> Self {
-                  let mut res: Robj = ExternalPtr::new(value).into();
-                  res.set_attrib(class_symbol(), "MySubmoduleClass").unwrap();
-                  res
+          impl TryFrom<Robj> for &mut MySubmoduleClass {
+              type Error = Error;
+              fn try_from(mut robj: Robj) -> Result<Self> {
+                  Self::try_from(&mut robj)
+              }
+          }
+          impl TryFrom<&Robj> for &MySubmoduleClass {
+              type Error = Error;
+              fn try_from(robj: &Robj) -> Result<Self> {
+                  let external_ptr: &ExternalPtr<MySubmoduleClass> = robj.try_into()?;
+                  external_ptr
+                      .as_ref()
+                      .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+              }
+          }
+          impl TryFrom<&mut Robj> for &mut MySubmoduleClass {
+              type Error = Error;
+              fn try_from(robj: &mut Robj) -> Result<Self> {
+                  let external_ptr: &mut ExternalPtr<MySubmoduleClass> = robj.try_into()?;
+                  external_ptr
+                      .as_mut()
+                      .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
               }
           }
           #[allow(non_snake_case)]
@@ -986,9 +988,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_submodule_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -1250,9 +1252,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_optional_ndarray_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -1448,9 +1450,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_optional_either_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -1790,9 +1792,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_raw_identifiers_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -1829,13 +1831,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  leak_implicit_strings(<Strings>::from_robj(&_x_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(leak_implicit_strings(_x_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -1923,13 +1919,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  leak_implicit_doubles(<Doubles>::from_robj(&_x_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(leak_implicit_doubles(_x_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -2228,13 +2218,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  leak_unwrap_strings(<Robj>::from_robj(&_x_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(leak_unwrap_strings(_x_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -2322,13 +2306,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  leak_unwrap_doubles(<Robj>::from_robj(&_x_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(leak_unwrap_doubles(_x_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -2416,13 +2394,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  leak_positive_control(<Robj>::from_robj(&_x_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(leak_positive_control(_x_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -2510,13 +2482,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  leak_negative_control(<Robj>::from_robj(&_x_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(leak_negative_control(_x_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -2657,9 +2623,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_memory_leaks_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -2698,37 +2664,42 @@
           }
           #[cfg(use_r_altlist)]
           impl VecUsize {}
-          impl<'a> extendr_api::FromRobj<'a> for &VecUsize {
-              fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  use libR_sys::*;
-                  unsafe {
-                      let ptr = R_ExternalPtrAddr(robj.get()).cast::<VecUsize>();
-                      if ptr.is_null() {
-                          Err("stored externalptr is invalid / NULL")
-                      } else {
-                          Ok(&*ptr)
-                      }
-                  }
+          impl TryFrom<VecUsize> for Robj {
+              type Error = Error;
+              fn try_from(value: VecUsize) -> Result<Self> {
+                  let mut res: Robj = ExternalPtr::new(value).try_into()?;
+                  res.set_attrib(class_symbol(), "VecUsize")?;
+                  Ok(res)
               }
           }
-          impl<'a> extendr_api::FromRobj<'a> for &mut VecUsize {
-              fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-                  use libR_sys::*;
-                  unsafe {
-                      let ptr = R_ExternalPtrAddr(robj.get()).cast::<VecUsize>();
-                      if ptr.is_null() {
-                          Err("stored externalptr is invalid / NULL")
-                      } else {
-                          Ok(&mut *ptr)
-                      }
-                  }
+          impl TryFrom<Robj> for &VecUsize {
+              type Error = Error;
+              fn try_from(robj: Robj) -> Result<Self> {
+                  Self::try_from(&robj)
               }
           }
-          impl From<VecUsize> for Robj {
-              fn from(value: VecUsize) -> Self {
-                  let mut res: Robj = ExternalPtr::new(value).into();
-                  res.set_attrib(class_symbol(), "VecUsize").unwrap();
-                  res
+          impl TryFrom<Robj> for &mut VecUsize {
+              type Error = Error;
+              fn try_from(mut robj: Robj) -> Result<Self> {
+                  Self::try_from(&mut robj)
+              }
+          }
+          impl TryFrom<&Robj> for &VecUsize {
+              type Error = Error;
+              fn try_from(robj: &Robj) -> Result<Self> {
+                  let external_ptr: &ExternalPtr<VecUsize> = robj.try_into()?;
+                  external_ptr
+                      .as_ref()
+                      .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+              }
+          }
+          impl TryFrom<&mut Robj> for &mut VecUsize {
+              type Error = Error;
+              fn try_from(robj: &mut Robj) -> Result<Self> {
+                  let external_ptr: &mut ExternalPtr<VecUsize> = robj.try_into()?;
+                  external_ptr
+                      .as_mut()
+                      .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
               }
           }
           #[allow(non_snake_case)]
@@ -2774,13 +2745,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > {
-                          Ok(
-                              extendr_api::Robj::from(
-                                  new_usize(<Integers>::from_robj(&_robj_robj)?),
-                              ),
-                          )
-                      }),
+                      > { Ok(new_usize(_robj_robj.try_into()?).try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -2902,7 +2867,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > { Ok(extendr_api::Robj::from(tst_altstring())) }),
+                      > { Ok(tst_altstring().try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -3032,7 +2997,7 @@
                       std::panic::AssertUnwindSafe(|| -> std::result::Result<
                           Robj,
                           extendr_api::Error,
-                      > { Ok(extendr_api::Robj::from(tst_altinteger())) }),
+                      > { Ok(tst_altinteger().try_into()?) }),
                   )
               };
               match wrap_result_state {
@@ -3156,9 +3121,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_altrep_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -3620,9 +3585,9 @@
                   use extendr_api::robj::*;
                   use extendr_api::GetSexp;
                   let robj = Robj::from_sexp(use_symbols_sexp);
-                  let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+                  let use_symbols: bool = <bool>::try_from(&robj).unwrap();
                   let robj = Robj::from_sexp(package_name_sexp);
-                  let package_name: &str = <&str>::from_robj(&robj).unwrap();
+                  let package_name: &str = <&str>::try_from(&robj).unwrap();
                   extendr_api::Robj::from(
                           get_enum_as_factor_metadata()
                               .make_r_wrappers(use_symbols, package_name)
@@ -3654,7 +3619,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(hello_world())) }),
+                  > { Ok(hello_world().try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -3725,7 +3690,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(do_nothing())) }),
+                  > { Ok(do_nothing().try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -3799,9 +3764,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(extendr_api::Robj::from(double_scalar(<f64>::from_robj(&_x_robj)?)))
-                  }),
+                  > { Ok(double_scalar(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -3884,7 +3847,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(int_scalar(<i32>::from_robj(&_x_robj)?))) }),
+                  > { Ok(int_scalar(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -3967,7 +3930,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(bool_scalar(<bool>::from_robj(&_x_robj)?))) }),
+                  > { Ok(bool_scalar(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -4050,9 +4013,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(extendr_api::Robj::from(char_scalar(<String>::from_robj(&_x_robj)?)))
-                  }),
+                  > { Ok(char_scalar(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -4135,13 +4096,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(
-                          extendr_api::Robj::from(
-                              char_vec(<Vec<String>>::from_robj(&_x_robj)?),
-                          ),
-                      )
-                  }),
+                  > { Ok(char_vec(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -4224,9 +4179,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(extendr_api::Robj::from(double_vec(<Vec<f64>>::from_robj(&_x_robj)?)))
-                  }),
+                  > { Ok(double_vec(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -5437,12 +5390,8 @@
                       extendr_api::Error,
                   > {
                       Ok(
-                          extendr_api::Robj::from(
-                              special_param_names(
-                                  <i32>::from_robj(&__x_robj)?,
-                                  <i32>::from_robj(&__y_robj)?,
-                              ),
-                          ),
+                          special_param_names(__x_robj.try_into()?, __y_robj.try_into()?)
+                              .try_into()?,
                       )
                   }),
               )
@@ -5533,7 +5482,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(__00__special_function_name())) }),
+                  > { Ok(__00__special_function_name().try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -5683,13 +5632,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(
-                          extendr_api::Robj::from(
-                              get_default_value(<i32>::from_robj(&_x_robj)?),
-                          ),
-                      )
-                  }),
+                  > { Ok(get_default_value(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -5922,7 +5865,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(<MyClass>::new())) }),
+                  > { Ok(<MyClass>::new().try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -5999,12 +5942,11 @@
                       extendr_api::Error,
                   > {
                       Ok(
-                          extendr_api::Robj::from(
-                              extendr_api::unwrap_or_throw(
-                                      <&mut MyClass>::from_robj(&_self_robj),
-                                  )
-                                  .set_a(<i32>::from_robj(&_x_robj)?),
-                          ),
+                          extendr_api::unwrap_or_throw_error(
+                                  <&mut MyClass>::try_from(&mut _self_robj),
+                              )
+                              .set_a(_x_robj.try_into()?)
+                              .try_into()?,
                       )
                   }),
               )
@@ -6093,10 +6035,9 @@
                       extendr_api::Error,
                   > {
                       Ok(
-                          extendr_api::Robj::from(
-                              extendr_api::unwrap_or_throw(<&MyClass>::from_robj(&_self_robj))
-                                  .a(),
-                          ),
+                          extendr_api::unwrap_or_throw_error(<&MyClass>::try_from(&_self_robj))
+                              .a()
+                              .try_into()?,
                       )
                   }),
               )
@@ -6179,8 +6120,8 @@
                       Robj,
                       extendr_api::Error,
                   > {
-                      let _return_ref_to_self = extendr_api::unwrap_or_throw(
-                              <&MyClass>::from_robj(&_self_robj),
+                      let _return_ref_to_self = extendr_api::unwrap_or_throw_error(
+                              <&MyClass>::try_from(&_self_robj),
                           )
                           .me();
                       Ok(_self_robj)
@@ -6266,13 +6207,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(
-                          extendr_api::Robj::from(
-                              <MyClass>::restore_from_robj(<Robj>::from_robj(&_robj_robj)?),
-                          ),
-                      )
-                  }),
+                  > { Ok(<MyClass>::restore_from_robj(_robj_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -6354,13 +6289,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(
-                          extendr_api::Robj::from(
-                              <MyClass>::get_default_value(<i32>::from_robj(&_x_robj)?),
-                          ),
-                      )
-                  }),
+                  > { Ok(<MyClass>::get_default_value(_x_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -6427,37 +6356,42 @@
                   hidden: false,
               })
       }
-      impl<'a> extendr_api::FromRobj<'a> for &MyClass {
-          fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              use libR_sys::*;
-              unsafe {
-                  let ptr = R_ExternalPtrAddr(robj.get()).cast::<MyClass>();
-                  if ptr.is_null() {
-                      Err("stored externalptr is invalid / NULL")
-                  } else {
-                      Ok(&*ptr)
-                  }
-              }
+      impl TryFrom<MyClass> for Robj {
+          type Error = Error;
+          fn try_from(value: MyClass) -> Result<Self> {
+              let mut res: Robj = ExternalPtr::new(value).try_into()?;
+              res.set_attrib(class_symbol(), "MyClass")?;
+              Ok(res)
           }
       }
-      impl<'a> extendr_api::FromRobj<'a> for &mut MyClass {
-          fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              use libR_sys::*;
-              unsafe {
-                  let ptr = R_ExternalPtrAddr(robj.get()).cast::<MyClass>();
-                  if ptr.is_null() {
-                      Err("stored externalptr is invalid / NULL")
-                  } else {
-                      Ok(&mut *ptr)
-                  }
-              }
+      impl TryFrom<Robj> for &MyClass {
+          type Error = Error;
+          fn try_from(robj: Robj) -> Result<Self> {
+              Self::try_from(&robj)
           }
       }
-      impl From<MyClass> for Robj {
-          fn from(value: MyClass) -> Self {
-              let mut res: Robj = ExternalPtr::new(value).into();
-              res.set_attrib(class_symbol(), "MyClass").unwrap();
-              res
+      impl TryFrom<Robj> for &mut MyClass {
+          type Error = Error;
+          fn try_from(mut robj: Robj) -> Result<Self> {
+              Self::try_from(&mut robj)
+          }
+      }
+      impl TryFrom<&Robj> for &MyClass {
+          type Error = Error;
+          fn try_from(robj: &Robj) -> Result<Self> {
+              let external_ptr: &ExternalPtr<MyClass> = robj.try_into()?;
+              external_ptr
+                  .as_ref()
+                  .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+          }
+      }
+      impl TryFrom<&mut Robj> for &mut MyClass {
+          type Error = Error;
+          fn try_from(robj: &mut Robj) -> Result<Self> {
+              let external_ptr: &mut ExternalPtr<MyClass> = robj.try_into()?;
+              external_ptr
+                  .as_mut()
+                  .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
           }
       }
       #[allow(non_snake_case)]
@@ -7022,6 +6956,18 @@
               Ok(res)
           }
       }
+      impl TryFrom<Robj> for &MyClass2 {
+          type Error = Error;
+          fn try_from(robj: Robj) -> Result<Self> {
+              Self::try_from(&robj)
+          }
+      }
+      impl TryFrom<Robj> for &mut MyClass2 {
+          type Error = Error;
+          fn try_from(mut robj: Robj) -> Result<Self> {
+              Self::try_from(&mut robj)
+          }
+      }
       impl TryFrom<&Robj> for &MyClass2 {
           type Error = Error;
           fn try_from(robj: &Robj) -> Result<Self> {
@@ -7091,7 +7037,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(<__MyClass>::new())) }),
+                  > { Ok(<__MyClass>::new().try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -7166,12 +7112,11 @@
                       extendr_api::Error,
                   > {
                       Ok(
-                          extendr_api::Robj::from(
-                              extendr_api::unwrap_or_throw(
-                                      <&__MyClass>::from_robj(&_self_robj),
-                                  )
-                                  .__name_test(),
-                          ),
+                          extendr_api::unwrap_or_throw_error(
+                                  <&__MyClass>::try_from(&_self_robj),
+                              )
+                              .__name_test()
+                              .try_into()?,
                       )
                   }),
               )
@@ -7240,37 +7185,42 @@
                   hidden: false,
               })
       }
-      impl<'a> extendr_api::FromRobj<'a> for &__MyClass {
-          fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              use libR_sys::*;
-              unsafe {
-                  let ptr = R_ExternalPtrAddr(robj.get()).cast::<__MyClass>();
-                  if ptr.is_null() {
-                      Err("stored externalptr is invalid / NULL")
-                  } else {
-                      Ok(&*ptr)
-                  }
-              }
+      impl TryFrom<__MyClass> for Robj {
+          type Error = Error;
+          fn try_from(value: __MyClass) -> Result<Self> {
+              let mut res: Robj = ExternalPtr::new(value).try_into()?;
+              res.set_attrib(class_symbol(), "__MyClass")?;
+              Ok(res)
           }
       }
-      impl<'a> extendr_api::FromRobj<'a> for &mut __MyClass {
-          fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              use libR_sys::*;
-              unsafe {
-                  let ptr = R_ExternalPtrAddr(robj.get()).cast::<__MyClass>();
-                  if ptr.is_null() {
-                      Err("stored externalptr is invalid / NULL")
-                  } else {
-                      Ok(&mut *ptr)
-                  }
-              }
+      impl TryFrom<Robj> for &__MyClass {
+          type Error = Error;
+          fn try_from(robj: Robj) -> Result<Self> {
+              Self::try_from(&robj)
           }
       }
-      impl From<__MyClass> for Robj {
-          fn from(value: __MyClass) -> Self {
-              let mut res: Robj = ExternalPtr::new(value).into();
-              res.set_attrib(class_symbol(), "__MyClass").unwrap();
-              res
+      impl TryFrom<Robj> for &mut __MyClass {
+          type Error = Error;
+          fn try_from(mut robj: Robj) -> Result<Self> {
+              Self::try_from(&mut robj)
+          }
+      }
+      impl TryFrom<&Robj> for &__MyClass {
+          type Error = Error;
+          fn try_from(robj: &Robj) -> Result<Self> {
+              let external_ptr: &ExternalPtr<__MyClass> = robj.try_into()?;
+              external_ptr
+                  .as_ref()
+                  .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+          }
+      }
+      impl TryFrom<&mut Robj> for &mut __MyClass {
+          type Error = Error;
+          fn try_from(robj: &mut Robj) -> Result<Self> {
+              let external_ptr: &mut ExternalPtr<__MyClass> = robj.try_into()?;
+              external_ptr
+                  .as_mut()
+                  .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
           }
       }
       #[allow(non_snake_case)]
@@ -7332,7 +7282,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > { Ok(extendr_api::Robj::from(<MyClassUnexported>::new())) }),
+                  > { Ok(<MyClassUnexported>::new().try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -7407,12 +7357,11 @@
                       extendr_api::Error,
                   > {
                       Ok(
-                          extendr_api::Robj::from(
-                              extendr_api::unwrap_or_throw(
-                                      <&MyClassUnexported>::from_robj(&_self_robj),
-                                  )
-                                  .a(),
-                          ),
+                          extendr_api::unwrap_or_throw_error(
+                                  <&MyClassUnexported>::try_from(&_self_robj),
+                              )
+                              .a()
+                              .try_into()?,
                       )
                   }),
               )
@@ -7481,37 +7430,42 @@
                   hidden: false,
               })
       }
-      impl<'a> extendr_api::FromRobj<'a> for &MyClassUnexported {
-          fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              use libR_sys::*;
-              unsafe {
-                  let ptr = R_ExternalPtrAddr(robj.get()).cast::<MyClassUnexported>();
-                  if ptr.is_null() {
-                      Err("stored externalptr is invalid / NULL")
-                  } else {
-                      Ok(&*ptr)
-                  }
-              }
+      impl TryFrom<MyClassUnexported> for Robj {
+          type Error = Error;
+          fn try_from(value: MyClassUnexported) -> Result<Self> {
+              let mut res: Robj = ExternalPtr::new(value).try_into()?;
+              res.set_attrib(class_symbol(), "MyClassUnexported")?;
+              Ok(res)
           }
       }
-      impl<'a> extendr_api::FromRobj<'a> for &mut MyClassUnexported {
-          fn from_robj(robj: &'a Robj) -> std::result::Result<Self, &'static str> {
-              use libR_sys::*;
-              unsafe {
-                  let ptr = R_ExternalPtrAddr(robj.get()).cast::<MyClassUnexported>();
-                  if ptr.is_null() {
-                      Err("stored externalptr is invalid / NULL")
-                  } else {
-                      Ok(&mut *ptr)
-                  }
-              }
+      impl TryFrom<Robj> for &MyClassUnexported {
+          type Error = Error;
+          fn try_from(robj: Robj) -> Result<Self> {
+              Self::try_from(&robj)
           }
       }
-      impl From<MyClassUnexported> for Robj {
-          fn from(value: MyClassUnexported) -> Self {
-              let mut res: Robj = ExternalPtr::new(value).into();
-              res.set_attrib(class_symbol(), "MyClassUnexported").unwrap();
-              res
+      impl TryFrom<Robj> for &mut MyClassUnexported {
+          type Error = Error;
+          fn try_from(mut robj: Robj) -> Result<Self> {
+              Self::try_from(&mut robj)
+          }
+      }
+      impl TryFrom<&Robj> for &MyClassUnexported {
+          type Error = Error;
+          fn try_from(robj: &Robj) -> Result<Self> {
+              let external_ptr: &ExternalPtr<MyClassUnexported> = robj.try_into()?;
+              external_ptr
+                  .as_ref()
+                  .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
+          }
+      }
+      impl TryFrom<&mut Robj> for &mut MyClassUnexported {
+          type Error = Error;
+          fn try_from(robj: &mut Robj) -> Result<Self> {
+              let external_ptr: &mut ExternalPtr<MyClassUnexported> = robj.try_into()?;
+              external_ptr
+                  .as_mut()
+                  .ok_or_else(|| Error::ExpectedExternalNonNullPtr(robj.clone()))
           }
       }
       #[allow(non_snake_case)]
@@ -7553,13 +7507,7 @@
                   std::panic::AssertUnwindSafe(|| -> std::result::Result<
                       Robj,
                       extendr_api::Error,
-                  > {
-                      Ok(
-                          extendr_api::Robj::from(
-                              my_device(<String>::from_robj(&_welcome_message_robj)?),
-                          ),
-                      )
-                  }),
+                  > { Ok(my_device(_welcome_message_robj.try_into()?).try_into()?) }),
               )
           };
           match wrap_result_state {
@@ -7734,9 +7682,9 @@
               use extendr_api::robj::*;
               use extendr_api::GetSexp;
               let robj = Robj::from_sexp(use_symbols_sexp);
-              let use_symbols: bool = <bool>::from_robj(&robj).unwrap();
+              let use_symbols: bool = <bool>::try_from(&robj).unwrap();
               let robj = Robj::from_sexp(package_name_sexp);
-              let package_name: &str = <&str>::from_robj(&robj).unwrap();
+              let package_name: &str = <&str>::try_from(&robj).unwrap();
               extendr_api::Robj::from(
                       get_extendrtests_metadata()
                           .make_r_wrappers(use_symbols, package_name)
