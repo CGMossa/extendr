@@ -1,12 +1,9 @@
-// use std::ffi::CStr;
 #[allow(unused_imports)]
 use extendr_api::{r, GetSexp, Robj};
 use extendr_engine::with_r;
 use extendr_macros::R;
 #[allow(unused_imports)]
-use libR_sys::{
-    R_BlankScalarString, R_NilValue, R_ParseString, Rf_PrintValue, Rf_xlength, STRING_ELT, TYPEOF,
-};
+use libR_sys::{R_BlankScalarString, R_NilValue, Rf_PrintValue, Rf_xlength, STRING_ELT, TYPEOF};
 #[allow(unused_imports)]
 use libR_sys::{R_BlankString, R_NaString, CHARSXP, STRSXP};
 
