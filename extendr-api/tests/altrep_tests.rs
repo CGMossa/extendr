@@ -249,12 +249,14 @@ mod tests {
     #[extendr]
     impl VecUsize {}
 
+    #[cfg(use_r_altlist)]
     impl AltrepImpl for VecUsize {
         fn length(&self) -> usize {
             self.0.len()
         }
     }
 
+    #[cfg(use_r_altlist)]
     impl AltListImpl for VecUsize {
         fn elt(&self, index: usize) -> Robj {
             Self(vec![self.0[index]]).try_into().unwrap()
@@ -297,12 +299,14 @@ mod tests_use_try_from {
     #[extendr(use_try_from = true)]
     impl VecUsize {}
 
+    #[cfg(use_r_altlist)]
     impl AltrepImpl for VecUsize {
         fn length(&self) -> usize {
             self.0.len()
         }
     }
 
+    #[cfg(use_r_altlist)]
     impl AltListImpl for VecUsize {
         fn elt(&self, index: usize) -> Robj {
             Self(vec![self.0[index]]).try_into().unwrap()
