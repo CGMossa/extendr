@@ -612,6 +612,7 @@
 <a href="#610" id="610">610</a>
 <a href="#611" id="611">611</a>
 <a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Conversions to [`Robj`]
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -640,7 +641,8 @@
                 // is problematic when converting a negative value to unsigned
                 // integer types (e.g. `-1i32 as u8` becomes 255).
                 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_integer() {
-                    <span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = <span class="self">Self</span>::try_from(v) {
+                    <span class="comment">//TODO: this needs to be `Ok(Self::from(v))`
+                    </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = <span class="self">Self</span>::try_from(v) {
                         <span class="kw">return </span><span class="prelude-val">Ok</span>(v);
                     } <span class="kw">else </span>{
                         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::OutOfLimits(robj.clone()));
