@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (88189a71e 2024-01-19)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/mod.rs`."><title>mod.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (c67326b06 2024-03-15)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -1097,6 +1097,107 @@
 <a href="#1095" id="1095">1095</a>
 <a href="#1096" id="1096">1096</a>
 <a href="#1097" id="1097">1097</a>
+<a href="#1098" id="1098">1098</a>
+<a href="#1099" id="1099">1099</a>
+<a href="#1100" id="1100">1100</a>
+<a href="#1101" id="1101">1101</a>
+<a href="#1102" id="1102">1102</a>
+<a href="#1103" id="1103">1103</a>
+<a href="#1104" id="1104">1104</a>
+<a href="#1105" id="1105">1105</a>
+<a href="#1106" id="1106">1106</a>
+<a href="#1107" id="1107">1107</a>
+<a href="#1108" id="1108">1108</a>
+<a href="#1109" id="1109">1109</a>
+<a href="#1110" id="1110">1110</a>
+<a href="#1111" id="1111">1111</a>
+<a href="#1112" id="1112">1112</a>
+<a href="#1113" id="1113">1113</a>
+<a href="#1114" id="1114">1114</a>
+<a href="#1115" id="1115">1115</a>
+<a href="#1116" id="1116">1116</a>
+<a href="#1117" id="1117">1117</a>
+<a href="#1118" id="1118">1118</a>
+<a href="#1119" id="1119">1119</a>
+<a href="#1120" id="1120">1120</a>
+<a href="#1121" id="1121">1121</a>
+<a href="#1122" id="1122">1122</a>
+<a href="#1123" id="1123">1123</a>
+<a href="#1124" id="1124">1124</a>
+<a href="#1125" id="1125">1125</a>
+<a href="#1126" id="1126">1126</a>
+<a href="#1127" id="1127">1127</a>
+<a href="#1128" id="1128">1128</a>
+<a href="#1129" id="1129">1129</a>
+<a href="#1130" id="1130">1130</a>
+<a href="#1131" id="1131">1131</a>
+<a href="#1132" id="1132">1132</a>
+<a href="#1133" id="1133">1133</a>
+<a href="#1134" id="1134">1134</a>
+<a href="#1135" id="1135">1135</a>
+<a href="#1136" id="1136">1136</a>
+<a href="#1137" id="1137">1137</a>
+<a href="#1138" id="1138">1138</a>
+<a href="#1139" id="1139">1139</a>
+<a href="#1140" id="1140">1140</a>
+<a href="#1141" id="1141">1141</a>
+<a href="#1142" id="1142">1142</a>
+<a href="#1143" id="1143">1143</a>
+<a href="#1144" id="1144">1144</a>
+<a href="#1145" id="1145">1145</a>
+<a href="#1146" id="1146">1146</a>
+<a href="#1147" id="1147">1147</a>
+<a href="#1148" id="1148">1148</a>
+<a href="#1149" id="1149">1149</a>
+<a href="#1150" id="1150">1150</a>
+<a href="#1151" id="1151">1151</a>
+<a href="#1152" id="1152">1152</a>
+<a href="#1153" id="1153">1153</a>
+<a href="#1154" id="1154">1154</a>
+<a href="#1155" id="1155">1155</a>
+<a href="#1156" id="1156">1156</a>
+<a href="#1157" id="1157">1157</a>
+<a href="#1158" id="1158">1158</a>
+<a href="#1159" id="1159">1159</a>
+<a href="#1160" id="1160">1160</a>
+<a href="#1161" id="1161">1161</a>
+<a href="#1162" id="1162">1162</a>
+<a href="#1163" id="1163">1163</a>
+<a href="#1164" id="1164">1164</a>
+<a href="#1165" id="1165">1165</a>
+<a href="#1166" id="1166">1166</a>
+<a href="#1167" id="1167">1167</a>
+<a href="#1168" id="1168">1168</a>
+<a href="#1169" id="1169">1169</a>
+<a href="#1170" id="1170">1170</a>
+<a href="#1171" id="1171">1171</a>
+<a href="#1172" id="1172">1172</a>
+<a href="#1173" id="1173">1173</a>
+<a href="#1174" id="1174">1174</a>
+<a href="#1175" id="1175">1175</a>
+<a href="#1176" id="1176">1176</a>
+<a href="#1177" id="1177">1177</a>
+<a href="#1178" id="1178">1178</a>
+<a href="#1179" id="1179">1179</a>
+<a href="#1180" id="1180">1180</a>
+<a href="#1181" id="1181">1181</a>
+<a href="#1182" id="1182">1182</a>
+<a href="#1183" id="1183">1183</a>
+<a href="#1184" id="1184">1184</a>
+<a href="#1185" id="1185">1185</a>
+<a href="#1186" id="1186">1186</a>
+<a href="#1187" id="1187">1187</a>
+<a href="#1188" id="1188">1188</a>
+<a href="#1189" id="1189">1189</a>
+<a href="#1190" id="1190">1190</a>
+<a href="#1191" id="1191">1191</a>
+<a href="#1192" id="1192">1192</a>
+<a href="#1193" id="1193">1193</a>
+<a href="#1194" id="1194">1194</a>
+<a href="#1195" id="1195">1195</a>
+<a href="#1196" id="1196">1196</a>
+<a href="#1197" id="1197">1197</a>
+<a href="#1198" id="1198">1198</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! R object handling.
 //!
 //! See. [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html)
@@ -1116,11 +1217,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::scalar::{Rbool, Rfloat, Rint};
 <span class="kw">use </span>std::collections::HashMap;
-<span class="kw">use </span>std::iter::IntoIterator;
 <span class="kw">use </span>std::ops::{Range, RangeInclusive};
-
-<span class="comment">// deprecated
-</span><span class="kw">mod </span>from_robj;
 
 <span class="kw">mod </span>debug;
 <span class="kw">mod </span>into_robj;
@@ -1131,7 +1228,6 @@
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests;
 
-<span class="kw">pub use </span>from_robj::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>into_robj::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>iter::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>operators::Operators;
@@ -1231,7 +1327,13 @@
     /// Access to a raw [SEXP] pointer can cause undefined behaviour and is not thread safe.
     </span><span class="kw">unsafe fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SEXP;
 
-    <span class="kw">unsafe fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; SEXP;
+    <span class="doccomment">/// Get a copy of the underlying [SEXP] through an exclusive reference.
+    ///
+    /// # Safety
+    ///
+    /// Ensure that you use this, and not `get`-variant, when you need to do
+    /// mutable operations.
+    </span><span class="kw">unsafe fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; SEXP;
 
     <span class="doccomment">/// Get a reference to a Robj for this type.
     </span><span class="kw">fn </span>as_robj(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Robj;
@@ -1264,11 +1366,10 @@
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instantiate and Altrep objects.
+    /// Creating this slice will also instantiate and AltRep objects.
     </span><span class="kw">unsafe fn </span>as_typed_slice_raw&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
-        <span class="kw">let </span>len = XLENGTH(<span class="self">self</span>.get()) <span class="kw">as </span>usize;
-        <span class="kw">let </span>data = DATAPTR_RO(<span class="self">self</span>.get()) <span class="kw">as </span><span class="kw-2">*const </span>T;
-        std::slice::from_raw_parts(data, len)
+        <span class="kw">let </span>data = DATAPTR_RO(<span class="self">self</span>.get()).cast();
+        std::slice::from_raw_parts(data, <span class="self">self</span>.len())
     }
 
     <span class="doccomment">/// Get a mutable slice to this object's data.
@@ -1279,13 +1380,12 @@
     /// Creating this slice will also instantiate and AltRep objects.
     /// Not all objects (especially not list and strings) support this.
     </span><span class="kw">unsafe fn </span>as_typed_slice_raw_mut&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
-        <span class="kw">let </span>len = XLENGTH(<span class="self">self</span>.get()) <span class="kw">as </span>usize;
-        <span class="kw">let </span>data = DATAPTR(<span class="self">self</span>.get_mut()) <span class="kw">as </span><span class="kw-2">*mut </span>T;
-        std::slice::from_raw_parts_mut(data, len)
+        <span class="kw">let </span>data = DATAPTR(<span class="self">self</span>.get_mut()).cast();
+        std::slice::from_raw_parts_mut(data, <span class="self">self</span>.len())
     }
 }
 
-<span class="kw">impl </span>Slices <span class="kw">for </span>Robj {}
+<span class="kw">impl</span>&lt;T: GetSexp + <span class="question-mark">?</span>Sized&gt; Slices <span class="kw">for </span>T {}
 
 <span class="kw">pub trait </span>Length: GetSexp {
     <span class="doccomment">/// Get the extended length of the object.
@@ -1315,10 +1415,11 @@
     </span>}
 }
 
-<span class="kw">impl </span>Length <span class="kw">for </span>Robj {}
+<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + GetSexp&gt; Length <span class="kw">for </span>T {}
 
 <span class="kw">impl </span>Robj {
-    <span class="kw">pub fn </span>from_sexp(sexp: SEXP) -&gt; <span class="self">Self </span>{
+    <span class="attr">#[allow(clippy::not_unsafe_ptr_arg_deref)]
+    </span><span class="kw">pub fn </span>from_sexp(sexp: SEXP) -&gt; <span class="self">Self </span>{
         single_threaded(|| {
             <span class="kw">unsafe </span>{ ownership::protect(sexp) };
             Robj { inner: sexp }
@@ -1336,7 +1437,7 @@
     <span class="attr">#[doc(hidden)]
     </span><span class="doccomment">/// Get the XXXSXP type of the object.
     </span><span class="kw">fn </span>sexptype(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ TYPEOF(<span class="self">self</span>.get()) <span class="kw">as </span>u32 }
+        <span class="kw">unsafe </span>{ TYPEOF(<span class="self">self</span>.get()) }
     }
 
     <span class="doccomment">/// Get the type of an R object.
@@ -1424,10 +1525,10 @@
     }
 }
 
-<span class="kw">impl </span>Types <span class="kw">for </span>Robj {}
+<span class="kw">impl</span>&lt;T: GetSexp + <span class="question-mark">?</span>Sized&gt; Types <span class="kw">for </span>T {}
 
 <span class="kw">impl </span>Robj {
-    <span class="doccomment">/// Is this object is an `NA` scalar?
+    <span class="doccomment">/// Is this object an `NA` scalar?
     /// Works for character, integer and numeric types.
     ///
     /// ```
@@ -1446,6 +1547,9 @@
             <span class="kw">unsafe </span>{
                 <span class="kw">let </span>sexp = <span class="self">self</span>.get();
                 <span class="kw">match </span><span class="self">self</span>.sexptype() {
+                    <span class="comment">// a character vector contains `CHARSXP`, and thus you
+                    // seldomly have `Robj`'s that are `CHARSXP` themselves
+                    </span>CHARSXP =&gt; sexp == libR_sys::R_NaString,
                     STRSXP =&gt; STRING_ELT(sexp, <span class="number">0</span>) == libR_sys::R_NaString,
                     INTSXP =&gt; <span class="kw-2">*</span>(INTEGER(sexp)) == libR_sys::R_NaInt,
                     LGLSXP =&gt; <span class="kw-2">*</span>(LOGICAL(sexp)) == libR_sys::R_NaInt,
@@ -1686,18 +1790,63 @@
     /// ```
     </span><span class="kw">pub fn </span>as_str&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>str&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">match </span><span class="self">self</span>.sexptype() {
+            <span class="kw">let </span>charsxp = <span class="kw">match </span><span class="self">self</span>.sexptype() {
                 STRSXP =&gt; {
-                    <span class="kw">if </span><span class="self">self</span>.len() != <span class="number">1 </span>{
-                        <span class="prelude-val">None
-                    </span>} <span class="kw">else </span>{
-                        <span class="prelude-val">Some</span>(to_str(R_CHAR(STRING_ELT(<span class="self">self</span>.get(), <span class="number">0</span>)) <span class="kw">as </span><span class="kw-2">*const </span>u8))
+                    <span class="comment">// only allows scalar strings
+                    </span><span class="kw">if </span><span class="self">self</span>.len() != <span class="number">1 </span>{
+                        <span class="kw">return </span><span class="prelude-val">None</span>;
                     }
+                    <span class="prelude-val">Some</span>(STRING_ELT(<span class="self">self</span>.get(), <span class="number">0</span>))
                 }
-                <span class="comment">// CHARSXP =&gt; Some(to_str(R_CHAR(self.get()) as *const u8)),
-                // SYMSXP =&gt; Some(to_str(R_CHAR(PRINTNAME(self.get())) as *const u8)),
-                </span><span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+                CHARSXP =&gt; <span class="prelude-val">Some</span>(<span class="self">self</span>.get()),
+                SYMSXP =&gt; <span class="prelude-val">Some</span>(PRINTNAME(<span class="self">self</span>.get())),
+                <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+            };
+
+            <span class="kw">let </span>charsxp = charsxp<span class="question-mark">?</span>;
+            <span class="kw">if </span>charsxp == R_NaString {
+                <span class="kw">return </span><span class="prelude-val">Some</span>(&lt;<span class="kw-2">&amp;</span>str&gt;::na());
             }
+
+            <span class="kw">let </span>length = Rf_xlength(charsxp);
+            <span class="kw">let </span>all_bytes = std::slice::from_raw_parts(R_CHAR(charsxp) <span class="kw">as _</span>, length <span class="kw">as _</span>);
+            <span class="prelude-val">Some</span>(std::str::from_utf8_unchecked(all_bytes))
+        }
+    }
+    <span class="doccomment">/// Get a mutable reference to a scalar string type.
+    /// ```
+    /// use extendr_api::prelude::*;
+    /// test! {
+    ///    let robj1 = Robj::from("xyz");
+    ///    let robj2 = Robj::from(1);
+    ///    assert_eq!(robj1.as_str(), Some("xyz"));
+    ///    assert_eq!(robj2.as_str(), None);
+    /// }
+    /// ```
+    </span><span class="kw">pub fn </span>as_str_mut&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>str&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>charsxp = <span class="kw">match </span><span class="self">self</span>.sexptype() {
+                STRSXP =&gt; {
+                    <span class="comment">// only allows Scalar strings
+                    </span><span class="kw">if </span><span class="self">self</span>.len() != <span class="number">1 </span>{
+                        <span class="kw">return </span><span class="prelude-val">None</span>;
+                    }
+                    <span class="prelude-val">Some</span>(STRING_ELT(<span class="self">self</span>.get_mut(), <span class="number">0</span>))
+                }
+                CHARSXP =&gt; <span class="prelude-val">Some</span>(<span class="self">self</span>.get_mut()),
+                SYMSXP =&gt; <span class="prelude-val">Some</span>(PRINTNAME(<span class="self">self</span>.get_mut())),
+                <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+            };
+
+            <span class="kw">let </span>charsxp = charsxp<span class="question-mark">?</span>;
+            <span class="kw">if </span>charsxp == R_NaString {
+                <span class="macro">todo!</span>()
+                <span class="comment">// return Some(&lt;&amp;str&gt;::na());
+            </span>}
+
+            <span class="kw">let </span>length = Rf_xlength(charsxp);
+            <span class="kw">let </span>all_bytes = std::slice::from_raw_parts_mut(R_CHAR(charsxp) <span class="kw">as _</span>, length <span class="kw">as _</span>);
+            <span class="prelude-val">Some</span>(std::str::from_utf8_unchecked_mut(all_bytes))
         }
     }
 
@@ -1838,65 +1987,132 @@
 <span class="kw">where
     </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
 {
-    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;
-    <span class="kw">where
-        </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
-    {
-        <span class="prelude-val">None
-    </span>}
+    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;;
 
-    <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;
-    <span class="kw">where
-        </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
-    {
-        <span class="prelude-val">None
-    </span>}
+    <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;;
 }
 
-<span class="macro">macro_rules! </span>make_typed_slice {
-    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>: <span class="macro-nonterminal">tt</span>, $(<span class="macro-nonterminal">$sexp</span>: tt),* ) =&gt; {
-        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">Robj
-        </span><span class="kw">where
-            </span><span class="self">Self </span>: <span class="lifetime">'a</span>,
-        {
-            <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="macro-nonterminal">$</span><span class="kw">type</span>]&gt; {
-                <span class="kw">match </span><span class="macro-nonterminal">self</span>.sexptype() {
-                    $( <span class="macro-nonterminal">$sexp </span>)|* =&gt; {
-                        <span class="kw">unsafe </span>{
-                            <span class="kw">let </span>ptr = <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">self</span>.get()) <span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$</span><span class="kw">type</span>;
-                            <span class="prelude-val">Some</span>(<span class="macro-nonterminal">std::slice::from_raw_parts</span>(ptr, <span class="self">self</span>.len()))
-                        }
-                    }
-                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None
-                </span>}
-            }
-
-            <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[<span class="macro-nonterminal">$</span><span class="kw">type</span>]&gt; {
-                <span class="kw">match </span><span class="macro-nonterminal">self</span>.sexptype() {
-                    $( <span class="macro-nonterminal">$sexp </span>)|* =&gt; {
-                        <span class="kw">unsafe </span>{
-                            <span class="kw">let </span>ptr = <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">self</span>.get()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$</span><span class="kw">type</span>;
-                            <span class="prelude-val">Some</span>(<span class="macro-nonterminal">std::slice::from_raw_parts_mut</span>(ptr, <span class="self">self</span>.len()))
-                        }
-                    }
-                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None
-                </span>}
-            }
-        }
+<span class="doccomment">/// Trait for providing rust with a typed pointer to an R scalar/vector type.
+///
+/// R data are hidden behind [`SEXP`] opaque pointers with an identifier
+/// for the underlying r storage type. Thus this trait is only meaningful for
+/// [`SEXP`]-wrappers.
+///
+/// [`SEXP`]: libR_sys::SEXP
+/// Marker for the R object modes / types represented as a value.
+</span><span class="kw">trait </span>SexpAsPtr: Sized {
+    <span class="doccomment">/// See [`Rtype`] for reference.
+    </span><span class="kw">const </span>R_TYPE_ID: u32;
+    <span class="doccomment">/// Corresponding rust type to the type in C (in R's C-API)
+    </span><span class="kw">type </span>CType;
+    <span class="doccomment">/// Returns a typed mutable pointer to the underlying value
+    </span><span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
+        DATAPTR(x).cast()
+    }
+    <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ DATAPTR(x).cast() }
     }
 }
 
-<span class="macro">make_typed_slice!</span>(Rbool, INTEGER, LGLSXP);
-<span class="macro">make_typed_slice!</span>(i32, INTEGER, INTSXP);
-<span class="macro">make_typed_slice!</span>(u32, INTEGER, INTSXP);
-<span class="macro">make_typed_slice!</span>(Rint, INTEGER, INTSXP);
-<span class="macro">make_typed_slice!</span>(f64, REAL, REALSXP);
-<span class="macro">make_typed_slice!</span>(Rfloat, REAL, REALSXP);
-<span class="macro">make_typed_slice!</span>(u8, RAW, RAWSXP);
-<span class="macro">make_typed_slice!</span>(Rstr, STRING_PTR, STRSXP);
-<span class="macro">make_typed_slice!</span>(c64, COMPLEX, CPLXSXP);
-<span class="macro">make_typed_slice!</span>(Rcplx, COMPLEX, CPLXSXP);
-<span class="macro">make_typed_slice!</span>(Rcomplex, COMPLEX, CPLXSXP);
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rbool {
+    <span class="doccomment">/// Corresponds to `logical` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = LGLSXP;
+    <span class="kw">type </span>CType = raw::c_int;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>i32 {
+    <span class="doccomment">/// Corresponds to `integer` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
+    <span class="kw">type </span>CType = raw::c_int;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>u32 {
+    <span class="doccomment">/// Corresponds to `integer` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
+    <span class="kw">type </span>CType = raw::c_int;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rint {
+    <span class="doccomment">/// Corresponds to `integer` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
+    <span class="kw">type </span>CType = raw::c_int;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>f64 {
+    <span class="doccomment">/// Corresponds to `numeric` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = REALSXP;
+    <span class="kw">type </span>CType = <span class="self">Self</span>;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rfloat {
+    <span class="doccomment">/// Corresponds to `numeric` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = REALSXP;
+    <span class="kw">type </span>CType = f64;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>u8 {
+    <span class="kw">const </span>R_TYPE_ID: u32 = RAWSXP;
+    <span class="kw">type </span>CType = Rbyte;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rstr {
+    <span class="doccomment">/// Corresponds to `character` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = STRSXP;
+    <span class="kw">type </span>CType = SEXP;
+    <span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
+    }
+    <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
+    }
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>CString {
+    <span class="doccomment">/// Corresponds to `character` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = STRSXP;
+    <span class="kw">type </span>CType = SEXP;
+    <span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
+    }
+    <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
+        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
+    }
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>c64 {
+    <span class="doccomment">/// Corresponds to `complex` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
+    <span class="kw">type </span>CType = Rcomplex;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rcplx {
+    <span class="doccomment">/// Corresponds to `complex` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
+    <span class="kw">type </span>CType = Rcomplex;
+}
+<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rcomplex {
+    <span class="doccomment">/// Corresponds to `complex` in R
+    </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
+    <span class="kw">type </span>CType = Rcomplex;
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt; <span class="kw">for </span>Robj
+<span class="kw">where
+    </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
+    T: SexpAsPtr,
+{
+    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt; {
+        <span class="kw">if </span><span class="self">self</span>.sexptype() == &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
+            <span class="kw">unsafe </span>{
+                <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_ptr(<span class="self">self</span>.get());
+                <span class="prelude-val">Some</span>(std::slice::from_raw_parts(ptr, <span class="self">self</span>.len()))
+            }
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
+
+    <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt; {
+        <span class="kw">if </span><span class="self">self</span>.sexptype() == &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
+            <span class="kw">unsafe </span>{
+                <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_mut_ptr(<span class="self">self</span>.get_mut());
+                <span class="prelude-val">Some</span>(std::slice::from_raw_parts_mut(ptr, <span class="self">self</span>.len()))
+            }
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
+    }
+}
 
 <span class="doccomment">/// These are helper functions which give access to common properties of R objects.
 </span><span class="attr">#[allow(non_snake_case)]
@@ -2135,7 +2351,7 @@
     }
 }
 
-<span class="kw">impl </span>Attributes <span class="kw">for </span>Robj {}
+<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + Types + Length&gt; Attributes <span class="kw">for </span>T {}
 
 <span class="doccomment">/// Compare equality with integer slices.
 </span><span class="kw">impl </span>PartialEq&lt;[i32]&gt; <span class="kw">for </span>Robj {
@@ -2167,23 +2383,9 @@
             }
 
             <span class="comment">// see https://github.com/hadley/r-internals/blob/master/misc.md
-            </span>R_compute_identical(<span class="self">self</span>.get(), rhs.get(), <span class="number">16</span>) != <span class="number">0
-        </span>}
-    }
-}
-
-<span class="comment">// Internal utf8 to str conversion.
-// Lets not worry about non-ascii/unicode strings for now (or ever).
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">unsafe fn </span>to_str&lt;<span class="lifetime">'a</span>&gt;(ptr: <span class="kw-2">*const </span>u8) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>str {
-    <span class="kw">let </span><span class="kw-2">mut </span>len = <span class="number">0</span>;
-    <span class="kw">loop </span>{
-        <span class="kw">if </span><span class="kw-2">*</span>ptr.offset(len) == <span class="number">0 </span>{
-            <span class="kw">break</span>;
+            </span>R_compute_identical(<span class="self">self</span>.get(), rhs.get(), <span class="number">16</span>) != Rboolean::FALSE
         }
-        len += <span class="number">1</span>;
     }
-    <span class="kw">let </span>slice = std::slice::from_raw_parts(ptr, len <span class="kw">as </span>usize);
-    std::str::from_utf8_unchecked(slice)
 }
 
 <span class="doccomment">/// Release any owned objects.

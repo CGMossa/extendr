@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (88189a71e 2024-01-19)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-macros/src/lib.rs`."><title>lib.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (c67326b06 2024-03-15)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../extendr_macros/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -271,6 +271,28 @@
 <a href="#269" id="269">269</a>
 <a href="#270" id="270">270</a>
 <a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//!
 //! Macros for generating wrappers for rust functions.
 
@@ -331,10 +353,14 @@
 </span><span class="kw">mod </span>R;
 <span class="kw">mod </span>call;
 <span class="kw">mod </span>dataframe;
+<span class="comment">// region: #[extendr] macro
+</span><span class="kw">mod </span>extendr_enum;
 <span class="kw">mod </span>extendr_function;
 <span class="kw">mod </span>extendr_impl;
 <span class="kw">mod </span>extendr_module;
-<span class="kw">mod </span>list;
+<span class="kw">mod </span>extendr_options;
+<span class="comment">// endregion
+</span><span class="kw">mod </span>list;
 <span class="kw">mod </span>list_struct;
 <span class="kw">mod </span>pairlist;
 <span class="kw">mod </span>pairs;
@@ -344,17 +370,35 @@
 <span class="kw">use </span>quote::quote;
 <span class="kw">use </span>syn::{parse_macro_input, Item};
 
-<span class="attr">#[proc_macro_attribute]
+<span class="doccomment">/// The `#[extendr]`-macro may be placed on three items
+///
+/// - `fn` for wrapped rust-functions, see [`extendr-fn`]
+/// - `impl`-blocks, see [`extendr-impl`]
+/// - Rust `enum`s as R factors, see [`extendr-enum`]
+///
+/// [`extendr-fn`]: extendr-macros/extendr_function/fn.extendr_function.html
+/// [`extendr-impl`]: extendr_impl/fn.extendr_impl.html
+/// [`extendr-enum`]: extendr_enum/fn.extendr_enum.html
+///
+/// There is also [extendr_module!], which is used for defining what rust
+/// wrapped items should be visible to the surrounding R-package.
+</span><span class="attr">#[proc_macro_attribute]
 </span><span class="kw">pub fn </span>extendr(attr: TokenStream, item: TokenStream) -&gt; TokenStream {
-    <span class="kw">let </span><span class="kw-2">mut </span>opts = wrappers::ExtendrOptions::default();
+    <span class="kw">let </span>item = <span class="macro">parse_macro_input!</span>(item <span class="kw">as </span>Item);
+    <span class="kw">let </span><span class="kw-2">mut </span>opts = extendr_options::ExtendrOptions {
+        use_try_from: <span class="bool-val">true</span>,
+        ..Default::default()
+    };
 
     <span class="kw">let </span>extendr_opts_parser = syn::meta::parser(|meta| opts.parse(meta));
     <span class="macro">parse_macro_input!</span>(attr with extendr_opts_parser);
 
-    <span class="kw">match </span><span class="macro">parse_macro_input!</span>(item <span class="kw">as </span>Item) {
+    opts.use_try_from = <span class="bool-val">true</span>;
+    <span class="kw">match </span>item {
         Item::Fn(func) =&gt; extendr_function::extendr_function(func, <span class="kw-2">&amp;</span>opts),
-        Item::Impl(item_impl) =&gt; extendr_impl::extendr_impl(item_impl),
-        other_item =&gt; TokenStream::from(<span class="macro">quote! </span>{#other_item}),
+        Item::Impl(item_impl) =&gt; extendr_impl::extendr_impl(item_impl, <span class="kw-2">&amp;</span>opts),
+        Item::Enum(item_enum) =&gt; extendr_enum::extendr_enum(item_enum, <span class="kw-2">&amp;</span>opts),
+        other_item =&gt; TokenStream::from(<span class="macro">quote!</span> {#other_item}),
     }
 }
 
@@ -404,7 +448,7 @@
 
 <span class="doccomment">/// Call a function or primitive defined by a text expression with arbitrary parameters.
 /// This currently works by parsing and evaluating the string in R, but will probably acquire
-/// some shortcuts for simple expessions, for example by caching symbols and constant values.
+/// some shortcuts for simple expressions, for example by caching symbols and constant values.
 ///
 /// ```ignore
 ///     assert_eq!(call!("`+`", 1, 2), r!(3));

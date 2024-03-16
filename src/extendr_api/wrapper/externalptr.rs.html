@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/wrapper/externalptr.rs`."><title>externalptr.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (88189a71e 2024-01-19)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/wrapper/externalptr.rs`."><title>externalptr.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (c67326b06 2024-03-15)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -195,8 +195,58 @@
 <a href="#193" id="193">193</a>
 <a href="#194" id="194">194</a>
 <a href="#195" id="195">195</a>
-</pre></div><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
-<span class="kw">use </span>std::any::Any;
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+</pre></div><pre class="rust"><code><span class="doccomment">//! `ExternalPtr` is a way to leak Rust allocated data to R, forego deallocation
+//! to R and its GC strategy.
+//!
+//! An `ExternalPtr` encompasses three values, an owned pointer to the Rust
+//! type, a `tag` and a `prot`. Tag is a helpful naming of the type, but
+//! it doesn't offer any solid type-checking capability. And `prot` is meant
+//! to be R values, that are supposed to be kept together with the `ExternalPtr`.
+//!
+//! Neither `tag` nor `prot` are attributes, therefore to use `ExternalPtr` as
+//! a class in R, you must decorate it with a class-attribute manually.
+//!
+//!  
+
+</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>std::fmt::Debug;
 
 <span class="doccomment">/// Wrapper for creating R objects containing any Rust object.
@@ -213,6 +263,7 @@
 /// ```
 ///
 </span><span class="attr">#[derive(PartialEq, Clone)]
+#[repr(transparent)]
 </span><span class="kw">pub struct </span>ExternalPtr&lt;T: Debug + <span class="lifetime">'static</span>&gt; {
     <span class="doccomment">/// This is the contained Robj.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) robj: Robj,
@@ -241,41 +292,23 @@
     }
 }
 
-<span class="doccomment">/// len() and is_empty()
-</span><span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Length <span class="kw">for </span>ExternalPtr&lt;T&gt; {}
-
-<span class="doccomment">/// rtype() and rany()
-</span><span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Types <span class="kw">for </span>ExternalPtr&lt;T&gt; {}
-
-<span class="doccomment">/// as_*()
-</span><span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Conversions <span class="kw">for </span>ExternalPtr&lt;T&gt; {}
-
-<span class="doccomment">/// find_var() etc.
-</span><span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Rinternals <span class="kw">for </span>ExternalPtr&lt;T&gt; {}
-
-<span class="doccomment">/// as_typed_slice_raw() etc.
-</span><span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Slices <span class="kw">for </span>ExternalPtr&lt;T&gt; {}
-
-<span class="doccomment">/// dollar() etc.
-</span><span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Operators <span class="kw">for </span>ExternalPtr&lt;T&gt; {}
-
 <span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; Deref <span class="kw">for </span>ExternalPtr&lt;T&gt; {
     <span class="kw">type </span>Target = T;
 
     <span class="doccomment">/// This allows us to treat the Robj as if it is the type T.
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="self">Self</span>::Target {
-        <span class="self">self</span>.addr()
+        <span class="self">self</span>.as_ref().unwrap()
     }
 }
 
 <span class="kw">impl</span>&lt;T: Debug + <span class="lifetime">'static</span>&gt; DerefMut <span class="kw">for </span>ExternalPtr&lt;T&gt; {
     <span class="doccomment">/// This allows us to treat the Robj as if it is the mutable type T.
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span><span class="self">Self</span>::Target {
-        <span class="self">self</span>.addr_mut()
+        <span class="self">self</span>.as_mut().unwrap()
     }
 }
 
-<span class="kw">impl</span>&lt;T: Any + Debug&gt; ExternalPtr&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: Debug&gt; ExternalPtr&lt;T&gt; {
     <span class="doccomment">/// Construct an external pointer object from any type T.
     /// In this case, the R object owns the data and will drop the Rust object
     /// when the last reference is removed via register_c_finalizer.
@@ -289,26 +322,38 @@
 
             <span class="comment">// This constructs an external pointer to our boxed data.
             // into_raw() converts the box to a malloced pointer.
-            </span><span class="kw">let </span>robj = Robj::make_external_ptr(Box::into_raw(boxed), <span class="macro">r!</span>(()));
+            </span><span class="kw">let </span>robj = {
+                <span class="kw">let </span>p = Box::into_raw(boxed);
+                <span class="kw">let </span>prot = R_NilValue;
+                <span class="kw">let </span>type_name: Robj = std::any::type_name::&lt;T&gt;().into();
+                Robj::from_sexp({
+                    R_MakeExternalPtr(p <span class="kw">as </span><span class="kw-2">*mut </span>std::os::raw::c_void, type_name.get(), prot)
+                })
+            };
 
-            <span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>finalizer&lt;T&gt;(x: SEXP) {
+            <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>finalizer&lt;T&gt;(x: SEXP) {
                 <span class="kw">unsafe </span>{
-                    <span class="kw">let </span>ptr = R_ExternalPtrAddr(x) <span class="kw">as </span><span class="kw-2">*mut </span>T;
+                    <span class="kw">let </span>ptr = R_ExternalPtrAddr(x);
 
                     <span class="comment">// Free the `tag`, which is the type-name
                     </span>R_SetExternalPtrTag(x, R_NilValue);
 
-                    <span class="comment">// Convert the pointer to a box and drop it implictly.
+                    <span class="comment">// Convert the pointer to a box and drop it implicitly.
                     // This frees up the memory we have used and calls the "T::drop" method if there is one.
-                    </span>drop(Box::from_raw(ptr));
+                    </span><span class="kw">if </span>!ptr.is_null() {
+                        <span class="kw">let </span>ptr = ptr.cast::&lt;T&gt;();
+                        drop(Box::from_raw(ptr));
+                    }
 
-                    <span class="comment">// Now set the pointer in ExternalPTR to C `NULL`
+                    <span class="comment">// Now set the pointer in ExternalPtr to C `NULL`
                     </span>R_ClearExternalPtr(x);
                 }
             }
 
             <span class="comment">// Tell R about our finalizer
-            </span>robj.register_c_finalizer(<span class="prelude-val">Some</span>(finalizer::&lt;T&gt;));
+            // Use R_RegisterCFinalizerEx() and set `onexit` to 1 (TRUE) to invoke the
+            // finalizer on a shutdown of the R session as well.
+            </span>R_RegisterCFinalizerEx(robj.get(), <span class="prelude-val">Some</span>(finalizer::&lt;T&gt;), Rboolean::TRUE);
 
             <span class="comment">// Return an object in a wrapper.
             </span><span class="self">Self </span>{
@@ -330,56 +375,87 @@
         <span class="kw">unsafe </span>{ Robj::from_sexp(R_ExternalPtrProtected(<span class="self">self</span>.robj.get())) }
     }
 
-    <span class="doccomment">/// Get the "address" field of an external pointer.
-    /// Normally, we will use Deref to do this.
-    </span><span class="kw">pub fn </span>addr&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>T {
+    <span class="doccomment">/// Return a reference by way of the stored owned pointer,
+    /// otherwise if pointer is C-`NULL`, returns `None`.
+    </span><span class="kw">pub fn </span>as_ref&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = R_ExternalPtrAddr(<span class="self">self</span>.robj.get()) <span class="kw">as </span><span class="kw-2">*const </span>T;
-            <span class="kw-2">&amp;*</span>ptr <span class="kw">as </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T
+            <span class="kw">let </span>ptr = R_ExternalPtrAddr(<span class="self">self</span>.robj.get()).cast::&lt;T&gt;();
+            ptr.as_ref()
         }
     }
 
-    <span class="doccomment">/// Get the "address" field of an external pointer as a mutable reference.
-    /// Normally, we will use DerefMut to do this.
-    </span><span class="kw">pub fn </span>addr_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>T {
+    <span class="doccomment">/// Return a mutable reference by way of the stored owned pointer,
+    /// otherwise if pointer is C-`NULL`, returns `None`.
+    </span><span class="kw">pub fn </span>as_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;mut </span>T&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = R_ExternalPtrAddr(<span class="self">self</span>.robj.get()) <span class="kw">as </span><span class="kw-2">*mut </span>T;
-            <span class="kw-2">&amp;mut *</span>ptr <span class="kw">as </span><span class="kw-2">&amp;mut </span>T
+            <span class="kw">let </span>ptr = R_ExternalPtrAddr(<span class="self">self</span>.robj.get_mut()).cast::&lt;T&gt;();
+            ptr.as_mut()
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: Any + Debug&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>ExternalPtr&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: Debug&gt; TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>ExternalPtr&lt;T&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if </span>robj.rtype() != Rtype::ExternalPtr {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedExternalPtr(robj.clone()));
+        }
+
+        <span class="comment">// NOTE: omitting type checking because it is unnecessary and inaccurate.
+
+        // check if the embedded pointer is C NULL
+        </span><span class="kw">let </span>res: <span class="self">Self </span>= <span class="kw">unsafe </span>{ std::mem::transmute(robj) };
+        <span class="kw">if </span>res.as_ref().is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedExternalNonNullPtr(res.robj.clone()));
+        }
+
+        <span class="prelude-val">Ok</span>(res)
+    }
+}
+
+<span class="kw">impl</span>&lt;T: Debug&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>ExternalPtr&lt;T&gt; {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>clone = robj.clone();
-        <span class="kw">if </span>clone.rtype() != Rtype::ExternalPtr {
-            <span class="prelude-val">Err</span>(Error::ExpectedExternalPtr(clone))
-        } <span class="kw">else if </span>clone.check_external_ptr_type::&lt;T&gt;() {
-            <span class="kw">let </span>res = ExternalPtr::&lt;T&gt; {
-                robj: clone,
-                marker: std::marker::PhantomData,
-            };
-            <span class="prelude-val">Ok</span>(res)
-        } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(Error::ExpectedExternalPtrType(
-                clone,
-                std::any::type_name::&lt;T&gt;().into(),
-            ))
+        <span class="comment">// let clone = robj.clone();
+        </span><span class="kw">if </span>robj.rtype() != Rtype::ExternalPtr {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedExternalPtr(robj.clone()));
         }
+
+        <span class="comment">// NOTE: omitting type checking because it is unnecessary and inaccurate.
+
+        // check if the embedded pointer is C NULL
+        </span><span class="kw">let </span>res: <span class="self">Self </span>= <span class="kw">unsafe </span>{ std::mem::transmute(robj) };
+        <span class="kw">if </span>res.as_ref().is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedExternalNonNullPtr(robj.clone()));
+        }
+
+        <span class="prelude-val">Ok</span>(res)
     }
 }
 
-<span class="kw">impl</span>&lt;T: Any + Debug&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>ExternalPtr&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: Debug&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>ExternalPtr&lt;T&gt; {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>try_from(robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        &lt;ExternalPtr&lt;T&gt;&gt;::try_from(<span class="kw-2">&amp;</span>robj)
+        <span class="kw">if </span>robj.rtype() != Rtype::ExternalPtr {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedExternalPtr(robj));
+        }
+
+        <span class="comment">// NOTE: omitting type checking because it is unnecessary and inaccurate.
+
+        // check if the embedded pointer is C NULL
+        </span><span class="kw">let </span>res: <span class="self">Self </span>= <span class="kw">unsafe </span>{ std::mem::transmute(robj) };
+        <span class="kw">if </span>res.as_ref().is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedExternalNonNullPtr(res.robj.clone()));
+        }
+
+        <span class="prelude-val">Ok</span>(res)
     }
 }
 
-<span class="kw">impl</span>&lt;T: Any + Debug&gt; From&lt;ExternalPtr&lt;T&gt;&gt; <span class="kw">for </span>Robj {
+<span class="kw">impl</span>&lt;T: Debug&gt; From&lt;ExternalPtr&lt;T&gt;&gt; <span class="kw">for </span>Robj {
     <span class="kw">fn </span>from(val: ExternalPtr&lt;T&gt;) -&gt; <span class="self">Self </span>{
         val.robj
     }

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"macro":["impl_iter_from_robj","impl_prim_from_robj"],"trait":["FromRobj"]};

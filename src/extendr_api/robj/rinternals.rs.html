@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/rinternals.rs`."><title>rinternals.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (88189a71e 2024-01-19)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/rinternals.rs`."><title>rinternals.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (c67326b06 2024-03-15)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -498,6 +498,37 @@
 <a href="#496" id="496">496</a>
 <a href="#497" id="497">497</a>
 <a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span>std::os::raw;
 
@@ -507,37 +538,37 @@
 </span><span class="kw">pub trait </span>Rinternals: Types + Conversions {
     <span class="doccomment">/// Return true if this is the null object.
     </span><span class="kw">fn </span>is_null(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isNull(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isNull(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a symbol.
     </span><span class="kw">fn </span>is_symbol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isSymbol(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isSymbol(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a boolean (`logical`) vector
     </span><span class="kw">fn </span>is_logical(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isLogical(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isLogical(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a real (`f64`) vector.
     </span><span class="kw">fn </span>is_real(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isReal(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isReal(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a complex vector.
     </span><span class="kw">fn </span>is_complex(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isComplex(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isComplex(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is an expression.
     </span><span class="kw">fn </span>is_expressions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isExpression(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isExpression(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is an environment.
     </span><span class="kw">fn </span>is_environment(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isEnvironment(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isEnvironment(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is an environment.
@@ -547,17 +578,21 @@
 
     <span class="doccomment">/// Return `true` if this is a string.
     </span><span class="kw">fn </span>is_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isString(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isString(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is an object (ie. has a class attribute).
     </span><span class="kw">fn </span>is_object(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isObject(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isObject(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a S4 object.
     </span><span class="kw">fn </span>is_s4(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isS4(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{
+            <span class="comment">// calls IS_S4_OBJECT, returns 16 instead of 1..
+            </span>Rf_isS4(<span class="self">self</span>.get()) != Rboolean::FALSE
+            <span class="comment">// unsafe { Rf_isS4(self.get()) == Rboolean_TRUE }
+        </span>}
     }
 
     <span class="doccomment">/// Return `true` if this is an expression.
@@ -731,16 +766,17 @@
 
     <span class="doccomment">/// Number of columns of a matrix
     </span><span class="kw">fn </span>ncols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="kw">unsafe </span>{ Rf_ncols(<span class="self">self</span>.get()) <span class="kw">as </span>usize }
+        <span class="kw">unsafe </span>{ Rf_ncols(<span class="self">self</span>.get()) }
     }
 
     <span class="doccomment">/// Number of rows of a matrix
     </span><span class="kw">fn </span>nrows(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="kw">unsafe </span>{ Rf_nrows(<span class="self">self</span>.get()) <span class="kw">as </span>usize }
+        <span class="kw">unsafe </span>{ Rf_nrows(<span class="self">self</span>.get()) }
     }
 
     <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
     </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
     </span><span class="kw">unsafe fn </span>make_external_ptr&lt;T&gt;(p: <span class="kw-2">*mut </span>T, prot: Robj) -&gt; Robj {
         <span class="kw">let </span>type_name: Robj = std::any::type_name::&lt;T&gt;().into();
         Robj::from_sexp(single_threaded(|| {
@@ -754,27 +790,52 @@
 
     <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
     </span><span class="attr">#[doc(hidden)]
-    </span><span class="kw">unsafe fn </span>external_ptr_addr&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T {
-        R_ExternalPtrAddr(<span class="self">self</span>.get()) <span class="kw">as </span><span class="kw-2">*mut </span>T
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
+    </span><span class="kw">unsafe fn </span>external_ptr_addr&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>T {
+        R_ExternalPtrAddr(<span class="self">self</span>.get()) <span class="kw">as </span><span class="kw-2">*const </span>T
     }
 
     <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
     </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
+    </span><span class="kw">unsafe fn </span>external_ptr_addr_mut&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>T {
+        R_ExternalPtrAddr(<span class="self">self</span>.get_mut()) <span class="kw">as </span><span class="kw-2">*mut </span>T
+    }
+
+    <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
+    </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
     </span><span class="kw">unsafe fn </span>external_ptr_tag(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
         Robj::from_sexp(R_ExternalPtrTag(<span class="self">self</span>.get()))
     }
 
     <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
     </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
+    </span><span class="kw">unsafe fn </span>external_ptr_tag_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Robj {
+        Robj::from_sexp(R_ExternalPtrTag(<span class="self">self</span>.get_mut()))
+    }
+
+    <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
+    </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
     </span><span class="kw">unsafe fn </span>external_ptr_protected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
         Robj::from_sexp(R_ExternalPtrProtected(<span class="self">self</span>.get()))
     }
 
+    <span class="doccomment">/// Internal function used to implement `#[extendr]` impl
+    </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
+    </span><span class="kw">unsafe fn </span>external_ptr_protected_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; Robj {
+        Robj::from_sexp(R_ExternalPtrProtected(<span class="self">self</span>.get_mut()))
+    }
+
     <span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"use `ExternalPtr&lt;T&gt;` instead"</span>]
     </span><span class="kw">unsafe fn </span>register_c_finalizer(<span class="kw-2">&amp;</span><span class="self">self</span>, func: R_CFinalizer_t) {
         <span class="comment">// Use R_RegisterCFinalizerEx() and set onexit to 1 (TRUE) to invoke the
         // finalizer on a shutdown of the R session as well.
-        </span>single_threaded(|| R_RegisterCFinalizerEx(<span class="self">self</span>.get(), func, <span class="number">1</span>));
+        </span>single_threaded(|| R_RegisterCFinalizerEx(<span class="self">self</span>.get(), func, Rboolean::TRUE));
     }
 
     <span class="doccomment">/// Copy a vector and resize it.
@@ -798,102 +859,102 @@
 
     <span class="doccomment">/// Return `true` if two arrays have identical dims.
     </span><span class="kw">fn </span>conformable(a: <span class="kw-2">&amp;</span>Robj, b: <span class="kw-2">&amp;</span>Robj) -&gt; bool {
-        single_threaded(|| <span class="kw">unsafe </span>{ Rf_conformable(a.get(), b.get()) == Rboolean_TRUE })
+        single_threaded(|| <span class="kw">unsafe </span>{ Rf_conformable(a.get(), b.get()) == Rboolean::TRUE })
     }
 
     <span class="doccomment">/// Return `true` if this is an array.
     </span><span class="kw">fn </span>is_array(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isArray(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isArray(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is factor.
     </span><span class="kw">fn </span>is_factor(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isFactor(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isFactor(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a data frame.
     </span><span class="kw">fn </span>is_frame(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isFrame(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isFrame(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a function or a primitive (`CLOSXP`, `BUILTINSXP` or `SPECIALSXP`)
     </span><span class="kw">fn </span>is_function(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isFunction(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isFunction(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is an integer vector (`INTSXP`) but not a factor.
     </span><span class="kw">fn </span>is_integer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isInteger(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isInteger(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a language object (`LANGSXP`).
     </span><span class="kw">fn </span>is_language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isLanguage(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isLanguage(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is `NILSXP` or `LISTSXP`.
     </span><span class="kw">fn </span>is_pairlist(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isList(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isList(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a matrix.
     </span><span class="kw">fn </span>is_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isMatrix(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isMatrix(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is `NILSXP` or `VECSXP`.
     </span><span class="kw">fn </span>is_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isNewList(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isNewList(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is `INTSXP`, `LGLSXP` or `REALSXP` but not a factor.
     </span><span class="kw">fn </span>is_number(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isNumber(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isNumber(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a primitive function `BUILTINSXP`, `SPECIALSXP`.
     </span><span class="kw">fn </span>is_primitive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isPrimitive(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isPrimitive(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a time series vector (see tsp).
     </span><span class="kw">fn </span>is_ts(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isTs(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isTs(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a user defined binop.
     </span><span class="kw">fn </span>is_user_binop(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isUserBinop(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isUserBinop(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a valid string.
     </span><span class="kw">fn </span>is_valid_string(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isValidString(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isValidString(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a valid string.
     </span><span class="kw">fn </span>is_valid_string_f(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isValidStringF(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isValidStringF(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a vector.
     </span><span class="kw">fn </span>is_vector(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVector(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isVector(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is an atomic vector.
     </span><span class="kw">fn </span>is_vector_atomic(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVectorAtomic(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isVectorAtomic(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is a vector list.
     </span><span class="kw">fn </span>is_vector_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVectorList(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isVectorList(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is can be made into a vector.
     </span><span class="kw">fn </span>is_vectorizable(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ Rf_isVectorizable(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ Rf_isVectorizable(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="doccomment">/// Return `true` if this is RAWSXP.
@@ -909,6 +970,7 @@
     <span class="doccomment">/// Check an external pointer tag.
     /// This is used to wrap R objects.
     </span><span class="attr">#[doc(hidden)]
+    #[deprecated = <span class="string">"no need to check the type, as it is insufficient and unnecessary"</span>]
     </span><span class="kw">fn </span>check_external_ptr_type&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="kw">if </span><span class="self">self</span>.sexptype() == libR_sys::EXTPTRSXP {
             <span class="kw">let </span>tag = <span class="kw">unsafe </span>{ <span class="self">self</span>.external_ptr_tag() };
@@ -928,7 +990,7 @@
     }
 
     <span class="kw">fn </span>is_package_env(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ R_IsPackageEnv(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ R_IsPackageEnv(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="kw">fn </span>package_env_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
@@ -936,7 +998,7 @@
     }
 
     <span class="kw">fn </span>is_namespace_env(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ R_IsNamespaceEnv(<span class="self">self</span>.get()) == Rboolean_TRUE }
+        <span class="kw">unsafe </span>{ R_IsNamespaceEnv(<span class="self">self</span>.get()) == Rboolean::TRUE }
     }
 
     <span class="kw">fn </span>namespace_env_spec(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Robj {
@@ -950,33 +1012,33 @@
 
     <span class="doccomment">/// Returns `true` if this is an integer ALTREP object.
     </span><span class="kw">fn </span>is_altinteger(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == INTSXP <span class="kw">as </span>i32 }
+        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == INTSXP }
     }
 
     <span class="doccomment">/// Returns `true` if this is an real ALTREP object.
     </span><span class="kw">fn </span>is_altreal(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == REALSXP <span class="kw">as </span>i32 }
+        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == REALSXP }
     }
 
     <span class="doccomment">/// Returns `true` if this is an logical ALTREP object.
     </span><span class="kw">fn </span>is_altlogical(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == LGLSXP <span class="kw">as </span>i32 }
+        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == LGLSXP }
     }
 
     <span class="doccomment">/// Returns `true` if this is a raw ALTREP object.
     </span><span class="kw">fn </span>is_altraw(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == RAWSXP <span class="kw">as </span>i32 }
+        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == RAWSXP }
     }
 
     <span class="doccomment">/// Returns `true` if this is an integer ALTREP object.
     </span><span class="kw">fn </span>is_altstring(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == STRSXP <span class="kw">as </span>i32 }
+        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == STRSXP }
     }
 
     <span class="doccomment">/// Returns `true` if this is an integer ALTREP object.
     </span><span class="attr">#[cfg(use_r_altlist)]
     </span><span class="kw">fn </span>is_altlist(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == VECSXP <span class="kw">as </span>i32 }
+        <span class="kw">unsafe </span>{ ALTREP(<span class="self">self</span>.get()) != <span class="number">0 </span>&amp;&amp; TYPEOF(<span class="self">self</span>.get()) == VECSXP }
     }
 
     <span class="doccomment">/// Generate a text representation of this object.
@@ -995,5 +1057,5 @@
     }
 }
 
-<span class="kw">impl </span>Rinternals <span class="kw">for </span>Robj {}
+<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + Types + Conversions&gt; Rinternals <span class="kw">for </span>T {}
 </code></pre></div></section></main></body></html>
