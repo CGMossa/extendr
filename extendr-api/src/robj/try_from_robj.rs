@@ -26,6 +26,7 @@ macro_rules! impl_try_from_scalar_integer {
                 // is problematic when converting a negative value to unsigned
                 // integer types (e.g. `-1i32 as u8` becomes 255).
                 if let Some(v) = robj.as_integer() {
+                    //TODO: this needs to be `Ok(Self::from(v))`
                     if let Ok(v) = Self::try_from(v) {
                         return Ok(v);
                     } else {
