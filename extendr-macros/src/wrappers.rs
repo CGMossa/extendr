@@ -1,7 +1,28 @@
+//! This is responsible for generating the C functions that act as wrappers of
+//! the exported Rust functions.
 //!
+//! extendr relies on the [`.Call`-interface](https://cran.r-project.org/doc/manuals/R-exts.html#Calling-_002eCall)
+//! In short, it is necessary the the signature of the C-function have [`SEXP`]
+//! as the type for return type, and argument types.
 //!
+//! For instance, if your function returns nothing, the return type is not
+//! allowed to be `void`, instead `SEXP` must be used, and one should return
+//! [`R_NilValue`].
 //!
+//! ## R wrappers
 //!
+//! Within R, you may call `rextendr::document()` to generate R functions,
+//! that use the `.Call`-interface, to call the wrapped Rust functions.
+//!
+//! You may also manually implement these wrappers, in order to do special
+//! type-checking, or other annotation, that could be more convenient to do
+//! on the R-side. The C-functions are named according to `"{WRAP_PREFIX}{prefix}{mod_name}"`.
+//! See [`WRAP_PREFIX`], and note that `prefix` is set specifically for methods in
+//! `extendr`-impl blocks, while for functions have no prefix.
+//!
+//! [`R_NilValue`]: ::libR_sys::R_NilValue
+//! [`SEXP`]: ::libR_sys::SEXP
+
 use proc_macro2::Ident;
 use quote::{format_ident, quote};
 use syn::{parse_quote, punctuated::Punctuated, Expr, ExprLit, FnArg, ItemFn, Token, Type};
