@@ -127,6 +127,12 @@ pub trait GetSexp {
     /// Access to a raw [SEXP] pointer can cause undefined behaviour and is not thread safe.
     unsafe fn get(&self) -> SEXP;
 
+    /// Get a copy of the underlying [SEXP] through an exclusive reference.
+    ///
+    /// # Safety
+    ///
+    /// Ensure that you use this, and not `get`-variant, when you need to do
+    /// mutable operations.
     unsafe fn get_mut(&mut self) -> SEXP;
 
     /// Get a reference to a Robj for this type.

@@ -9,7 +9,7 @@ use std::ops::{AddAssign, DivAssign, MulAssign, SubAssign};
 ///
 /// `Rint` can have a value between `i32::MIN+1` and `i32::MAX`
 ///
-/// The value `i32::MIN` is used as `"NA"`.
+/// The value `i32::MIN` is used as `NA`.
 ///
 /// `Rint` has the same footprint as an `i32` value allowing us to use it in zero copy slices.
 #[repr(transparent)]

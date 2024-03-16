@@ -79,7 +79,7 @@ use syn::{parse_macro_input, Item};
 ///
 /// - `fn` for wrapped rust-functions, see [`extendr-fn`]
 /// - `impl`-blocks, see [`extendr-impl`]
-/// - `Rust enum`s as R factors, see [`extendr-enum`]
+/// - Rust `enum`s as R factors, see [`extendr-enum`]
 ///
 /// [`extendr-fn`]: extendr-macros/extendr_function/fn.extendr_function.html
 /// [`extendr-impl`]: extendr_impl/fn.extendr_impl.html
