@@ -4,6 +4,8 @@ use quote::{format_ident, quote};
 use syn::{parse::ParseStream, parse_macro_input, Ident, Token, Type};
 
 pub fn extendr_module(item: TokenStream) -> TokenStream {
+    use wrappers::META_PREFIX;
+    use wrappers::WRAP_PREFIX;
     let module = parse_macro_input!(item as Module);
     let Module {
         modname,
@@ -11,29 +13,28 @@ pub fn extendr_module(item: TokenStream) -> TokenStream {
         implnames,
         usenames,
     } = module;
-    let modname = modname.unwrap();
+    let modname = modname.expect("cannot include unnamed modules");
     let modname_string = modname.to_string();
     let module_init_name = format_ident!("R_init_{}_extendr", modname);
 
     let module_metadata_name = format_ident!("get_{}_metadata", modname);
     let module_metadata_name_string = module_metadata_name.to_string();
-    let wrap_module_metadata_name =
-        format_ident!("{}get_{}_metadata", wrappers::WRAP_PREFIX, modname);
+    let wrap_module_metadata_name = format_ident!("{WRAP_PREFIX}get_{}_metadata", modname);
 
     let make_module_wrappers_name = format_ident!("make_{}_wrappers", modname);
     let make_module_wrappers_name_string = make_module_wrappers_name.to_string();
-    let wrap_make_module_wrappers =
-        format_ident!("{}make_{}_wrappers", wrappers::WRAP_PREFIX, modname);
+    let wrap_make_module_wrappers = format_ident!("{WRAP_PREFIX}make_{}_wrappers", modname);
 
     let fnmetanames = fnnames
         .iter()
-        .map(|id| format_ident!("{}{}", wrappers::META_PREFIX, id));
-    let implmetanames = implnames
-        .iter()
-        .map(|id| format_ident!("{}{}", wrappers::META_PREFIX, wrappers::type_name(id)));
+        .map(|id| format_ident!("{META_PREFIX}{}", id));
+    let implmetanames = implnames.iter().map(|id| {
+        let type_name = wrappers::type_name(id);
+        format_ident!("{META_PREFIX}{type_name}")
+    });
     let usemetanames = usenames
         .iter()
-        .map(|id| format_ident!("get_{}_metadata", id))
+        .map(|id| format_ident!("get_{id}_metadata"))
         .collect::<Vec<Ident>>();
 
     TokenStream::from(quote! {
