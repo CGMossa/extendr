@@ -180,11 +180,7 @@ pub fn make_function_wrappers(
     };
 
     let return_type_conversion = if !return_is_ref_self {
-        if opts.use_try_from {
-            quote!(Ok(#call_name(#actual_args).try_into()?))
-        } else {
-            quote!(Ok(extendr_api::Robj::from(#call_name(#actual_args))))
-        }
+        quote!(Ok(extendr_api::Robj::from(#call_name(#actual_args))))
     } else {
         // instead of converting &Self / &mut Self, pass on the passed
         // ExternalPtr<Self>

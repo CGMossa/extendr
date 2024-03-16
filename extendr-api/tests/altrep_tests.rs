@@ -259,7 +259,7 @@ mod tests {
     #[cfg(use_r_altlist)]
     impl AltListImpl for VecUsize {
         fn elt(&self, index: usize) -> Robj {
-            Self(vec![self.0[index]]).try_into().unwrap()
+            Self(vec![self.0[index]]).into()
         }
     }
 
@@ -279,7 +279,7 @@ mod tests {
             assert_eq!(obj.len(), 3);
 
             // convert to a list and test the .elt() method
-            let robj: Robj = obj.try_into().unwrap();
+            let robj: Robj = obj.into();
             let l = List::try_from(robj).unwrap();
             let li = l.elt(1).unwrap();
 
@@ -309,7 +309,7 @@ mod tests_use_try_from {
     #[cfg(use_r_altlist)]
     impl AltListImpl for VecUsize {
         fn elt(&self, index: usize) -> Robj {
-            Self(vec![self.0[index]]).try_into().unwrap()
+            Self(vec![self.0[index]]).into()
         }
     }
 
@@ -329,7 +329,7 @@ mod tests_use_try_from {
             assert_eq!(obj.len(), 3);
 
             // convert to a list and test the .elt() method
-            let robj: Robj = obj.try_into().unwrap();
+            let robj: Robj = obj.into();
             let l = List::try_from(robj).unwrap();
             let li = l.elt(1).unwrap();
 

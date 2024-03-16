@@ -180,11 +180,8 @@ impl TryFrom<&Robj> for Rint {
         // is problematic when converting a negative value to unsigned
         // integer types (e.g. `-1i32 as u8` becomes 255).
         if let Some(v) = robj.as_integer() {
-            if let Ok(v) = Self::try_from(v) {
+            let v: Self = v.into();
                 return Ok(v);
-            } else {
-                return Err(Error::OutOfLimits(robj.clone()));
-            }
         }
 
         // If the conversion is float-to-int, check if the value is

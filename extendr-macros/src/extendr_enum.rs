@@ -61,9 +61,7 @@ pub(crate) fn extendr_enum(
     let enum_levels_name = format_ident!("__{}_LEVELS", enum_name_upper);
     let enum_levels_name_str = format_ident!("__{}_LEVELS_STR", enum_name_upper);
     let n_variants = item_enum.variants.len();
-    let field_name_number: Vec<usize> = (0..n_variants).into_iter().collect();
-
-    // println!("{}", &enum_name);
+    let field_name_number: Vec<usize> = (0..n_variants).collect();
 
     let item_enum = &item_enum;
 
@@ -107,12 +105,10 @@ pub(crate) fn extendr_enum(
             }
         }
 
-        impl TryFrom<#enum_name> for Robj {
-            type Error = extendr_api::Error;
-
-            fn try_from(value: #enum_name) -> Result<Self> {
+        impl From<#enum_name> for Robj {
+            fn from(value: #enum_name) -> Self {
                 let rint: Rint = value.into();
-                let mut robj: Robj = rint.try_into()?;
+                let mut robj: Robj = rint.into();
                 // TODO: consider using `single_threaded` here
                 unsafe {
                     #enum_levels_name_strings.with(|strings_enum|{
@@ -127,7 +123,7 @@ pub(crate) fn extendr_enum(
                         libR_sys::Rf_setAttrib(robj.get_mut(), libR_sys::R_ClassSymbol, libR_sys::Rf_ScalarString(libR_sys::PRINTNAME(*factor_class)));
                     });
                 }
-                Ok(robj)
+                robj
             }
         }
 
@@ -148,7 +144,7 @@ pub(crate) fn extendr_enum(
                 }
 
                 let levels = robj.get_attrib(levels_symbol()).unwrap();
-                let levels: Strings = levels.try_into().unwrap();
+                let levels: Strings = levels.try_into()?;
 
                 // same levels as enum?
                 let levels_cmp_flag = #enum_levels_name_strings.with(|x|{

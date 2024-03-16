@@ -106,7 +106,7 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
                 method.sig.ident
             ));
             wrappers::make_function_wrappers(
-                &opts,
+                opts,
                 &mut wrappers,
                 prefix.as_str(),
                 &method.attrs,
@@ -121,14 +121,6 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
     let conversion_impls = if opts.use_try_from {
         quote!(
             // Output conversion function for this type.
-            impl TryFrom<#self_ty> for Robj {
-                type Error = Error;
-                fn try_from(value: #self_ty) -> Result<Self> {
-                    let mut res: Robj = ExternalPtr::new(value).try_into()?;
-                    res.set_attrib(class_symbol(), #self_ty_name)?;
-                    Ok(res)
-                }
-            }
 
             impl TryFrom<Robj> for &#self_ty {
                 type Error = Error;
@@ -199,15 +191,6 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
                     }
                 }
             }
-
-            // Output conversion function for this type.
-            impl From<#self_ty> for Robj {
-                fn from(value: #self_ty) -> Self {
-                    let mut res: Robj = ExternalPtr::new(value).into();
-                    res.set_attrib(class_symbol(), #self_ty_name).unwrap();
-                    res
-                }
-            }
         )
     };
 
@@ -219,6 +202,15 @@ pub fn extendr_impl(mut item_impl: ItemImpl, opts: &ExtendrOptions) -> syn::Resu
         #( #wrappers )*
 
         #conversion_impls
+
+        // Output conversion function for this type.
+        impl From<#self_ty> for Robj {
+            fn from(value: #self_ty) -> Self {
+                let mut res: Robj = ExternalPtr::new(value).into();
+                res.set_attrib(class_symbol(), #self_ty_name).unwrap();
+                res
+            }
+        }
 
         #[allow(non_snake_case)]
         fn #meta_name(impls: &mut Vec<extendr_api::metadata::Impl>) {

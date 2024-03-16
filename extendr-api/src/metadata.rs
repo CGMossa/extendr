@@ -76,9 +76,7 @@ impl From<&Arg> for RArg {
 
 impl From<Arg> for Robj {
     fn from(val: Arg) -> Self {
-        let mut robj: Robj = List::from_values(&[r!(val.name), r!(val.arg_type)])
-            .try_into()
-            .unwrap();
+        let mut robj: Robj = List::from_values(&[r!(val.name), r!(val.arg_type)]).into();
         robj.set_names(&["name", "arg_type"])
             .expect("From<Arg> failed")
     }
@@ -95,8 +93,7 @@ impl From<Func> for Robj {
             r!(val.return_type),
             r!(val.hidden),
         ])
-        .try_into()
-        .unwrap();
+        .into();
         robj.set_names(&[
             "doc",
             "rust_name",
@@ -117,8 +114,7 @@ impl From<Impl> for Robj {
             r!(val.name),
             r!(List::from_values(val.methods)),
         ])
-        .try_into()
-        .unwrap();
+        .into();
         robj.set_names(&["doc", "name", "methods"])
             .expect("From<Impl> failed")
     }
@@ -131,8 +127,7 @@ impl From<Metadata> for Robj {
             r!(List::from_values(val.functions)),
             r!(List::from_values(val.impls)),
         ])
-        .try_into()
-        .unwrap();
+        .into();
         robj.set_names(&["name", "functions", "impls"])
             .expect("From<Metadata> failed")
     }
