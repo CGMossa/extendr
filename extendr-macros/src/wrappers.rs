@@ -161,9 +161,9 @@ pub fn make_function_wrappers(
         match sig.output {
             syn::ReturnType::Default => false,
             syn::ReturnType::Type(_, ref return_type) => match return_type.as_ref() {
-                // matches -> Self
+                // matches `-> Self`
                 // Type::Path(type_path) => type_path.path.is_ident("Self"),
-                // matches -> &Self / -> &mut Self
+                // matches `-> &Self` / `-> &mut Self`
                 Type::Reference(ref reference_type) => {
                     if let Type::Path(path) = reference_type.elem.as_ref() {
                         path.path.is_ident("Self")
