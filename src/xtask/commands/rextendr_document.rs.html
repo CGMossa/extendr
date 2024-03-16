@@ -42,17 +42,17 @@
 <a href="#40" id="40">40</a>
 <a href="#41" id="41">41</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! This invokes `rextendr::document()` within `tests/extendrtests`.
-//! 
+//!
 //! It uses the vendored `rextendr` in the repository as the source package.
-//! 
+//!
 //! 1. Ensure that `git submodule update --init` was invoked once, as to setup
 //! the vendored `rextendr` package.
 //! 2. `devtools` must be installed on system.
-//! 
-//! 
+//!
+//!
 //! The idea here is to be able to develop `rextendr` alongside `extendr`,
 //! as well as ease the development of extendr.
-//! 
+//!
 </span><span class="kw">use </span>std::error::Error;
 
 <span class="kw">use </span><span class="kw">crate</span>::extendrtests::with_absolute_path::{swap_extendr_api_path, R_FOLDER_PATH};
