@@ -235,12 +235,12 @@ pub trait Rinternals: Types + Conversions {
 
     /// Number of columns of a matrix
     fn ncols(&self) -> usize {
-        unsafe { Rf_ncols(self.get()) as usize }
+        unsafe { Rf_ncols(self.get()) }
     }
 
     /// Number of rows of a matrix
     fn nrows(&self) -> usize {
-        unsafe { Rf_nrows(self.get()) as usize }
+        unsafe { Rf_nrows(self.get()) }
     }
 
     /// Internal function used to implement `#[extendr]` impl

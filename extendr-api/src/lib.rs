@@ -706,6 +706,7 @@ mod tests {
     use extendr_macros::pairlist;
 
     #[extendr]
+    #[allow(clippy::too_many_arguments)]
     pub fn inttypes(a: i8, b: u8, c: i16, d: u16, e: i32, f: u32, g: i64, h: u64) {
         assert_eq!(a, 1);
         assert_eq!(b, 2);
@@ -967,7 +968,7 @@ mod tests {
             let robj = r!(person);
             // alternatively:
             // let robj: Robj = person.try_into().unwrap();
-            assert_eq!(robj.check_external_ptr_type::<Person2>(), true);
+            assert!(robj.check_external_ptr_type::<Person2>());
             let person2 = <&Person2>::try_from(&robj).unwrap();
             dbg!(person2.name());
             assert_eq!(person2.name(), "fred");

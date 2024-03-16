@@ -85,8 +85,8 @@ fn test_debug_scalar() {
             f64::INFINITY,
             f64::NEG_INFINITY,
             f64::NAN,
-            3.141592653589793,
-            -3.141592653589793,
+            std::f64::consts::PI,
+            -std::f64::consts::PI,
         ];
         for val in test_data {
             assert_eq!(format!("{:?}", Rfloat::from(val)), format!("{:?}", val));

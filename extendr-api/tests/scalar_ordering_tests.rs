@@ -201,7 +201,7 @@ where
 
 #[test]
 fn collection_sort_bool() {
-    let raw = vec![true, false, true, false, true];
+    let raw = [true, false, true, false, true];
     let ordered = vec![false, false, true, true, true];
     let mut scalars: Vec<Rbool> = raw.iter().map(|&x| x.into()).collect();
     scalars.sort_by(|a, b| a.partial_cmp(b).unwrap());

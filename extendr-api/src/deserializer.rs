@@ -419,7 +419,7 @@ impl<'de> Deserializer<'de> for &'de Robj {
         let s = <&str>::try_from(self.clone())?;
         let mut c = s.chars();
         if let Some(ch) = c.next() {
-            if c.next() == None {
+            if c.next().is_none() {
                 return visitor.visit_char(ch);
             }
         }

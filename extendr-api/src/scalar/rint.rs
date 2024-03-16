@@ -181,7 +181,7 @@ impl TryFrom<&Robj> for Rint {
         // integer types (e.g. `-1i32 as u8` becomes 255).
         if let Some(v) = robj.as_integer() {
             let v: Self = v.into();
-                return Ok(v);
+            return Ok(v);
         }
 
         // If the conversion is float-to-int, check if the value is

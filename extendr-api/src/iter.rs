@@ -99,9 +99,7 @@ impl Iterator for StrIter {
                 // assert_eq!(TYPEOF(self.levels), STRSXP, "levels of a factor must always be a character-vector");
                 // assert_ne!(j, 0, "invalid factor, where level/label i 0-indexed");
                 Some(str_from_strsxp(self.levels, j as isize - 1))
-            } else if TYPEOF(vector) == NILSXP {
-                Some(<&str>::na())
-            } else if vector == R_NaString {
+            } else if TYPEOF(vector) == NILSXP || vector == R_NaString {
                 Some(<&str>::na())
             } else {
                 None
