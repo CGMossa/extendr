@@ -3246,8 +3246,7 @@
                               if let ::std::option::Option::Some(init) = init {
                                   if let ::std::option::Option::Some(value) = init.take() {
                                       return value;
-                                  }
-                                  if true {
+                                  } else if true {
                                       {
                                           ::core::panicking::panic_fmt(
                                               format_args!(
