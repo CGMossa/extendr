@@ -312,7 +312,7 @@ pub fn mangled_type_name(type_: &Type) -> String {
     res
 }
 
-// Return a simplified type name that will be meaningful to R. Defaults to a digest.
+/// Return a simplified type name that will be meaningful to R. Defaults to a digest.
 // For example:
 // & Fred -> Fred
 // * Fred -> Fred
