@@ -273,6 +273,64 @@ impl TryFrom<&Robj> for Vec<String> {
     }
 }
 
+impl<T> TryFrom<&Robj> for RobjRef<'_, T>
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
+    type Error = Error;
+
+    fn try_from(robj: &Robj) -> Result<Self> {
+        let slice = robj
+            .as_typed_slice()
+            .ok_or_else(|| Error::ExpectedVector(robj.clone()))?;
+        match robj.len() {
+            0 => Err(Error::ExpectedNonZeroLength(robj.clone())),
+            1 => Ok(Self(slice.first().unwrap())),
+            _ => Err(Error::ExpectedScalar(robj.clone())),
+        }
+    }
+}
+
+impl<T> TryFrom<&mut Robj> for RobjMut<'_, T>
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
+    type Error = Error;
+
+    fn try_from(robj: &mut Robj) -> Result<Self> {
+        let slice = robj
+            .as_typed_slice_mut()
+            .ok_or_else(|| Error::ExpectedVector(robj.clone()))?;
+        match robj.len() {
+            0 => Err(Error::ExpectedNonZeroLength(robj.clone())),
+            1 => Ok(Self(slice.first_mut().unwrap())),
+            _ => Err(Error::ExpectedScalar(robj.clone())),
+        }
+    }
+}
+
+impl<T> TryFrom<Robj> for RobjRef<'_, T>
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
+    type Error = Error;
+
+    fn try_from(robj: Robj) -> Result<Self> {
+        Self::try_from(&robj)
+    }
+}
+
+impl<T> TryFrom<Robj> for RobjMut<'_, T>
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
+    type Error = Error;
+
+    fn try_from(mut robj: Robj) -> Result<Self> {
+        Self::try_from(&mut robj)
+    }
+}
+
 impl TryFrom<&Robj> for &[i32] {
     type Error = Error;
 

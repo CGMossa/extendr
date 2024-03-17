@@ -50,7 +50,7 @@ pub use super::wrapper::{Conversions, MatrixConversions};
 
 pub use super::robj::{
     AsStrIter, Attributes, Eval, GetSexp, IntoRobj, Length, Operators, Rinternals, Robj,
-    RobjItertools, Slices, Types,
+    RobjItertools, RobjMut, RobjRef, Slices, Types,
 };
 
 pub use super::thread_safety::{catch_r_error, handle_panic, single_threaded, throw_r_error};

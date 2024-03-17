@@ -34,6 +34,12 @@ pub use operators::Operators;
 pub use operators::*;
 pub use rinternals::Rinternals;
 
+#[derive(Debug)]
+pub struct RobjRef<'a, T: ?Sized>(pub &'a T);
+
+#[derive(Debug)]
+pub struct RobjMut<'a, T: ?Sized>(pub &'a mut T);
+
 /// Wrapper for an R S-expression pointer (SEXP).
 ///
 /// Create R objects from rust types and iterators:
@@ -800,7 +806,7 @@ where
 ///
 /// [`SEXP`]: libR_sys::SEXP
 /// Marker for the R object modes / types represented as a value.
-trait SexpAsPtr: Sized {
+pub(crate) trait SexpAsPtr: Sized {
     /// See [`Rtype`] for reference.
     const R_TYPE_ID: u32;
     /// Corresponding rust type to the type in C (in R's C-API)
