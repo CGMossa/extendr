@@ -485,7 +485,7 @@
     <span class="kw">unsafe </span>{ Robj::from_sexp(R_Srcref) }
 }
 
-<span class="doccomment">/// The nil object
+<span class="doccomment">/// The nil object / `NULL`
 </span><span class="kw">pub fn </span>nil_value() -&gt; Robj {
     <span class="kw">unsafe </span>{ Robj::from_sexp(R_NilValue) }
 }
@@ -495,12 +495,12 @@
     <span class="kw">unsafe </span>{ Robj::from_sexp(R_dot_Generic) }
 }
 
-<span class="doccomment">/// NA_STRING as a CHARSXP
+<span class="doccomment">/// `NA_STRING` as a CHARSXP
 </span><span class="kw">pub fn </span>na_string() -&gt; Robj {
     <span class="kw">unsafe </span>{ Robj::from_sexp(R_NaString) }
 }
 
-<span class="doccomment">/// "" as a CHARSXP
+<span class="doccomment">/// "" as a `CHARSXP`
 </span><span class="kw">pub fn </span>blank_string() -&gt; Robj {
     <span class="kw">unsafe </span>{ Robj::from_sexp(R_BlankString) }
 }
