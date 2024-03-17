@@ -555,34 +555,9 @@ macro_rules! impl_try_from_robj_mut {
 
 impl_try_from_robj_mut!(
     &mut [Rint] &mut [Rfloat] &mut [Rbool] &mut [Rcplx] &mut [u8] &mut [i32] &mut [f64]
-    &mut str
-    // RobjMut<'_, Rstr> // don't include this
     RobjMut<'_, Rint> RobjMut<'_, Rfloat> RobjMut<'_, Rbool> RobjMut<'_, Rcplx> RobjMut<'_, u8> RobjMut<'_, i32> RobjMut<'_, f64>
-    RobjMut<'_, [Rint]> RobjMut<'_, [Rstr]> RobjMut<'_, [Rfloat]> RobjMut<'_, [Rbool]> RobjMut<'_, [Rcplx]> RobjMut<'_, [u8]> RobjMut<'_, [i32]> RobjMut<'_, [f64]>
+    RobjMut<'_, [Rint]> RobjMut<'_, [Rfloat]> RobjMut<'_, [Rbool]> RobjMut<'_, [Rcplx]> RobjMut<'_, [u8]> RobjMut<'_, [i32]> RobjMut<'_, [f64]>
 );
-
-impl TryFrom<&mut Robj> for &mut str {
-    type Error = Error;
-
-    /// Convert a scalar `STRSXP` object into a string slice.
-    /// NAs are not allowed.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        if robj.is_na() {
-            return Err(Error::MustNotBeNA(robj.clone()));
-        }
-        match robj.len() {
-            0 => Err(Error::ExpectedNonZeroLength(robj.clone())),
-            1 => {
-                if let Some(s) = robj.as_str_mut() {
-                    Ok(s)
-                } else {
-                    Err(Error::ExpectedString(robj.clone()))
-                }
-            }
-            _ => Err(Error::ExpectedScalar(robj.clone())),
-        }
-    }
-}
 
 impl TryFrom<&mut Robj> for &mut [i32] {
     type Error = Error;

@@ -352,6 +352,7 @@ impl Robj {
         } else {
             unsafe {
                 let sexp = self.get();
+                //TODO: use SexpAsPtr maybe?
                 match self.sexptype() {
                     // a character vector contains `CHARSXP`, and thus you
                     // seldomly have `Robj`'s that are `CHARSXP` themselves
@@ -619,41 +620,14 @@ impl Robj {
             Some(std::str::from_utf8_unchecked(all_bytes))
         }
     }
-    /// Get a mutable reference to a scalar string type.
-    /// ```
-    /// use extendr_api::prelude::*;
-    /// test! {
-    ///    let robj1 = Robj::from("xyz");
-    ///    let robj2 = Robj::from(1);
-    ///    assert_eq!(robj1.as_str(), Some("xyz"));
-    ///    assert_eq!(robj2.as_str(), None);
-    /// }
-    /// ```
-    pub fn as_str_mut<'a>(&mut self) -> Option<&'a mut str> {
-        unsafe {
-            let charsxp = match self.sexptype() {
-                STRSXP => {
-                    // only allows Scalar strings
-                    if self.len() != 1 {
-                        return None;
-                    }
-                    Some(STRING_ELT(self.get_mut(), 0))
-                }
-                CHARSXP => Some(self.get_mut()),
-                SYMSXP => Some(PRINTNAME(self.get_mut())),
-                _ => None,
-            };
-
-            let charsxp = charsxp?;
-            if charsxp == R_NaString {
-                todo!()
-                // return Some(<&str>::na());
-            }
-
-            let length = Rf_xlength(charsxp);
-            let all_bytes = std::slice::from_raw_parts_mut(R_CHAR(charsxp) as _, length as _);
-            Some(std::str::from_utf8_unchecked_mut(all_bytes))
-        }
+    /// Under no circumstance, is it safe to get mutable access to a `CHARSXP`.
+    ///
+    /// # Safety
+    ///
+    /// It is not safe, you're not allowed to get this.
+    #[deprecated = "It is dangerous to modify a `CHARSXP`"]
+    pub unsafe fn as_str_mut<'a>(&mut self) -> Option<&'a mut str> {
+        None
     }
 
     /// Get a scalar integer.
@@ -859,7 +833,7 @@ impl SexpAsPtr for Rstr {
     const R_TYPE_ID: u32 = STRSXP;
     type CType = SEXP;
     unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
-        unsafe { STRING_PTR(x).cast() }
+        std::ptr::null_mut()
     }
     unsafe fn as_ptr(x: SEXP) -> *const Self {
         unsafe { STRING_PTR(x).cast() }
