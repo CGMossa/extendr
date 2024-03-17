@@ -26,7 +26,6 @@ macro_rules! impl_try_from_scalar_integer {
                 // is problematic when converting a negative value to unsigned
                 // integer types (e.g. `-1i32 as u8` becomes 255).
                 if let Some(v) = robj.as_integer() {
-                    //TODO: this needs to be `Ok(Self::from(v))`
                     if let Ok(v) = Self::try_from(v) {
                         return Ok(v);
                     } else {
@@ -301,28 +300,6 @@ where
     }
 }
 
-impl<T> TryFrom<Robj> for RobjRef<'_, [T]>
-where
-    Robj: for<'a> AsTypedSlice<'a, T>,
-{
-    type Error = Error;
-
-    fn try_from(robj: Robj) -> Result<Self> {
-        Self::try_from(&robj)
-    }
-}
-
-impl<T> TryFrom<Robj> for RobjMut<'_, [T]>
-where
-    Robj: for<'a> AsTypedSlice<'a, T>,
-{
-    type Error = Error;
-
-    fn try_from(mut robj: Robj) -> Result<Self> {
-        Self::try_from(&mut robj)
-    }
-}
-
 impl<T> TryFrom<&Robj> for RobjRef<'_, T>
 where
     Robj: for<'a> AsTypedSlice<'a, T>,
@@ -356,28 +333,6 @@ where
             1 => Ok(Self(slice.first_mut().unwrap())),
             _ => Err(Error::ExpectedScalar(robj.clone())),
         }
-    }
-}
-
-impl<T> TryFrom<Robj> for RobjRef<'_, T>
-where
-    Robj: for<'a> AsTypedSlice<'a, T>,
-{
-    type Error = Error;
-
-    fn try_from(robj: Robj) -> Result<Self> {
-        Self::try_from(&robj)
-    }
-}
-
-impl<T> TryFrom<Robj> for RobjMut<'_, T>
-where
-    Robj: for<'a> AsTypedSlice<'a, T>,
-{
-    type Error = Error;
-
-    fn try_from(mut robj: Robj) -> Result<Self> {
-        Self::try_from(&mut robj)
     }
 }
 
@@ -543,6 +498,8 @@ impl_try_from_robj_ref!(
     Vec::<String>
     Vec::<Rint> Vec::<Rfloat> Vec::<Rbool> Vec::<Rcplx> Vec::<u8> Vec::<i32> Vec::<f64>
     &[Rint] &[Rfloat] &[Rbool] &[Rcplx] &[u8] &[i32] &[f64]
+    RobjRef<'_, Rint> RobjRef<'_, Rfloat> RobjRef<'_, Rbool> RobjRef<'_, Rcplx> RobjRef<'_, u8> RobjRef<'_, i32> RobjRef<'_, f64>
+    RobjRef<'_, [Rint]> RobjRef<'_, [Rfloat]> RobjRef<'_, [Rbool]> RobjRef<'_, [Rcplx]> RobjRef<'_, [u8]> RobjRef<'_, [i32]> RobjRef<'_, [f64]>
     &str String
 );
 
@@ -696,6 +653,8 @@ impl TryFrom<&mut Robj> for &mut [f64] {
 impl_try_from_robj_mut!(
     &mut [Rint] &mut [Rfloat] &mut [Rbool] &mut [Rcplx] &mut [u8] &mut [i32] &mut [f64]
     &mut str
+    RobjMut<'_, Rint> RobjMut<'_, Rfloat> RobjMut<'_, Rbool> RobjMut<'_, Rcplx> RobjMut<'_, u8> RobjMut<'_, i32> RobjMut<'_, f64>
+    RobjMut<'_, [Rint]> RobjMut<'_, [Rfloat]> RobjMut<'_, [Rbool]> RobjMut<'_, [Rcplx]> RobjMut<'_, [u8]> RobjMut<'_, [i32]> RobjMut<'_, [f64]>
 );
 
 // endregion
