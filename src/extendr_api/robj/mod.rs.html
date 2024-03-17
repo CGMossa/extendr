@@ -1202,6 +1202,8 @@
 <a href="#1200" id="1200">1200</a>
 <a href="#1201" id="1201">1201</a>
 <a href="#1202" id="1202">1202</a>
+<a href="#1203" id="1203">1203</a>
+<a href="#1204" id="1204">1204</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! R object handling.
 //!
 //! See. [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html)
@@ -1238,9 +1240,11 @@
 <span class="kw">pub use </span>operators::<span class="kw-2">*</span>;
 <span class="kw">pub use </span>rinternals::Rinternals;
 
-<span class="kw">pub struct </span>RobjRef&lt;<span class="lifetime">'a</span>, T&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T);
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>RobjRef&lt;<span class="lifetime">'a</span>, T&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T);
 
-<span class="kw">pub struct </span>RobjMut&lt;<span class="lifetime">'a</span>, T&gt;(<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T);
+<span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>RobjMut&lt;<span class="lifetime">'a</span>, T&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T);
 
 <span class="doccomment">/// Wrapper for an R S-expression pointer (SEXP).
 ///
