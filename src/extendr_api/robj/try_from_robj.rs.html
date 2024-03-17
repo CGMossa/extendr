@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/try_from_robj.rs`."><title>try_from_robj.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (c67326b06 2024-03-15)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/try_from_robj.rs`."><title>try_from_robj.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.78.0-nightly (766bdce74 2024-03-16)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -672,6 +672,20 @@
 <a href="#670" id="670">670</a>
 <a href="#671" id="671">671</a>
 <a href="#672" id="672">672</a>
+<a href="#673" id="673">673</a>
+<a href="#674" id="674">674</a>
+<a href="#675" id="675">675</a>
+<a href="#676" id="676">676</a>
+<a href="#677" id="677">677</a>
+<a href="#678" id="678">678</a>
+<a href="#679" id="679">679</a>
+<a href="#680" id="680">680</a>
+<a href="#681" id="681">681</a>
+<a href="#682" id="682">682</a>
+<a href="#683" id="683">683</a>
+<a href="#684" id="684">684</a>
+<a href="#685" id="685">685</a>
+<a href="#686" id="686">686</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Conversions to [`Robj`]
 
 </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -700,8 +714,7 @@
                 // is problematic when converting a negative value to unsigned
                 // integer types (e.g. `-1i32 as u8` becomes 255).
                 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_integer() {
-                    <span class="comment">//TODO: this needs to be `Ok(Self::from(v))`
-                    </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = <span class="self">Self</span>::try_from(v) {
+                    <span class="kw">if let </span><span class="prelude-val">Ok</span>(v) = <span class="self">Self</span>::try_from(v) {
                         <span class="kw">return </span><span class="prelude-val">Ok</span>(v);
                     } <span class="kw">else </span>{
                         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::OutOfLimits(robj.clone()));
@@ -947,6 +960,34 @@
     }
 }
 
+<span class="comment">// region: `RobjRef` / `RobjMut`
+
+</span><span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RobjRef&lt;<span class="lifetime">'_</span>, [T]&gt;
+<span class="kw">where
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+{
+    <span class="kw">type </span>Error = Error;
+
+    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedVector(robj.clone()))
+            .map(<span class="self">Self</span>)
+    }
+}
+
+<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span>RobjMut&lt;<span class="lifetime">'_</span>, [T]&gt;
+<span class="kw">where
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+{
+    <span class="kw">type </span>Error = Error;
+
+    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice_mut()
+            .ok_or_else(|| Error::ExpectedVector(robj.clone()))
+            .map(<span class="self">Self</span>)
+    }
+}
+
 <span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RobjRef&lt;<span class="lifetime">'_</span>, T&gt;
 <span class="kw">where
     </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
@@ -983,29 +1024,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>RobjRef&lt;<span class="lifetime">'_</span>, T&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
+<span class="comment">// endregion
 
-    <span class="kw">fn </span>try_from(robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="self">Self</span>::try_from(<span class="kw-2">&amp;</span>robj)
-    }
-}
-
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>RobjMut&lt;<span class="lifetime">'_</span>, T&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
-
-    <span class="kw">fn </span>try_from(<span class="kw-2">mut </span>robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="self">Self</span>::try_from(<span class="kw-2">&amp;mut </span>robj)
-    }
-}
-
-<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[i32] {
+</span><span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[i32] {
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert an `INTSXP` object into a slice of `i32` (integer).
@@ -1165,6 +1186,10 @@
     Vec::&lt;String&gt;
     Vec::&lt;Rint&gt; Vec::&lt;Rfloat&gt; Vec::&lt;Rbool&gt; Vec::&lt;Rcplx&gt; Vec::&lt;u8&gt; Vec::&lt;i32&gt; Vec::&lt;f64&gt;
     <span class="kw-2">&amp;</span>[Rint] <span class="kw-2">&amp;</span>[Rfloat] <span class="kw-2">&amp;</span>[Rbool] <span class="kw-2">&amp;</span>[Rcplx] <span class="kw-2">&amp;</span>[u8] <span class="kw-2">&amp;</span>[i32] <span class="kw-2">&amp;</span>[f64]
+    <span class="comment">//TODO: RobjRef&lt;'_, str&gt;
+    //TODO: RobjRef&lt;'_, [str]&gt;
+    </span>RobjRef&lt;<span class="lifetime">'_</span>, Rstr&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rint&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rfloat&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rbool&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rcplx&gt; RobjRef&lt;<span class="lifetime">'_</span>, u8&gt; RobjRef&lt;<span class="lifetime">'_</span>, i32&gt; RobjRef&lt;<span class="lifetime">'_</span>, f64&gt;
+    RobjRef&lt;<span class="lifetime">'_</span>, [Rstr]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rint]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rfloat]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rbool]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rcplx]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [u8]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [i32]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [f64]&gt;
     <span class="kw-2">&amp;</span>str String
 );
 
@@ -1215,6 +1240,14 @@
         )*
     }
 }
+
+<span class="macro">impl_try_from_robj_mut!</span>(
+    <span class="kw-2">&amp;mut </span>[Rint] <span class="kw-2">&amp;mut </span>[Rfloat] <span class="kw-2">&amp;mut </span>[Rbool] <span class="kw-2">&amp;mut </span>[Rcplx] <span class="kw-2">&amp;mut </span>[u8] <span class="kw-2">&amp;mut </span>[i32] <span class="kw-2">&amp;mut </span>[f64]
+    <span class="kw-2">&amp;mut </span>str
+    <span class="comment">// RobjMut&lt;'_, Rstr&gt; // don't include this
+    </span>RobjMut&lt;<span class="lifetime">'_</span>, Rint&gt; RobjMut&lt;<span class="lifetime">'_</span>, Rfloat&gt; RobjMut&lt;<span class="lifetime">'_</span>, Rbool&gt; RobjMut&lt;<span class="lifetime">'_</span>, Rcplx&gt; RobjMut&lt;<span class="lifetime">'_</span>, u8&gt; RobjMut&lt;<span class="lifetime">'_</span>, i32&gt; RobjMut&lt;<span class="lifetime">'_</span>, f64&gt;
+    RobjMut&lt;<span class="lifetime">'_</span>, [Rint]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rstr]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rfloat]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rbool]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rcplx]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [u8]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [i32]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [f64]&gt;
+);
 
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>str {
     <span class="kw">type </span>Error = Error;
@@ -1314,11 +1347,6 @@
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
     }
 }
-
-<span class="macro">impl_try_from_robj_mut!</span>(
-    <span class="kw-2">&amp;mut </span>[Rint] <span class="kw-2">&amp;mut </span>[Rfloat] <span class="kw-2">&amp;mut </span>[Rbool] <span class="kw-2">&amp;mut </span>[Rcplx] <span class="kw-2">&amp;mut </span>[u8] <span class="kw-2">&amp;mut </span>[i32] <span class="kw-2">&amp;mut </span>[f64]
-    <span class="kw-2">&amp;mut </span>str
-);
 
 <span class="comment">// endregion
 
