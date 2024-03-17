@@ -1128,6 +1128,8 @@
 <a href="#1126" id="1126">1126</a>
 <a href="#1127" id="1127">1127</a>
 <a href="#1128" id="1128">1128</a>
+<a href="#1129" id="1129">1129</a>
+<a href="#1130" id="1130">1130</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//!
 //! A safe and user friendly R extension interface.
 //!
@@ -1634,7 +1636,9 @@
     })
 }
 
-<span class="doccomment">/// Type of R objects used by [Robj::rtype].
+<span class="doccomment">/// Type of R objects used by [`Robj::rtype`].
+/// 
+/// [`Robj::rtype`]: Types::rtype
 </span><span class="attr">#[derive(Debug, PartialEq)]
 </span><span class="kw">pub enum </span>Rtype {
     <span class="doccomment">/// R-internal name: `NILSXP`

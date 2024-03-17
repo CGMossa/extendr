@@ -1241,10 +1241,10 @@
 <span class="kw">pub use </span>rinternals::Rinternals;
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RobjRef&lt;<span class="lifetime">'a</span>, T&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T);
+</span><span class="kw">pub struct </span>RobjRef&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span>Sized&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T);
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RobjMut&lt;<span class="lifetime">'a</span>, T&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T);
+</span><span class="kw">pub struct </span>RobjMut&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span>Sized&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T);
 
 <span class="doccomment">/// Wrapper for an R S-expression pointer (SEXP).
 ///
@@ -2012,7 +2012,7 @@
 ///
 /// [`SEXP`]: libR_sys::SEXP
 /// Marker for the R object modes / types represented as a value.
-</span><span class="kw">trait </span>SexpAsPtr: Sized {
+</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>SexpAsPtr: Sized {
     <span class="doccomment">/// See [`Rtype`] for reference.
     </span><span class="kw">const </span>R_TYPE_ID: u32;
     <span class="doccomment">/// Corresponding rust type to the type in C (in R's C-API)

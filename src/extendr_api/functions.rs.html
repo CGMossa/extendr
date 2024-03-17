@@ -306,6 +306,8 @@
 <a href="#304" id="304">304</a>
 <a href="#305" id="305">305</a>
 <a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
 </pre></div><pre class="rust"><code><span class="kw">use crate as </span>extendr_api;
 <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
@@ -364,7 +366,7 @@
 
 <span class="doccomment">/// Find a namespace by name.
 ///
-/// See also [Robj::double_colon].
+/// See also [`Robj::double_colon`].
 /// ```
 /// use extendr_api::prelude::*;
 /// test! {
@@ -372,6 +374,8 @@
 ///    assert_eq!(find_namespace("stats").is_ok(), true);
 /// }
 /// ```
+/// 
+/// [`Robj::double_colon`]: Operators::double_colon
 </span><span class="kw">pub fn </span>find_namespace&lt;K: Into&lt;Robj&gt;&gt;(key: K) -&gt; <span class="prelude-ty">Result</span>&lt;Environment&gt; {
     <span class="kw">let </span>key = key.into();
     <span class="kw">let </span>res = single_threaded(|| <span class="macro">call!</span>(<span class="string">".getNamespace"</span>, key.clone()));
