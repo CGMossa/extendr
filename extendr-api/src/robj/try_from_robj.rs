@@ -498,8 +498,10 @@ impl_try_from_robj_ref!(
     Vec::<String>
     Vec::<Rint> Vec::<Rfloat> Vec::<Rbool> Vec::<Rcplx> Vec::<u8> Vec::<i32> Vec::<f64>
     &[Rint] &[Rfloat] &[Rbool] &[Rcplx] &[u8] &[i32] &[f64]
-    RobjRef<'_, Rint> RobjRef<'_, Rfloat> RobjRef<'_, Rbool> RobjRef<'_, Rcplx> RobjRef<'_, u8> RobjRef<'_, i32> RobjRef<'_, f64>
-    RobjRef<'_, [Rint]> RobjRef<'_, [Rfloat]> RobjRef<'_, [Rbool]> RobjRef<'_, [Rcplx]> RobjRef<'_, [u8]> RobjRef<'_, [i32]> RobjRef<'_, [f64]>
+    //TODO: RobjRef<'_, str>
+    //TODO: RobjRef<'_, [str]>
+    RobjRef<'_, Rstr> RobjRef<'_, Rint> RobjRef<'_, Rfloat> RobjRef<'_, Rbool> RobjRef<'_, Rcplx> RobjRef<'_, u8> RobjRef<'_, i32> RobjRef<'_, f64>
+    RobjRef<'_, [Rstr]> RobjRef<'_, [Rint]> RobjRef<'_, [Rfloat]> RobjRef<'_, [Rbool]> RobjRef<'_, [Rcplx]> RobjRef<'_, [u8]> RobjRef<'_, [i32]> RobjRef<'_, [f64]>
     &str String
 );
 
@@ -550,6 +552,14 @@ macro_rules! impl_try_from_robj_mut {
         )*
     }
 }
+
+impl_try_from_robj_mut!(
+    &mut [Rint] &mut [Rfloat] &mut [Rbool] &mut [Rcplx] &mut [u8] &mut [i32] &mut [f64]
+    &mut str
+    // RobjMut<'_, Rstr> // don't include this
+    RobjMut<'_, Rint> RobjMut<'_, Rfloat> RobjMut<'_, Rbool> RobjMut<'_, Rcplx> RobjMut<'_, u8> RobjMut<'_, i32> RobjMut<'_, f64>
+    RobjMut<'_, [Rint]> RobjMut<'_, [Rstr]> RobjMut<'_, [Rfloat]> RobjMut<'_, [Rbool]> RobjMut<'_, [Rcplx]> RobjMut<'_, [u8]> RobjMut<'_, [i32]> RobjMut<'_, [f64]>
+);
 
 impl TryFrom<&mut Robj> for &mut str {
     type Error = Error;
@@ -649,13 +659,6 @@ impl TryFrom<&mut Robj> for &mut [f64] {
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
     }
 }
-
-impl_try_from_robj_mut!(
-    &mut [Rint] &mut [Rfloat] &mut [Rbool] &mut [Rcplx] &mut [u8] &mut [i32] &mut [f64]
-    &mut str
-    RobjMut<'_, Rint> RobjMut<'_, Rfloat> RobjMut<'_, Rbool> RobjMut<'_, Rcplx> RobjMut<'_, u8> RobjMut<'_, i32> RobjMut<'_, f64>
-    RobjMut<'_, [Rint]> RobjMut<'_, [Rfloat]> RobjMut<'_, [Rbool]> RobjMut<'_, [Rcplx]> RobjMut<'_, [u8]> RobjMut<'_, [i32]> RobjMut<'_, [f64]>
-);
 
 // endregion
 
