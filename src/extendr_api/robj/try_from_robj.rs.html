@@ -816,7 +816,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>String {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an scalar `STRSXP` object into a String.
+    <span class="doccomment">/// Convert an scalar `STRSXP` object into a `String`.
     /// Note: Unless you plan to store the result, use a string slice instead.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -827,9 +827,9 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;i32&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an `INTSXP` object into a vector of i32 (integer).
+    <span class="doccomment">/// Convert an `INTSXP` object into a vector of `i32` (integer).
     /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
             <span class="comment">// TODO: check NAs
@@ -843,9 +843,9 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;f64&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a `REALSXP` object into a vector of f64 (double precision floating point).
+    <span class="doccomment">/// Convert a `REALSXP` object into a vector of `f64` (double precision floating point).
     /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
             <span class="comment">// TODO: check NAs
@@ -875,7 +875,7 @@
 
     <span class="doccomment">/// Convert an `INTSXP` object into a vector of i32 (integer).
     /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
             <span class="prelude-val">Ok</span>(Vec::from(v))
@@ -888,9 +888,9 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rfloat&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a `REALSXP` object into a vector of f64 (double precision floating point).
+    <span class="doccomment">/// Convert a `REALSXP` object into a vector of `f64` (double precision floating point).
     /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
             <span class="prelude-val">Ok</span>(Vec::from(v))
@@ -905,7 +905,7 @@
 
     <span class="doccomment">/// Convert a `LGLSXP` object into a vector of `Rbool` (tri-state booleans).
     /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
             <span class="prelude-val">Ok</span>(Vec::from(v))
@@ -935,7 +935,7 @@
     /// Note: Unless you plan to store the result, use a slice instead.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(iter) = robj.as_str_iter() {
-            <span class="comment">// check for NA's in the string vector
+            <span class="comment">// check for `NA`'s in the string vector
             </span><span class="kw">if </span>iter.clone().any(|s| s.is_na()) {
                 <span class="prelude-val">Err</span>(Error::MustNotBeNA(robj.clone()))
             } <span class="kw">else </span>{
@@ -1008,8 +1008,8 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[i32] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an `INTSXP` object into a slice of i32 (integer).
-    /// Use `value.is_na()` to detect NA values.
+    <span class="doccomment">/// Convert an `INTSXP` object into a slice of `i32` (integer).
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
@@ -1020,7 +1020,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert an integer object into a slice of `Rint` (tri-state booleans).
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
@@ -1031,7 +1031,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert a doubles object into a slice of `Rfloat` (tri-state booleans).
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
@@ -1042,7 +1042,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert a logical object into a slice of `Rbool` (tri-state booleans).
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedLogical(robj.clone()))
@@ -1053,7 +1053,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert a complex object into a slice of `Rbool`
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedComplex(robj.clone()))
@@ -1073,8 +1073,8 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[f64] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a `REALSXP` object into a slice of f64 (double precision floating point).
-    /// Use `value.is_na()` to detect NA values.
+    <span class="doccomment">/// Convert a `REALSXP` object into a slice of `f64` (double precision floating point).
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice()
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
@@ -1099,12 +1099,12 @@
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Rcplx::na());
         }
 
-        <span class="comment">// This should always work, NA is handled above.
+        <span class="comment">// This should always work, `NA` is handled above.
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_real() {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Rcplx::from(v));
         }
 
-        <span class="comment">// Any integer (32 bit) can be represented as f64,
+        <span class="comment">// Any integer (32 bit) can be represented as `f64`,
         // this always works.
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_integer() {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Rcplx::from(v <span class="kw">as </span>f64));
@@ -1242,8 +1242,8 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>[i32] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an `INTSXP` object into a mutable slice of i32 (integer).
-    /// Use `value.is_na()` to detect NA values.
+    <span class="doccomment">/// Convert an `INTSXP` object into a mutable slice of `i32` (integer).
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice_mut()
             .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
@@ -1254,7 +1254,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert an integer object into a slice of `Rint` (tri-state booleans).
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice_mut()
             .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
@@ -1265,7 +1265,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert a doubles object into a slice of `Rfloat` (tri-state booleans).
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice_mut()
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
@@ -1276,7 +1276,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert a logical object into a slice of `Rbool` (tri-state booleans).
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice_mut()
             .ok_or_else(|| Error::ExpectedLogical(robj.clone()))
@@ -1287,7 +1287,7 @@
     <span class="kw">type </span>Error = Error;
 
     <span class="doccomment">/// Convert a complex object into a slice of `Rbool`
-    /// Use `value.is_na()` to detect NA values.
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice_mut()
             .ok_or_else(|| Error::ExpectedComplex(robj.clone()))
@@ -1307,8 +1307,8 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>[f64] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a `REALSXP` object into a slice of f64 (double precision floating point).
-    /// Use `value.is_na()` to detect NA values.
+    <span class="doccomment">/// Convert a `REALSXP` object into a slice of `f64` (double precision floating point).
+    /// Use `value.is_na()` to detect `NA` values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         robj.as_typed_slice_mut()
             .ok_or_else(|| Error::ExpectedReal(robj.clone()))
