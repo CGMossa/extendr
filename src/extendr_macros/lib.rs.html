@@ -293,6 +293,19 @@
 <a href="#291" id="291">291</a>
 <a href="#292" id="292">292</a>
 <a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//!
 //! Macros for generating wrappers for rust functions.
 
@@ -518,6 +531,10 @@
 /// # }
 /// # Ok::&lt;(), extendr_api::Error&gt;(())
 /// ```
+///
+/// See [`IntoRobj`] for converting arbitrary Rust types into R type by using
+/// R's list / `List`.
+///
 </span><span class="attr">#[proc_macro_derive(TryFromRobj)]
 </span><span class="kw">pub fn </span>derive_try_from_robj(item: TokenStream) -&gt; TokenStream {
     list_struct::derive_try_from_robj(item)
@@ -528,7 +545,11 @@
 /// This allows the struct to be converted to a named list in R,
 /// where the list names correspond to the field names of the Rust struct.
 ///
+/// Note that the R list may contain more fields, than those corresponding
+/// to the Rust type.
+///
 /// # Examples
+///
 /// In the below example, `converted` contains an R list object with the same fields as the
 /// `Foo` struct.
 /// ```ignore
@@ -550,7 +571,13 @@
 /// # }
 /// # Ok::&lt;(), extendr_api::Error&gt;(())
 /// ```
+///
+/// See [`TryFromRobj`] for a `derive`-macro in the other direction, i.e.
+/// instantiation of a rust type, by an R list with fields corresponding to
+/// said type.
+///
 /// # Details
+///
 /// Note, the `From&lt;Struct&gt; for Robj` behaviour is different from what is obtained by applying the standard `#[extendr]` macro
 /// to an `impl` block. The `#[extendr]` behaviour returns to R a **pointer** to Rust memory, and generates wrapper functions for calling
 /// Rust functions on that pointer. The implementation from `#[derive(IntoRobj)]` actually converts the Rust structure
@@ -581,7 +608,6 @@
 /// assert_eq!(df[0], r!([0, 1]));
 /// assert_eq!(df[1], r!(["abc", "xyz"]));
 /// ```
-
 </span><span class="attr">#[proc_macro_derive(IntoDataFrameRow)]
 </span><span class="kw">pub fn </span>derive_into_dataframe(item: TokenStream) -&gt; TokenStream {
     dataframe::derive_into_dataframe(item)
