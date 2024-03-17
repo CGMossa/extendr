@@ -383,7 +383,7 @@ impl Robj {
 
     /// Convert an [`Robj`] into [`Integers`].
     pub fn as_integers(&self) -> Option<Integers> {
-        self.clone().try_into().ok()
+        self.try_into().ok()
     }
 
     /// Get a `Vec<i32>` copied from the object.
