@@ -505,7 +505,7 @@ pub unsafe fn register_call_methods(info: *mut libR_sys::DllInfo, metadata: Meta
 }
 
 /// Type of R objects used by [`Robj::rtype`].
-/// 
+///
 /// [`Robj::rtype`]: Types::rtype
 #[derive(Debug, PartialEq)]
 pub enum Rtype {

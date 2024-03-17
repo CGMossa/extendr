@@ -64,7 +64,7 @@ pub fn global_function<K: Into<Robj>>(key: K) -> Result<Robj> {
 ///    assert_eq!(find_namespace("stats").is_ok(), true);
 /// }
 /// ```
-/// 
+///
 /// [`Robj::double_colon`]: Operators::double_colon
 pub fn find_namespace<K: Into<Robj>>(key: K) -> Result<Environment> {
     let key = key.into();
