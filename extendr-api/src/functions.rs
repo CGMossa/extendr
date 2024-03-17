@@ -175,7 +175,7 @@ pub fn srcref() -> Robj {
     unsafe { Robj::from_sexp(R_Srcref) }
 }
 
-/// The nil object
+/// The nil object / `NULL`
 pub fn nil_value() -> Robj {
     unsafe { Robj::from_sexp(R_NilValue) }
 }
@@ -185,12 +185,12 @@ pub fn dot_generic() -> Robj {
     unsafe { Robj::from_sexp(R_dot_Generic) }
 }
 
-/// NA_STRING as a CHARSXP
+/// `NA_STRING` as a CHARSXP
 pub fn na_string() -> Robj {
     unsafe { Robj::from_sexp(R_NaString) }
 }
 
-/// "" as a CHARSXP
+/// "" as a `CHARSXP`
 pub fn blank_string() -> Robj {
     unsafe { Robj::from_sexp(R_BlankString) }
 }
