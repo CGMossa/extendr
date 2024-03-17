@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["debug","into_robj","operators","rinternals","try_from_robj"],"struct":["Robj"],"trait":["AsTypedSlice","Attributes","Eval","GetSexp","IntoRobj","Length","Operators","Rinternals","RobjItertools","SexpAsPtr","Slices","ToVectorValue","Types"]};
+window.SIDEBAR_ITEMS = {"mod":["debug","into_robj","operators","rinternals","try_from_robj"],"struct":["Robj","RobjMut","RobjRef"],"trait":["AsTypedSlice","Attributes","Eval","GetSexp","IntoRobj","Length","Operators","Rinternals","RobjItertools","SexpAsPtr","Slices","ToVectorValue","Types"]};

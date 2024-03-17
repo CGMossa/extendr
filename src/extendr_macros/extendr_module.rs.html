@@ -169,13 +169,14 @@
 <a href="#167" id="167">167</a>
 <a href="#168" id="168">168</a>
 <a href="#169" id="169">169</a>
-<a href="#170" id="170">170</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">crate</span>::wrappers;
 <span class="kw">use </span>proc_macro::TokenStream;
 <span class="kw">use </span>quote::{format_ident, quote};
 <span class="kw">use </span>syn::{parse::ParseStream, parse_macro_input, Ident, Token, Type};
 
 <span class="kw">pub fn </span>extendr_module(item: TokenStream) -&gt; TokenStream {
+    <span class="kw">use </span>wrappers::META_PREFIX;
+    <span class="kw">use </span>wrappers::WRAP_PREFIX;
     <span class="kw">let </span>module = <span class="macro">parse_macro_input!</span>(item <span class="kw">as </span>Module);
     <span class="kw">let </span>Module {
         modname,
@@ -185,27 +186,24 @@
     } = module;
     <span class="kw">let </span>modname = modname.unwrap();
     <span class="kw">let </span>modname_string = modname.to_string();
-    <span class="kw">let </span>module_init_name = <span class="macro">format_ident!</span>(<span class="string">"R_init_{}_extendr"</span>, modname);
+    <span class="kw">let </span>module_init_name = <span class="macro">format_ident!</span>(<span class="string">"R_init_{modname}_extendr"</span>);
 
-    <span class="kw">let </span>module_metadata_name = <span class="macro">format_ident!</span>(<span class="string">"get_{}_metadata"</span>, modname);
+    <span class="kw">let </span>module_metadata_name = <span class="macro">format_ident!</span>(<span class="string">"get_{modname}_metadata"</span>);
     <span class="kw">let </span>module_metadata_name_string = module_metadata_name.to_string();
-    <span class="kw">let </span>wrap_module_metadata_name =
-        <span class="macro">format_ident!</span>(<span class="string">"{}get_{}_metadata"</span>, wrappers::WRAP_PREFIX, modname);
+    <span class="kw">let </span>wrap_module_metadata_name = <span class="macro">format_ident!</span>(<span class="string">"{WRAP_PREFIX}get_{modname}_metadata"</span>);
 
-    <span class="kw">let </span>make_module_wrappers_name = <span class="macro">format_ident!</span>(<span class="string">"make_{}_wrappers"</span>, modname);
+    <span class="kw">let </span>make_module_wrappers_name = <span class="macro">format_ident!</span>(<span class="string">"make_{modname}_wrappers"</span>);
     <span class="kw">let </span>make_module_wrappers_name_string = make_module_wrappers_name.to_string();
-    <span class="kw">let </span>wrap_make_module_wrappers =
-        <span class="macro">format_ident!</span>(<span class="string">"{}make_{}_wrappers"</span>, wrappers::WRAP_PREFIX, modname);
+    <span class="kw">let </span>wrap_make_module_wrappers = <span class="macro">format_ident!</span>(<span class="string">"{WRAP_PREFIX}make_{modname}_wrappers"</span>);
 
-    <span class="kw">let </span>fnmetanames = fnnames
-        .iter()
-        .map(|id| <span class="macro">format_ident!</span>(<span class="string">"{}{}"</span>, wrappers::META_PREFIX, id));
-    <span class="kw">let </span>implmetanames = implnames
-        .iter()
-        .map(|id| <span class="macro">format_ident!</span>(<span class="string">"{}{}"</span>, wrappers::META_PREFIX, wrappers::type_name(id)));
+    <span class="kw">let </span>fnmetanames = fnnames.iter().map(|id| <span class="macro">format_ident!</span>(<span class="string">"{META_PREFIX}{id}"</span>));
+    <span class="kw">let </span>implmetanames = implnames.iter().map(|id| {
+        <span class="kw">let </span>type_name = wrappers::type_name(id);
+        <span class="macro">format_ident!</span>(<span class="string">"{META_PREFIX}{type_name}"</span>)
+    });
     <span class="kw">let </span>usemetanames = usenames
         .iter()
-        .map(|id| <span class="macro">format_ident!</span>(<span class="string">"get_{}_metadata"</span>, id))
+        .map(|id| <span class="macro">format_ident!</span>(<span class="string">"get_{id}_metadata"</span>))
         .collect::&lt;Vec&lt;Ident&gt;&gt;();
 
     TokenStream::from(<span class="macro">quote!</span> {
