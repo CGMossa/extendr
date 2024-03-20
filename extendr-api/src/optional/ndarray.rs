@@ -4,7 +4,7 @@ Defines conversions between R objects and the [`ndarray`](https://docs.rs/ndarra
 To enable these conversions, you must first enable the `ndarray` feature for extendr:
 ```toml
 [dependencies]
-extendr-api = { version = "0.4", features = ["ndarray"] }
+extendr-api = { version = "0.6", features = ["ndarray"] }
 ```
 
 Specifically, extendr supports the following conversions:
