@@ -63,74 +63,59 @@ use crate::*;
 
 // TODO: Use the AsTypedSlice route for this
 
-macro_rules! make_array_view_1 {
-    ($type: ty) => {
-        impl<'a> TryFrom<&'_ Robj> for ArrayView1<'a, $type> {
-            type Error = crate::Error;
-
-            fn try_from(robj: &Robj) -> Result<Self> {
-                let v = robj.try_into_typed_slice()?;
-                Ok(ArrayView1::<'a, $type>::from(v))
-            }
+impl<T> TryFrom<&Robj> for ArrayView2<'_, T>
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
+    type Error = crate::Error;
+    fn try_from(robj: &Robj) -> Result<Self> {
+        if !robj.is_matrix() {
+            return Err(Error::ExpectedMatrix(robj.clone()));
         }
-
-        impl<'a> TryFrom<Robj> for ArrayView1<'a, $type> {
-            type Error = crate::Error;
-
-            fn try_from(robj: Robj) -> Result<Self> {
-                Self::try_from(&robj)
-            }
-        }
-    };
+        let nrows = robj.nrows();
+        let ncols = robj.ncols();
+        let v = robj.try_into_typed_slice()?;
+        // use fortran order.
+        let shape = (nrows, ncols).into_shape().f();
+        return ArrayView2::from_shape(shape, v).map_err(Error::NDArrayShapeError);
+    }
 }
 
-// TODO: Use the AsTypedSlice route for this
+impl<T> TryFrom<&Robj> for ArrayView1<'_, T>
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
+    type Error = crate::Error;
 
-macro_rules! make_array_view_2 {
-    ($type: ty) => {
-        impl<'a> TryFrom<&'_ Robj> for ArrayView2<'a, $type> {
-            type Error = crate::Error;
-            fn try_from(robj: &Robj) -> Result<Self> {
-                if !robj.is_matrix() {
-                    return Err(Error::ExpectedMatrix(robj.clone()));
-                }
-                let nrows = robj.nrows();
-                let ncols = robj.ncols();
-                let v = robj.try_into_typed_slice()?;
-                // use fortran order.
-                let shape = (nrows, ncols).into_shape().f();
-                return ArrayView2::from_shape(shape, v)
-                    .map_err(|err| Error::NDArrayShapeError(err));
-            }
-        }
-
-        impl<'a> TryFrom<Robj> for ArrayView2<'a, $type> {
-            type Error = crate::Error;
-            fn try_from(robj: Robj) -> Result<Self> {
-                Self::try_from(&robj)
-            }
-        }
-    };
+    fn try_from(robj: &Robj) -> Result<Self> {
+        let v = robj.try_into_typed_slice()?;
+        Ok(ArrayView1::<'_, T>::from(v))
+    }
 }
-make_array_view_1!(Rbool);
-make_array_view_1!(Rint);
-make_array_view_1!(i32);
-make_array_view_1!(u32);
-make_array_view_1!(Rfloat);
-make_array_view_1!(f64);
-make_array_view_1!(Rcplx);
-make_array_view_1!(c64);
-make_array_view_1!(Rstr);
 
-make_array_view_2!(Rbool);
-make_array_view_2!(Rint);
-make_array_view_2!(i32);
-make_array_view_2!(u32);
-make_array_view_2!(Rfloat);
-make_array_view_2!(f64);
-make_array_view_2!(Rcplx);
-make_array_view_2!(c64);
-make_array_view_2!(Rstr);
+impl_try_from_robj_ref! {
+    ArrayView1<'_, Rbool>
+    ArrayView1<'_, Rint>
+    ArrayView1<'_, i32>
+    ArrayView1<'_, u32>
+    ArrayView1<'_, Rfloat>
+    ArrayView1<'_, f64>
+    ArrayView1<'_, Rcplx>
+    ArrayView1<'_, c64>
+    ArrayView1<'_, Rstr>
+}
+
+impl_try_from_robj_ref! {
+    ArrayView2<'_, Rbool>
+    ArrayView2<'_, Rint>
+    ArrayView2<'_, i32>
+    ArrayView2<'_, u32>
+    ArrayView2<'_, Rfloat>
+    ArrayView2<'_, f64>
+    ArrayView2<'_, Rcplx>
+    ArrayView2<'_, c64>
+    ArrayView2<'_, Rstr>
+}
 
 impl<A, S, D> TryFrom<&ArrayBase<S, D>> for Robj
 where

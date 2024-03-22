@@ -292,6 +292,7 @@ impl TryFrom<&Robj> for Rcplx {
 
 // Convert `TryFrom<&Robj>` into `TryFrom<Robj>`. Sadly, we are unable to make a blanket
 // conversion using `GetSexp` with the current version of Rust.
+#[macro_export]
 macro_rules! impl_try_from_robj_ref {
     ($($type : ty)*) => {
         $(
@@ -325,6 +326,7 @@ macro_rules! impl_try_from_robj_ref {
         )*
     }
 }
+pub(crate) use impl_try_from_robj_ref;
 
 impl_try_from_robj_ref!(
     u8 u16 u32 u64 usize
@@ -413,7 +415,7 @@ macro_rules! impl_try_from_on {
 }
  */
 //
-
+#[macro_export]
 macro_rules! impl_try_from_robj_mut {
     ($($type : ty)*) => {
         $(
@@ -447,6 +449,7 @@ macro_rules! impl_try_from_robj_mut {
         )*
     }
 }
+pub(crate) use impl_try_from_robj_mut;
 
 impl_try_from_robj_mut!(
     &mut [Rint] &mut [Rfloat] &mut [Rbool] &mut [Rcplx] &mut [u8] &mut [i32] &mut [f64]
