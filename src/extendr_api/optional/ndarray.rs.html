@@ -325,11 +325,6 @@
 <a href="#323" id="323">323</a>
 <a href="#324" id="324">324</a>
 <a href="#325" id="325">325</a>
-<a href="#326" id="326">326</a>
-<a href="#327" id="327">327</a>
-<a href="#328" id="328">328</a>
-<a href="#329" id="329">329</a>
-<a href="#330" id="330">330</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*!
 Defines conversions between R objects and the [`ndarray`](https://docs.rs/ndarray/latest/ndarray/) crate, which offers native Rust array types and numerical computation routines.
 
@@ -393,17 +388,17 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
 <span class="kw">use </span><span class="kw">crate</span>::prelude::{c64, dim_symbol, Rcplx, Rfloat, Rint};
 <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
-<span class="macro">macro_rules!</span> make_array_view_1 {
-    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$error_fn</span>: expr) =&gt; {
+
+<span class="comment">// TODO: Use the AsTypedSlice route for this
+
+</span><span class="macro">macro_rules!</span> make_array_view_1 {
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>) =&gt; {
         <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>Robj&gt; <span class="kw">for </span>ArrayView1&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
             <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw">crate</span>::Error;
 
             <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-                <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
-                    <span class="prelude-val">Ok</span>(ArrayView1::&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt;<span class="macro-nonterminal">::from</span>(v))
-                } <span class="kw">else </span>{
-                    <span class="prelude-val">Err</span>(<span class="macro-nonterminal">$error_fn</span>(robj.clone()))
-                }
+                <span class="kw">let </span>v = robj.try_into_typed_slice()<span class="question-mark">?</span>;
+                <span class="prelude-val">Ok</span>(ArrayView1::&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt;<span class="macro-nonterminal">::from</span>(v))
             }
         }
 
@@ -417,24 +412,23 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
     };
 }
 
-<span class="macro">macro_rules!</span> make_array_view_2 {
-    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$error_str</span>: expr, <span class="macro-nonterminal">$error_fn</span>: expr) =&gt; {
+<span class="comment">// TODO: Use the AsTypedSlice route for this
+
+</span><span class="macro">macro_rules!</span> make_array_view_2 {
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>) =&gt; {
         <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>Robj&gt; <span class="kw">for </span>ArrayView2&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
             <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw">crate</span>::Error;
             <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-                <span class="kw">if </span>robj.is_matrix() {
-                    <span class="kw">let </span>nrows = robj.nrows();
-                    <span class="kw">let </span>ncols = robj.ncols();
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
-                        <span class="comment">// use fortran order.
-                        </span><span class="kw">let </span>shape = (nrows, ncols).into_shape().f();
-                        <span class="kw">return </span>ArrayView2::from_shape(shape, v)
-                            .map_err(|err| Error::NDArrayShapeError(err));
-                    } <span class="kw">else </span>{
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro-nonterminal">$error_fn</span>(robj.clone()));
-                    }
+                <span class="kw">if </span>!robj.is_matrix() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj.clone()));
                 }
-                <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj.clone()));
+                <span class="kw">let </span>nrows = robj.nrows();
+                <span class="kw">let </span>ncols = robj.ncols();
+                <span class="kw">let </span>v = robj.try_into_typed_slice()<span class="question-mark">?</span>;
+                <span class="comment">// use fortran order.
+                </span><span class="kw">let </span>shape = (nrows, ncols).into_shape().f();
+                <span class="kw">return </span>ArrayView2::from_shape(shape, v)
+                    .map_err(|err| Error::NDArrayShapeError(err));
             }
         }
 
@@ -446,29 +440,25 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
         }
     };
 }
-<span class="macro">make_array_view_1!</span>(Rbool, Error::ExpectedLogical);
-<span class="macro">make_array_view_1!</span>(Rint, Error::ExpectedInteger);
-<span class="macro">make_array_view_1!</span>(i32, Error::ExpectedInteger);
-<span class="macro">make_array_view_1!</span>(u32, Error::ExpectedInteger);
-<span class="macro">make_array_view_1!</span>(Rfloat, Error::ExpectedReal);
-<span class="macro">make_array_view_1!</span>(f64, Error::ExpectedReal);
-<span class="macro">make_array_view_1!</span>(Rcplx, Error::ExpectedComplex);
-<span class="macro">make_array_view_1!</span>(c64, Error::ExpectedComplex);
-<span class="macro">make_array_view_1!</span>(Rstr, Error::ExpectedString);
+<span class="macro">make_array_view_1!</span>(Rbool);
+<span class="macro">make_array_view_1!</span>(Rint);
+<span class="macro">make_array_view_1!</span>(i32);
+<span class="macro">make_array_view_1!</span>(u32);
+<span class="macro">make_array_view_1!</span>(Rfloat);
+<span class="macro">make_array_view_1!</span>(f64);
+<span class="macro">make_array_view_1!</span>(Rcplx);
+<span class="macro">make_array_view_1!</span>(c64);
+<span class="macro">make_array_view_1!</span>(Rstr);
 
-<span class="macro">make_array_view_2!</span>(Rbool, <span class="string">"Not a logical matrix."</span>, Error::ExpectedLogical);
-<span class="macro">make_array_view_2!</span>(Rint, <span class="string">"Not an integer matrix."</span>, Error::ExpectedInteger);
-<span class="macro">make_array_view_2!</span>(i32, <span class="string">"Not an integer matrix."</span>, Error::ExpectedInteger);
-<span class="macro">make_array_view_2!</span>(u32, <span class="string">"Not an integer matrix."</span>, Error::ExpectedInteger);
-<span class="macro">make_array_view_2!</span>(Rfloat, <span class="string">"Not a floating point matrix."</span>, Error::ExpectedReal);
-<span class="macro">make_array_view_2!</span>(f64, <span class="string">"Not a floating point matrix."</span>, Error::ExpectedReal);
-<span class="macro">make_array_view_2!</span>(
-    Rcplx,
-    <span class="string">"Not a complex number matrix."</span>,
-    Error::ExpectedComplex
-);
-<span class="macro">make_array_view_2!</span>(c64, <span class="string">"Not a complex number matrix."</span>, Error::ExpectedComplex);
-<span class="macro">make_array_view_2!</span>(Rstr, <span class="string">"Not a string matrix."</span>, Error::ExpectedString);
+<span class="macro">make_array_view_2!</span>(Rbool);
+<span class="macro">make_array_view_2!</span>(Rint);
+<span class="macro">make_array_view_2!</span>(i32);
+<span class="macro">make_array_view_2!</span>(u32);
+<span class="macro">make_array_view_2!</span>(Rfloat);
+<span class="macro">make_array_view_2!</span>(f64);
+<span class="macro">make_array_view_2!</span>(Rcplx);
+<span class="macro">make_array_view_2!</span>(c64);
+<span class="macro">make_array_view_2!</span>(Rstr);
 
 <span class="kw">impl</span>&lt;A, S, D&gt; TryFrom&lt;<span class="kw-2">&amp;</span>ArrayBase&lt;S, D&gt;&gt; <span class="kw">for </span>Robj
 <span class="kw">where

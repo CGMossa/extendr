@@ -1178,6 +1178,40 @@
 <a href="#1176" id="1176">1176</a>
 <a href="#1177" id="1177">1177</a>
 <a href="#1178" id="1178">1178</a>
+<a href="#1179" id="1179">1179</a>
+<a href="#1180" id="1180">1180</a>
+<a href="#1181" id="1181">1181</a>
+<a href="#1182" id="1182">1182</a>
+<a href="#1183" id="1183">1183</a>
+<a href="#1184" id="1184">1184</a>
+<a href="#1185" id="1185">1185</a>
+<a href="#1186" id="1186">1186</a>
+<a href="#1187" id="1187">1187</a>
+<a href="#1188" id="1188">1188</a>
+<a href="#1189" id="1189">1189</a>
+<a href="#1190" id="1190">1190</a>
+<a href="#1191" id="1191">1191</a>
+<a href="#1192" id="1192">1192</a>
+<a href="#1193" id="1193">1193</a>
+<a href="#1194" id="1194">1194</a>
+<a href="#1195" id="1195">1195</a>
+<a href="#1196" id="1196">1196</a>
+<a href="#1197" id="1197">1197</a>
+<a href="#1198" id="1198">1198</a>
+<a href="#1199" id="1199">1199</a>
+<a href="#1200" id="1200">1200</a>
+<a href="#1201" id="1201">1201</a>
+<a href="#1202" id="1202">1202</a>
+<a href="#1203" id="1203">1203</a>
+<a href="#1204" id="1204">1204</a>
+<a href="#1205" id="1205">1205</a>
+<a href="#1206" id="1206">1206</a>
+<a href="#1207" id="1207">1207</a>
+<a href="#1208" id="1208">1208</a>
+<a href="#1209" id="1209">1209</a>
+<a href="#1210" id="1210">1210</a>
+<a href="#1211" id="1211">1211</a>
+<a href="#1212" id="1212">1212</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! R object handling.
 //!
 //! See. [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html)
@@ -1947,8 +1981,10 @@
 <span class="kw">where
     </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
 {
-    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;;
+    <span class="kw">fn </span>try_into_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;;
+    <span class="kw">fn </span>try_into_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;;
 
+    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;;
     <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;;
 }
 
@@ -1965,6 +2001,7 @@
     </span><span class="kw">const </span>R_TYPE_ID: u32;
     <span class="doccomment">/// Corresponding rust type to the type in C (in R's C-API)
     </span><span class="kw">type </span>CType;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; error::Error;
     <span class="doccomment">/// Returns a typed mutable pointer to the underlying value
     </span><span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
         DATAPTR(x).cast()
@@ -1978,41 +2015,49 @@
     <span class="doccomment">/// Corresponds to `logical` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = LGLSXP;
     <span class="kw">type </span>CType = raw::c_int;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedLogical;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>i32 {
     <span class="doccomment">/// Corresponds to `integer` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
     <span class="kw">type </span>CType = raw::c_int;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedInteger;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>u32 {
     <span class="doccomment">/// Corresponds to `integer` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
     <span class="kw">type </span>CType = raw::c_int;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedInteger;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rint {
     <span class="doccomment">/// Corresponds to `integer` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
     <span class="kw">type </span>CType = raw::c_int;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedInteger;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>f64 {
     <span class="doccomment">/// Corresponds to `numeric` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = REALSXP;
     <span class="kw">type </span>CType = <span class="self">Self</span>;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedReal;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rfloat {
     <span class="doccomment">/// Corresponds to `numeric` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = REALSXP;
     <span class="kw">type </span>CType = f64;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedReal;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>u8 {
     <span class="kw">const </span>R_TYPE_ID: u32 = RAWSXP;
     <span class="kw">type </span>CType = Rbyte;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedRaw;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rstr {
     <span class="doccomment">/// Corresponds to `character` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = STRSXP;
     <span class="kw">type </span>CType = SEXP;
-    <span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedString;
+    <span class="kw">unsafe fn </span>as_mut_ptr(_sexp: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
         std::ptr::null_mut()
     }
     <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
@@ -2022,6 +2067,7 @@
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>CString {
     <span class="doccomment">/// Corresponds to `character` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = STRSXP;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedString;
     <span class="kw">type </span>CType = SEXP;
     <span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
         <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
@@ -2034,23 +2080,45 @@
     <span class="doccomment">/// Corresponds to `complex` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
     <span class="kw">type </span>CType = Rcomplex;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedComplex;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rcplx {
     <span class="doccomment">/// Corresponds to `complex` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
     <span class="kw">type </span>CType = Rcomplex;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedComplex;
 }
 <span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rcomplex {
     <span class="doccomment">/// Corresponds to `complex` in R
     </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
     <span class="kw">type </span>CType = Rcomplex;
+    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedComplex;
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt; <span class="kw">for </span>Robj
 <span class="kw">where
-    </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
-    T: SexpAsPtr,
+    </span>T: SexpAsPtr,
 {
+    <span class="kw">fn </span>try_into_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt; {
+        <span class="kw">if </span><span class="self">self</span>.sexptype() != &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(T::TYPE_ERROR(<span class="self">self</span>.clone()));
+        }
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_ptr(<span class="self">self</span>.get());
+            <span class="prelude-val">Ok</span>(std::slice::from_raw_parts(ptr, <span class="self">self</span>.len()))
+        }
+    }
+
+    <span class="kw">fn </span>try_into_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt; {
+        <span class="kw">if </span><span class="self">self</span>.sexptype() != &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(T::TYPE_ERROR(<span class="self">self</span>.clone()));
+        }
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_mut_ptr(<span class="self">self</span>.get_mut());
+            <span class="prelude-val">Ok</span>(std::slice::from_raw_parts_mut(ptr, <span class="self">self</span>.len()))
+        }
+    }
+
     <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt; {
         <span class="kw">if </span><span class="self">self</span>.sexptype() == &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
             <span class="kw">unsafe </span>{

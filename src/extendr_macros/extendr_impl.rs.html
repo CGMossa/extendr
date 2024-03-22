@@ -397,7 +397,7 @@
         )
     };
 
-    <span class="kw">let </span>expanded = TokenStream::from(<span class="macro">quote!</span> {
+    TokenStream::from(<span class="macro">quote!</span> {
         <span class="comment">// The impl itself copied from the source.
         </span>#item_impl
 
@@ -425,11 +425,11 @@
                 methods,
             });
         }
-    });
+    })
 
     <span class="comment">//eprintln!("{}", expanded);
-    </span>expanded
-}
+    // expanded
+</span>}
 
 <span class="comment">// This structure contains parameters parsed from the #[extendr_module] definition.
 </span></code></pre></div></section></main></body></html>

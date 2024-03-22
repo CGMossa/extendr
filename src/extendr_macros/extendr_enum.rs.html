@@ -176,6 +176,8 @@
 <a href="#174" id="174">174</a>
 <a href="#175" id="175">175</a>
 <a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>quote::{format_ident, quote};
 
 <span class="kw">use </span><span class="kw">crate</span>::extendr_options::ExtendrOptions;
@@ -340,7 +342,9 @@
                 }
 
                 <span class="kw">use </span>extendr_api::AsTypedSlice;
-                <span class="kw">let </span>int_vector: <span class="kw-2">&amp;</span>[Rint] = robj.as_typed_slice().unwrap();
+                <span class="comment">// this check is unnecessary, because it is a factor, and thus
+                // is an integer-vector
+                </span><span class="kw">let </span>int_vector: <span class="kw-2">&amp;</span>[Rint] = robj.try_into_typed_slice()<span class="question-mark">?</span>;
                 <span class="kw">if </span>int_vector.len() != <span class="number">1 </span>{
                     <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedScalarFactor(robj.clone()))
                 }

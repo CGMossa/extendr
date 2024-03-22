@@ -253,6 +253,8 @@
 <a href="#251" id="251">251</a>
 <a href="#252" id="252">252</a>
 <a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Error handling in Rust called from R.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::robj::Types;
@@ -319,6 +321,7 @@
     ExpectedVector(Robj),
     ExpectedMatrix(Robj),
     ExpectedMatrix3D(Robj),
+    ExpectedArray(Robj),
     ExpectedNumeric(Robj),
     ExpectedAltrep(Robj),
     ExpectedDataframe(Robj),
@@ -397,6 +400,7 @@
             Error::ExpectedVector(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Vector, got {:?}"</span>, robj.rtype()),
             Error::ExpectedMatrix(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Matrix, got {:?}"</span>, robj.rtype()),
             Error::ExpectedMatrix3D(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Matrix3D, got {:?}"</span>, robj.rtype()),
+            Error::ExpectedArray(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Array, got {:?}"</span>, robj.rtype()),
             Error::ExpectedNumeric(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Numeric, got {:?}"</span>, robj.rtype()),
             Error::ExpectedAltrep(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Altrep, got {:?}"</span>, robj.rtype()),
             Error::ExpectedDataframe(robj) =&gt; {

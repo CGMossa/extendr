@@ -824,7 +824,6 @@
 <a href="#822" id="822">822</a>
 <a href="#823" id="823">823</a>
 <a href="#824" id="824">824</a>
-<a href="#825" id="825">825</a>
 </pre></div><pre class="rust"><code><span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::scalar::Scalar;
 
@@ -1398,7 +1397,7 @@
     /// # Arguments
     ///
     /// * `dims` - an array containing the length of each dimension
-    </span><span class="kw">fn </span>collect_rarray&lt;<span class="lifetime">'a</span>, <span class="kw">const </span>LEN: usize&gt;(
+    </span><span class="kw">fn </span>collect_rarray&lt;<span class="kw">const </span>LEN: usize&gt;(
         <span class="self">self</span>,
         dims: [usize; LEN],
     ) -&gt; <span class="prelude-ty">Result</span>&lt;RArray&lt;<span class="self">Self</span>::Item, [usize; LEN]&gt;&gt;
@@ -1406,8 +1405,7 @@
         </span><span class="self">Self</span>: Iterator,
         <span class="self">Self</span>: Sized,
         <span class="self">Self</span>::Item: ToVectorValue,
-        Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, <span class="self">Self</span>::Item&gt;,
-        <span class="self">Self</span>::Item: <span class="lifetime">'a</span>,
+        Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, <span class="self">Self</span>::Item&gt;,
     {
         <span class="kw">let </span><span class="kw-2">mut </span>vector = <span class="self">self</span>.collect_robj();
         <span class="kw">let </span>prod = dims.iter().product::&lt;usize&gt;();
@@ -1419,9 +1417,8 @@
             )));
         }
         <span class="kw">let </span>robj = vector.set_attrib(wrapper::symbol::dim_symbol(), dims.iter().collect_robj())<span class="question-mark">?</span>;
-        <span class="kw">let </span>_data = robj.as_typed_slice().ok_or(Error::Other(
-            <span class="string">"Unknown error in converting to slice"</span>.to_string(),
-        ))<span class="question-mark">?</span>;
+        <span class="comment">//FIXME: find a cheaper way to do this, as this is ridiculous
+        </span><span class="kw">let </span>_data = robj.try_into_typed_slice()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(RArray::from_parts(robj, dims))
     }
 }
@@ -1453,8 +1450,9 @@
         }
     };
 }
-
-<span class="comment">// impl&lt;T&gt; From&lt;Range&lt;T&gt;&gt; for Robj
+<span class="comment">// Example of the above `impl_from_as_iterator`
+//
+// impl&lt;T&gt; From&lt;Range&lt;T&gt;&gt; for Robj
 // where
 //     Range&lt;T&gt; : RobjItertools,
 //     &lt;Range&lt;T&gt; as Iterator&gt;::Item: ToVectorValue,

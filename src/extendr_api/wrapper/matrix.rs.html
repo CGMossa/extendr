@@ -522,9 +522,54 @@
 <a href="#520" id="520">520</a>
 <a href="#521" id="521">521</a>
 <a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Wrappers for matrices with deferred arithmetic.
-
-</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+</span><span class="kw">use </span><span class="self">self</span>::robj::{AsTypedSlice, Robj};
+<span class="kw">use super</span>::<span class="kw-2">*</span>;
 <span class="kw">use </span><span class="kw">crate</span>::scalar::Scalar;
 <span class="kw">use </span>std::ops::{Index, IndexMut};
 
@@ -562,10 +607,10 @@
 <span class="kw">pub type </span>RMatrix&lt;T&gt; = RArray&lt;T, [usize; <span class="number">2</span>]&gt;;
 <span class="kw">pub type </span>RMatrix3D&lt;T&gt; = RArray&lt;T, [usize; <span class="number">3</span>]&gt;;
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; RMatrix&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; RMatrix&lt;T&gt;
 <span class="kw">where
-    </span>T: ToVectorValue + <span class="lifetime">'a</span>,
-    Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>T: ToVectorValue,
+    Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Returns an [`RMatrix`] with dimensions according to `nrow` and `ncol`,
     /// with arbitrary entries.
@@ -576,10 +621,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; RMatrix&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; RMatrix&lt;T&gt;
 <span class="kw">where
-    </span>T: ToVectorValue + <span class="lifetime">'a </span>+ CanBeNA,
-    Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>T: CanBeNA + ToVectorValue,
+    Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Returns an [`RMatrix`] with dimensions according to `nrow` and `ncol`,
     /// with all entries set to `NA`.
@@ -647,10 +692,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T, D&gt; RArray&lt;T, D&gt;
+<span class="kw">impl</span>&lt;T, D&gt; RArray&lt;T, D&gt;
 <span class="kw">where
-    </span>T: <span class="lifetime">'a</span>,
-    Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="kw">pub fn </span>from_parts(robj: Robj, dim: D) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
@@ -661,12 +705,12 @@
     }
 
     <span class="doccomment">/// Returns a flat representation of the array in col-major.
-    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T] {
+    </span><span class="kw">pub fn </span>data(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
         <span class="self">self</span>.as_typed_slice().unwrap()
     }
 
     <span class="doccomment">/// Returns a flat, mutable representation of the array in col-major.
-    </span><span class="kw">pub fn </span>data_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T] {
+    </span><span class="kw">pub fn </span>data_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
         <span class="self">self</span>.as_typed_slice_mut().unwrap()
     }
 
@@ -676,9 +720,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: ToVectorValue + <span class="lifetime">'a</span>&gt; RColumn&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; RColumn&lt;T&gt;
 <span class="kw">where
-    </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>T: ToVectorValue,
+    Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Make a new column type.
     </span><span class="kw">pub fn </span>new_column&lt;F: FnMut(usize) -&gt; T&gt;(nrows: usize, f: F) -&gt; <span class="self">Self </span>{
@@ -694,9 +739,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: ToVectorValue + <span class="lifetime">'a</span>&gt; RMatrix&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; RMatrix&lt;T&gt;
 <span class="kw">where
-    </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>T: ToVectorValue,
+    Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Create a new matrix wrapper.
     ///
@@ -736,9 +782,10 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: ToVectorValue + <span class="lifetime">'a</span>&gt; RMatrix3D&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; RMatrix3D&lt;T&gt;
 <span class="kw">where
-    </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>T: ToVectorValue,
+    Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="kw">pub fn </span>new_matrix3d&lt;F: Clone + FnMut(usize, usize, usize) -&gt; T&gt;(
         nrows: usize,
@@ -776,71 +823,116 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a</span>&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>RColumn&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RColumn&lt;T&gt;
 <span class="kw">where
-    </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="kw">type </span>Error = Error;
 
-    <span class="kw">fn </span>try_from(<span class="kw-2">mut </span>robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(_slice) = robj.as_typed_slice_mut() {
-            <span class="kw">let </span>len = robj.len();
-            <span class="prelude-val">Ok</span>(RArray::from_parts(robj, [len]))
-        } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(Error::ExpectedVector(robj))
-        }
+    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="comment">// FIXME: extract the type checking, as this is too costly
+        </span><span class="kw">let </span>_slice = robj.try_into_typed_slice()<span class="question-mark">?</span>;
+        <span class="kw">let </span>len = robj.len();
+        <span class="prelude-val">Ok</span>(RArray::from_parts(robj.clone(), [len]))
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a</span>&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>RMatrix&lt;T&gt;
+<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RMatrix&lt;T&gt;
 <span class="kw">where
-    </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="kw">type </span>Error = Error;
 
-    <span class="kw">fn </span>try_from(<span class="kw-2">mut </span>robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">if </span>!robj.is_matrix() {
-            <span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj))
-        } <span class="kw">else if let </span><span class="prelude-val">Some</span>(_slice) = robj.as_typed_slice_mut() {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(dim) = robj.dim() {
-                <span class="kw">let </span>dim: Vec&lt;<span class="kw">_</span>&gt; = dim.iter().map(|d| d.inner() <span class="kw">as </span>usize).collect();
-                <span class="kw">if </span>dim.len() != <span class="number">2 </span>{
-                    <span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj))
-                } <span class="kw">else </span>{
-                    <span class="prelude-val">Ok</span>(RArray::from_parts(robj, [dim[<span class="number">0</span>], dim[<span class="number">1</span>]]))
+    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="comment">// isMatrix checks vector-type, presence of `dim`, and length(dim) == 2
+        </span><span class="kw">if </span>!robj.is_matrix() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj.clone()));
+        }
+        <span class="kw">let </span>dim = robj.dim().unwrap();
+        <span class="kw">let </span>dim = dim.as_slice();
+        <span class="prelude-val">Ok</span>(RArray::from_parts(
+            robj.clone(),
+            [dim[<span class="number">0</span>].inner() <span class="kw">as _</span>, dim[<span class="number">1</span>].inner() <span class="kw">as _</span>],
+        ))
+    }
+}
+
+<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RMatrix3D&lt;T&gt;
+<span class="kw">where
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+{
+    <span class="kw">type </span>Error = Error;
+
+    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="comment">// this checks (1) vector type (2) existence of `dim`,
+        // but not length(dim) == 3
+        </span><span class="kw">if </span>!robj.is_array() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedArray(robj.clone()));
+        }
+        <span class="kw">let </span>dim = robj.dim().unwrap();
+        <span class="kw">if </span>dim.len() != <span class="number">3 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedMatrix3D(robj.clone()));
+        }
+        <span class="kw">let </span>dim = dim.as_slice();
+        <span class="prelude-val">Ok</span>(RArray::from_parts(
+            robj.clone(),
+            [
+                dim[<span class="number">0</span>].inner() <span class="kw">as _</span>,
+                dim[<span class="number">1</span>].inner() <span class="kw">as _</span>,
+                dim[<span class="number">2</span>].inner() <span class="kw">as _</span>,
+            ],
+        ))
+    }
+}
+
+<span class="macro">macro_rules!</span> impl_try_from_robj_ref {
+    ($(<span class="macro-nonterminal">$</span><span class="kw">type </span>: <span class="macro-nonterminal">tt</span>)<span class="kw-2">*</span>) =&gt; {
+        $(
+            <span class="kw">impl</span>&lt;T&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type</span>&lt;<span class="macro-nonterminal">T</span>&gt;
+            <span class="kw">where
+                </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+            {
+                <span class="kw">type </span>Error = Error;
+
+                <span class="kw">fn </span>try_from(robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                    &lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&lt;<span class="macro-nonterminal">T</span>&gt;&gt;::try_from(<span class="kw-2">&amp;</span>robj)
                 }
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj))
             }
-        } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(Error::TypeMismatch(robj))
-        }
-    }
-}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a</span>&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>RMatrix3D&lt;T&gt;
-<span class="kw">where
-    </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
+            <span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&lt;<span class="macro-nonterminal">T</span>&gt;&gt;
+            <span class="kw">where
+                </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+            {
+                <span class="kw">type </span>Error = Error;
 
-    <span class="kw">fn </span>try_from(<span class="kw-2">mut </span>robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(_slice) = robj.as_typed_slice_mut() {
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(dim) = robj.dim() {
-                <span class="kw">if </span>dim.len() != <span class="number">3 </span>{
-                    <span class="prelude-val">Err</span>(Error::ExpectedMatrix3D(robj))
-                } <span class="kw">else </span>{
-                    <span class="kw">let </span>dim: Vec&lt;<span class="kw">_</span>&gt; = dim.iter().map(|d| d.inner() <span class="kw">as </span>usize).collect();
-                    <span class="prelude-val">Ok</span>(RArray::from_parts(robj, [dim[<span class="number">0</span>], dim[<span class="number">1</span>], dim[<span class="number">2</span>]]))
+                <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                    <span class="kw">if </span>robj.is_null() || robj.is_na() {
+                        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
+                    } <span class="kw">else </span>{
+                        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&lt;<span class="macro-nonterminal">T</span>&gt;&gt;::try_from(robj)<span class="question-mark">?</span>))
+                    }
                 }
-            } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(Error::ExpectedMatrix3D(robj))
             }
-        } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(Error::TypeMismatch(robj))
-        }
+
+            <span class="kw">impl</span>&lt;T&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&lt;<span class="macro-nonterminal">T</span>&gt;&gt;
+            <span class="kw">where
+                </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+            {
+                <span class="kw">type </span>Error = Error;
+
+                <span class="kw">fn </span>try_from(robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                    &lt;<span class="prelude-ty">Option</span>::&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&lt;<span class="macro-nonterminal">T</span>&gt;&gt;&gt;::try_from(<span class="kw-2">&amp;</span>robj)
+                }
+            }
+        )*
     }
 }
+
+<span class="macro">impl_try_from_robj_ref!</span>(
+    RMatrix
+    RColumn
+    RMatrix3D
+);
 
 <span class="kw">impl</span>&lt;T, D&gt; From&lt;RArray&lt;T, D&gt;&gt; <span class="kw">for </span>Robj {
     <span class="doccomment">/// Convert a column, matrix or matrix3d to an Robj.
@@ -850,34 +942,33 @@
 }
 
 <span class="kw">pub trait </span>MatrixConversions: GetSexp {
-    <span class="kw">fn </span>as_column&lt;<span class="lifetime">'a</span>, E: <span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RColumn&lt;E&gt;&gt;
+    <span class="kw">fn </span>as_column&lt;E&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RColumn&lt;E&gt;&gt;
     <span class="kw">where
-        </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, E&gt;,
+        </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, E&gt;,
     {
-        &lt;RColumn&lt;E&gt;&gt;::try_from(<span class="self">self</span>.as_robj().clone()).ok()
+        &lt;RColumn&lt;E&gt;&gt;::try_from(<span class="self">self</span>.as_robj()).ok()
     }
 
-    <span class="kw">fn </span>as_matrix&lt;<span class="lifetime">'a</span>, E: <span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RMatrix&lt;E&gt;&gt;
+    <span class="kw">fn </span>as_matrix&lt;E&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RMatrix&lt;E&gt;&gt;
     <span class="kw">where
-        </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, E&gt;,
+        </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, E&gt;,
     {
-        &lt;RMatrix&lt;E&gt;&gt;::try_from(<span class="self">self</span>.as_robj().clone()).ok()
+        &lt;RMatrix&lt;E&gt;&gt;::try_from(<span class="self">self</span>.as_robj()).ok()
     }
 
-    <span class="kw">fn </span>as_matrix3d&lt;<span class="lifetime">'a</span>, E: <span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RMatrix3D&lt;E&gt;&gt;
+    <span class="kw">fn </span>as_matrix3d&lt;E&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;RMatrix3D&lt;E&gt;&gt;
     <span class="kw">where
-        </span>Robj: AsTypedSlice&lt;<span class="lifetime">'a</span>, E&gt;,
+        </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, E&gt;,
     {
-        &lt;RMatrix3D&lt;E&gt;&gt;::try_from(<span class="self">self</span>.as_robj().clone()).ok()
+        &lt;RMatrix3D&lt;E&gt;&gt;::try_from(<span class="self">self</span>.as_robj()).ok()
     }
 }
 
 <span class="kw">impl </span>MatrixConversions <span class="kw">for </span>Robj {}
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; Index&lt;[usize; <span class="number">2</span>]&gt; <span class="kw">for </span>RArray&lt;T, [usize; <span class="number">2</span>]&gt;
+<span class="kw">impl</span>&lt;T&gt; Index&lt;[usize; <span class="number">2</span>]&gt; <span class="kw">for </span>RArray&lt;T, [usize; <span class="number">2</span>]&gt;
 <span class="kw">where
-    </span>T: <span class="lifetime">'a</span>,
-    robj::Robj: robj::AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="kw">type </span>Output = T;
 
@@ -906,10 +997,9 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; IndexMut&lt;[usize; <span class="number">2</span>]&gt; <span class="kw">for </span>RArray&lt;T, [usize; <span class="number">2</span>]&gt;
+<span class="kw">impl</span>&lt;T&gt; IndexMut&lt;[usize; <span class="number">2</span>]&gt; <span class="kw">for </span>RArray&lt;T, [usize; <span class="number">2</span>]&gt;
 <span class="kw">where
-    </span>T: <span class="lifetime">'a</span>,
-    robj::Robj: robj::AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
+    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Zero-based mutable indexing in row, column order.
     ///
