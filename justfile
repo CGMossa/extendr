@@ -9,6 +9,9 @@ git fetch:
 cargo check extendrtests:
     cargo check --manifest-path tests/extendrtests/src/rust/Cargo.toml
 
+cargo expand extendrtests:
+    cargo expand --manifest-path tests/extendrtests/src/rust/Cargo.toml
+
 # Initialises and updates all submodules
 # Installs all packages needed to run `cargo extendr devtools-tests`
 configure:
