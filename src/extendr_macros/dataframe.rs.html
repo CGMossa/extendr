@@ -55,18 +55,34 @@
 <a href="#53" id="53">53</a>
 <a href="#54" id="54">54</a>
 <a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>proc_macro::TokenStream;
 <span class="kw">use </span>quote::quote;
 <span class="kw">use </span>syn::{parse_macro_input, Data, DataStruct, DeriveInput};
 
-<span class="kw">fn </span>parse_struct(input: <span class="kw-2">&amp;</span>DeriveInput, datastruct: <span class="kw-2">&amp;</span>DataStruct) -&gt; TokenStream {
+<span class="comment">//TODO: Add these options to the macro:
+// data.frame(..., row.names = NULL, check.rows = FALSE,
+//     check.names = TRUE, fix.empty.names = TRUE,
+//     stringsAsFactors = FALSE)
+//
+// First, ensure that these names aren't fields in the struct.
+// Then include them.
+
+</span><span class="kw">fn </span>derive_struct_into_dataframe(input: <span class="kw-2">&amp;</span>DeriveInput, datastruct: <span class="kw-2">&amp;</span>DataStruct) -&gt; TokenStream {
     <span class="kw">let </span>structname = <span class="kw-2">&amp;</span>input.ident;
     <span class="kw">let </span><span class="kw-2">mut </span>a = Vec::new();
     <span class="kw">for </span>f <span class="kw">in </span><span class="kw-2">&amp;</span>datastruct.fields {
         a.push(f.ident.clone());
     }
     <span class="macro">quote!</span> {
-        <span class="kw">impl </span>IntoDataFrameRow&lt;#structname&gt; <span class="kw">for </span>Vec&lt;#structname&gt;
+        <span class="kw">impl </span>IntoDataframe&lt;#structname&gt; <span class="kw">for </span>Vec&lt;#structname&gt;
         {
             <span class="kw">fn </span>into_dataframe(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Dataframe&lt;#structname&gt;&gt; {
                 #(<span class="kw">let </span><span class="kw-2">mut </span>#a = Vec::with_capacity(<span class="self">self</span>.len());)*
@@ -81,9 +97,9 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;I&gt; IntoDataFrameRow&lt;#structname&gt; <span class="kw">for </span>(I,)
+        <span class="kw">impl</span>&lt;I&gt; IntoDataframe&lt;#structname&gt; <span class="kw">for </span>(I,)
         <span class="kw">where
-            </span>I : ExactSizeIterator&lt;Item=#structname&gt;,
+            </span>I: ExactSizeIterator&lt;Item = #structname&gt;,
         {
             <span class="doccomment">/// Thanks to RFC 2451, we need to wrap a generic iterator in a tuple!
             </span><span class="kw">fn </span>into_dataframe(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Dataframe&lt;#structname&gt;&gt; {
@@ -106,7 +122,7 @@
     <span class="kw">let </span>input: DeriveInput = <span class="macro">parse_macro_input!</span>(item <span class="kw">as </span>DeriveInput);
 
     <span class="kw">match </span><span class="kw-2">&amp;</span>input.data {
-        Data::Struct(datastruct) =&gt; parse_struct(<span class="kw-2">&amp;</span>input, datastruct),
+        Data::Struct(datastruct) =&gt; derive_struct_into_dataframe(<span class="kw-2">&amp;</span>input, datastruct),
         <span class="kw">_ </span>=&gt; <span class="macro">quote!</span>(compile_error(<span class="string">"IntoDataFrameRow expected a struct."</span>)).into(),
     }
 }
