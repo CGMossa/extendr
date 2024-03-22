@@ -832,7 +832,7 @@ impl SexpAsPtr for Rstr {
     /// Corresponds to `character` in R
     const R_TYPE_ID: u32 = STRSXP;
     type CType = SEXP;
-    unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
+    unsafe fn as_mut_ptr(_x: SEXP) -> *mut Self {
         std::ptr::null_mut()
     }
     unsafe fn as_ptr(x: SEXP) -> *const Self {
