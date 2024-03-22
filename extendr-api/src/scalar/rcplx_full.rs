@@ -97,9 +97,17 @@ impl From<Rcplx> for Option<c64> {
     }
 }
 
+mod rcplx_helpers {
+    use super::*;
+
+    pub fn check_na(x: &Rcplx) -> bool {
+        x.inner().re.is_na()
+    }
+}
+
 // `NA_real_` is a `NaN` with specific bit representation.
 // Check that underlying `f64` is `NA_real_`.
-gen_trait_impl!(Rcplx, c64, |x: &Rcplx| x.inner().re.is_na(), c64::na());
+gen_trait_impl!(Rcplx, c64, rcplx_helpers::check_na, c64::na());
 gen_from_primitive!(Rcplx, c64);
 // gen_from_scalar!(Rcplx, c64);
 gen_sum_iter!(Rcplx);
