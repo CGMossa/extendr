@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"macro":["impl_try_from_robj_mut","impl_try_from_robj_ref","impl_try_from_scalar_integer","impl_try_from_scalar_real"]};
+window.SIDEBAR_ITEMS = {"macro":["impl_try_from_scalar_integer","impl_try_from_scalar_real"]};
