@@ -2,6 +2,14 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{parse_macro_input, Data, DataStruct, DeriveInput};
 
+//TODO: Add these options to the macro:
+// data.frame(..., row.names = NULL, check.rows = FALSE,
+//     check.names = TRUE, fix.empty.names = TRUE,
+//     stringsAsFactors = FALSE)
+//
+// First, ensure that these names aren't fields in the struct.
+// Then include them.
+
 fn derive_struct_into_dataframe(input: &DeriveInput, datastruct: &DataStruct) -> TokenStream {
     let structname = &input.ident;
     let mut a = Vec::new();
@@ -9,7 +17,7 @@ fn derive_struct_into_dataframe(input: &DeriveInput, datastruct: &DataStruct) ->
         a.push(f.ident.clone());
     }
     quote! {
-        impl IntoDataFrameRow<#structname> for Vec<#structname>
+        impl IntoDataframe<#structname> for Vec<#structname>
         {
             fn into_dataframe(self) -> Result<Dataframe<#structname>> {
                 #(let mut #a = Vec::with_capacity(self.len());)*
@@ -24,7 +32,7 @@ fn derive_struct_into_dataframe(input: &DeriveInput, datastruct: &DataStruct) ->
             }
         }
 
-        impl<I> IntoDataFrameRow<#structname> for (I,)
+        impl<I> IntoDataframe<#structname> for (I,)
         where
             I: ExactSizeIterator<Item = #structname>,
         {

@@ -57,7 +57,7 @@ pub use super::thread_safety::{catch_r_error, handle_panic, single_threaded, thr
 
 pub use super::wrapper::{
     Complexes, Dataframe, Doubles, EnvIter, Environment, Expressions, ExternalPtr, FromList,
-    Function, Integers, IntoDataFrameRow, Language, List, ListIter, Logicals, Nullable, Pairlist,
+    Function, Integers, IntoDataframe, Language, List, ListIter, Logicals, Nullable, Pairlist,
     Primitive, Promise, Raw, Rstr, Strings, Symbol,
 };
 
