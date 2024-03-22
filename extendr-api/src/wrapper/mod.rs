@@ -78,7 +78,7 @@ where
 }
 
 macro_rules! make_conversions {
-    ($typename: ident, $errname: ident, $isfunc: ident, $errstr: expr) => {
+    ($typename: ident, $errname: ident, $isfunc: ident) => {
         impl From<$typename> for Robj {
             /// Make an robj from a wrapper.
             fn from(val: $typename) -> Self {
@@ -142,69 +142,37 @@ macro_rules! make_getsexp {
     };
 }
 
-make_conversions!(Pairlist, ExpectedPairlist, is_pairlist, "Not a pairlist");
+make_conversions!(Pairlist, ExpectedPairlist, is_pairlist);
 
-make_conversions!(
-    Function,
-    ExpectedFunction,
-    is_function,
-    "Not a function or primitive."
-);
+make_conversions!(Function, ExpectedFunction, is_function);
 
-make_conversions!(Raw, ExpectedRaw, is_raw, "Not a raw object");
+make_conversions!(Raw, ExpectedRaw, is_raw);
 
-make_conversions!(Rstr, ExpectedRstr, is_char, "Not a character object");
+make_conversions!(Rstr, ExpectedRstr, is_char);
 
-make_conversions!(
-    Environment,
-    ExpectedEnvironment,
-    is_environment,
-    "Not an Environment"
-);
+make_conversions!(Environment, ExpectedEnvironment, is_environment);
 
-make_conversions!(List, ExpectedList, is_list, "Not a List");
+make_conversions!(List, ExpectedList, is_list);
 
-make_conversions!(
-    Expressions,
-    ExpectedExpression,
-    is_expressions,
-    "Not an Expression"
-);
+make_conversions!(Expressions, ExpectedExpression, is_expressions);
 
-make_conversions!(
-    Language,
-    ExpectedLanguage,
-    is_language,
-    "Not a Language object"
-);
+make_conversions!(Language, ExpectedLanguage, is_language);
 
-make_conversions!(Symbol, ExpectedSymbol, is_symbol, "Not a Symbol object");
+make_conversions!(Symbol, ExpectedSymbol, is_symbol);
 
-make_conversions!(
-    Primitive,
-    ExpectedPrimitive,
-    is_primitive,
-    "Not a Primitive object"
-);
+make_conversions!(Primitive, ExpectedPrimitive, is_primitive);
 
-make_conversions!(Promise, ExpectedPromise, is_promise, "Not a Promise object");
+make_conversions!(Promise, ExpectedPromise, is_promise);
 
-make_conversions!(Altrep, ExpectedAltrep, is_altrep, "Not an Altrep type");
+make_conversions!(Altrep, ExpectedAltrep, is_altrep);
 
-make_conversions!(S4, ExpectedS4, is_s4, "Not a S4 type");
+make_conversions!(S4, ExpectedS4, is_s4);
 
-make_conversions!(Integers, ExpectedInteger, is_integer, "Not an integer type");
-make_conversions!(Logicals, ExpectedLogical, is_logical, "Not a logical type");
-make_conversions!(Doubles, ExpectedReal, is_real, "Not a floating point type");
-make_conversions!(
-    Complexes,
-    ExpectedComplex,
-    is_complex,
-    "Not a complex number or vector"
-);
-// make_conversions!(Function, ExpectedFunction, is_function, "Not a function");
-
-make_conversions!(Strings, ExpectedString, is_string, "Not a string vector");
+make_conversions!(Integers, ExpectedInteger, is_integer);
+make_conversions!(Logicals, ExpectedLogical, is_logical);
+make_conversions!(Doubles, ExpectedReal, is_real);
+make_conversions!(Complexes, ExpectedComplex, is_complex);
+make_conversions!(Strings, ExpectedString, is_string);
 
 make_getsexp!(Dataframe<T>, impl<T>);
 
