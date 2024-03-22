@@ -3349,7 +3349,7 @@
                       return Err(levels_err);
                   }
                   use extendr_api::AsTypedSlice;
-                  let int_vector: &[Rint] = robj.as_typed_slice().unwrap();
+                  let int_vector: &[Rint] = robj.try_into_typed_slice()?;
                   if int_vector.len() != 1 {
                       return Err(Error::ExpectedScalarFactor(robj.clone()));
                   }

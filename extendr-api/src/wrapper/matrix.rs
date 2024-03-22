@@ -1,5 +1,5 @@
 //! Wrappers for matrices with deferred arithmetic.
-
+use self::robj::{AsTypedSlice, Robj};
 use super::*;
 use crate::scalar::Scalar;
 use std::ops::{Index, IndexMut};
@@ -142,10 +142,9 @@ impl<T> Offset<[usize; 3]> for RArray<T, [usize; 3]> {
     }
 }
 
-impl<'a, T, D> RArray<T, D>
+impl<T, D> RArray<T, D>
 where
-    T: 'a,
-    Robj: AsTypedSlice<'a, T>,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     pub fn from_parts(robj: Robj, dim: D) -> Self {
         Self {
@@ -156,12 +155,12 @@ where
     }
 
     /// Returns a flat representation of the array in col-major.
-    pub fn data(&self) -> &'a [T] {
+    pub fn data(&self) -> &[T] {
         self.as_typed_slice().unwrap()
     }
 
     /// Returns a flat, mutable representation of the array in col-major.
-    pub fn data_mut(&mut self) -> &'a mut [T] {
+    pub fn data_mut(&mut self) -> &mut [T] {
         self.as_typed_slice_mut().unwrap()
     }
 
@@ -171,9 +170,10 @@ where
     }
 }
 
-impl<'a, T: ToVectorValue + 'a> RColumn<T>
+impl<T> RColumn<T>
 where
-    Robj: AsTypedSlice<'a, T>,
+    T: ToVectorValue,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     /// Make a new column type.
     pub fn new_column<F: FnMut(usize) -> T>(nrows: usize, f: F) -> Self {
@@ -189,9 +189,10 @@ where
     }
 }
 
-impl<'a, T: ToVectorValue + 'a> RMatrix<T>
+impl<T> RMatrix<T>
 where
-    Robj: AsTypedSlice<'a, T>,
+    T: ToVectorValue,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     /// Create a new matrix wrapper.
     ///
@@ -231,9 +232,10 @@ where
     }
 }
 
-impl<'a, T: ToVectorValue + 'a> RMatrix3D<T>
+impl<T> RMatrix3D<T>
 where
-    Robj: AsTypedSlice<'a, T>,
+    T: ToVectorValue,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     pub fn new_matrix3d<F: Clone + FnMut(usize, usize, usize) -> T>(
         nrows: usize,
@@ -271,71 +273,116 @@ where
     }
 }
 
-impl<'a, T: 'a> TryFrom<Robj> for RColumn<T>
+impl<T> TryFrom<&Robj> for RColumn<T>
 where
-    Robj: AsTypedSlice<'a, T>,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     type Error = Error;
 
-    fn try_from(mut robj: Robj) -> Result<Self> {
-        if let Some(_slice) = robj.as_typed_slice_mut() {
-            let len = robj.len();
-            Ok(RArray::from_parts(robj, [len]))
-        } else {
-            Err(Error::ExpectedVector(robj))
-        }
+    fn try_from(robj: &Robj) -> Result<Self> {
+        // FIXME: extract the type checking, as this is too costly
+        let _slice = robj.try_into_typed_slice()?;
+        let len = robj.len();
+        Ok(RArray::from_parts(robj.clone(), [len]))
     }
 }
 
-impl<'a, T: 'a> TryFrom<Robj> for RMatrix<T>
+impl<T> TryFrom<&Robj> for RMatrix<T>
 where
-    Robj: AsTypedSlice<'a, T>,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     type Error = Error;
 
-    fn try_from(mut robj: Robj) -> Result<Self> {
+    fn try_from(robj: &Robj) -> Result<Self> {
+        // isMatrix checks vector-type, presence of `dim`, and length(dim) == 2
         if !robj.is_matrix() {
-            Err(Error::ExpectedMatrix(robj))
-        } else if let Some(_slice) = robj.as_typed_slice_mut() {
-            if let Some(dim) = robj.dim() {
-                let dim: Vec<_> = dim.iter().map(|d| d.inner() as usize).collect();
-                if dim.len() != 2 {
-                    Err(Error::ExpectedMatrix(robj))
-                } else {
-                    Ok(RArray::from_parts(robj, [dim[0], dim[1]]))
-                }
-            } else {
-                Err(Error::ExpectedMatrix(robj))
-            }
-        } else {
-            Err(Error::TypeMismatch(robj))
+            return Err(Error::ExpectedMatrix(robj.clone()));
         }
+        let dim = robj.dim().unwrap();
+        let dim = dim.as_slice();
+        Ok(RArray::from_parts(
+            robj.clone(),
+            [dim[0].inner() as _, dim[1].inner() as _],
+        ))
     }
 }
 
-impl<'a, T: 'a> TryFrom<Robj> for RMatrix3D<T>
+impl<T> TryFrom<&Robj> for RMatrix3D<T>
 where
-    Robj: AsTypedSlice<'a, T>,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     type Error = Error;
 
-    fn try_from(mut robj: Robj) -> Result<Self> {
-        if let Some(_slice) = robj.as_typed_slice_mut() {
-            if let Some(dim) = robj.dim() {
-                if dim.len() != 3 {
-                    Err(Error::ExpectedMatrix3D(robj))
-                } else {
-                    let dim: Vec<_> = dim.iter().map(|d| d.inner() as usize).collect();
-                    Ok(RArray::from_parts(robj, [dim[0], dim[1], dim[2]]))
-                }
-            } else {
-                Err(Error::ExpectedMatrix3D(robj))
-            }
-        } else {
-            Err(Error::TypeMismatch(robj))
+    fn try_from(robj: &Robj) -> Result<Self> {
+        // this checks (1) vector type (2) existence of `dim`,
+        // but not length(dim) == 3
+        if !robj.is_array() {
+            return Err(Error::ExpectedArray(robj.clone()));
         }
+        let dim = robj.dim().unwrap();
+        if dim.len() != 3 {
+            return Err(Error::ExpectedMatrix3D(robj.clone()));
+        }
+        let dim = dim.as_slice();
+        Ok(RArray::from_parts(
+            robj.clone(),
+            [
+                dim[0].inner() as _,
+                dim[1].inner() as _,
+                dim[2].inner() as _,
+            ],
+        ))
     }
 }
+
+macro_rules! impl_try_from_robj_ref {
+    ($($type : tt)*) => {
+        $(
+            impl<T> TryFrom<Robj> for $type<T>
+            where
+                Robj: for<'a> AsTypedSlice<'a, T>,
+            {
+                type Error = Error;
+
+                fn try_from(robj: Robj) -> Result<Self> {
+                    <$type<T>>::try_from(&robj)
+                }
+            }
+
+            impl<T> TryFrom<&Robj> for Option<$type<T>>
+            where
+                Robj: for<'a> AsTypedSlice<'a, T>,
+            {
+                type Error = Error;
+
+                fn try_from(robj: &Robj) -> Result<Self> {
+                    if robj.is_null() || robj.is_na() {
+                        Ok(None)
+                    } else {
+                        Ok(Some(<$type<T>>::try_from(robj)?))
+                    }
+                }
+            }
+
+            impl<T> TryFrom<Robj> for Option<$type<T>>
+            where
+                Robj: for<'a> AsTypedSlice<'a, T>,
+            {
+                type Error = Error;
+
+                fn try_from(robj: Robj) -> Result<Self> {
+                    <Option::<$type<T>>>::try_from(&robj)
+                }
+            }
+        )*
+    }
+}
+
+impl_try_from_robj_ref!(
+    RMatrix
+    RColumn
+    RMatrix3D
+);
 
 impl<T, D> From<RArray<T, D>> for Robj {
     /// Convert a column, matrix or matrix3d to an Robj.
@@ -345,34 +392,33 @@ impl<T, D> From<RArray<T, D>> for Robj {
 }
 
 pub trait MatrixConversions: GetSexp {
-    fn as_column<'a, E: 'a>(&self) -> Option<RColumn<E>>
+    fn as_column<E>(&self) -> Option<RColumn<E>>
     where
-        Robj: AsTypedSlice<'a, E>,
+        Robj: for<'a> AsTypedSlice<'a, E>,
     {
-        <RColumn<E>>::try_from(self.as_robj().clone()).ok()
+        <RColumn<E>>::try_from(self.as_robj()).ok()
     }
 
-    fn as_matrix<'a, E: 'a>(&self) -> Option<RMatrix<E>>
+    fn as_matrix<E>(&self) -> Option<RMatrix<E>>
     where
-        Robj: AsTypedSlice<'a, E>,
+        Robj: for<'a> AsTypedSlice<'a, E>,
     {
-        <RMatrix<E>>::try_from(self.as_robj().clone()).ok()
+        <RMatrix<E>>::try_from(self.as_robj()).ok()
     }
 
-    fn as_matrix3d<'a, E: 'a>(&self) -> Option<RMatrix3D<E>>
+    fn as_matrix3d<E>(&self) -> Option<RMatrix3D<E>>
     where
-        Robj: AsTypedSlice<'a, E>,
+        Robj: for<'a> AsTypedSlice<'a, E>,
     {
-        <RMatrix3D<E>>::try_from(self.as_robj().clone()).ok()
+        <RMatrix3D<E>>::try_from(self.as_robj()).ok()
     }
 }
 
 impl MatrixConversions for Robj {}
 
-impl<'a, T> Index<[usize; 2]> for RArray<T, [usize; 2]>
+impl<T> Index<[usize; 2]> for RArray<T, [usize; 2]>
 where
-    T: 'a,
-    robj::Robj: robj::AsTypedSlice<'a, T>,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     type Output = T;
 
@@ -401,10 +447,9 @@ where
     }
 }
 
-impl<'a, T> IndexMut<[usize; 2]> for RArray<T, [usize; 2]>
+impl<T> IndexMut<[usize; 2]> for RArray<T, [usize; 2]>
 where
-    T: 'a,
-    robj::Robj: robj::AsTypedSlice<'a, T>,
+    Robj: for<'a> AsTypedSlice<'a, T>,
 {
     /// Zero-based mutable indexing in row, column order.
     ///

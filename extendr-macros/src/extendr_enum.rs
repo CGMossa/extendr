@@ -162,7 +162,9 @@ pub(crate) fn extendr_enum(
                 }
 
                 use extendr_api::AsTypedSlice;
-                let int_vector: &[Rint] = robj.as_typed_slice().unwrap();
+                // this check is unnecessary, because it is a factor, and thus
+                // is an integer-vector
+                let int_vector: &[Rint] = robj.try_into_typed_slice()?;
                 if int_vector.len() != 1 {
                     return Err(Error::ExpectedScalarFactor(robj.clone()))
                 }

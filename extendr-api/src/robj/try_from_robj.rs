@@ -149,107 +149,20 @@ impl TryFrom<&Robj> for String {
     }
 }
 
-impl TryFrom<&Robj> for Vec<i32> {
+impl<T> TryFrom<&Robj> for Vec<T>
+where
+    T: Clone,
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
     type Error = Error;
 
     /// Convert an `INTSXP` object into a vector of `i32` (integer).
     /// Note: Unless you plan to store the result, use a slice instead.
     /// Use `value.is_na()` to detect `NA` values.
     fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            // TODO: check NAs
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedInteger(robj.clone()))
-        }
-    }
-}
-
-impl TryFrom<&Robj> for Vec<f64> {
-    type Error = Error;
-
-    /// Convert a `REALSXP` object into a vector of `f64` (double precision floating point).
-    /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            // TODO: check NAs
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedReal(robj.clone()))
-        }
-    }
-}
-
-impl TryFrom<&Robj> for Vec<u8> {
-    type Error = Error;
-
-    /// Convert a `RAWSXP` object into a vector of bytes.
-    /// Note: Unless you plan to store the result, use a slice instead.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedRaw(robj.clone()))
-        }
-    }
-}
-
-impl TryFrom<&Robj> for Vec<Rint> {
-    type Error = Error;
-
-    /// Convert an `INTSXP` object into a vector of i32 (integer).
-    /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedInteger(robj.clone()))
-        }
-    }
-}
-
-impl TryFrom<&Robj> for Vec<Rfloat> {
-    type Error = Error;
-
-    /// Convert a `REALSXP` object into a vector of `f64` (double precision floating point).
-    /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedReal(robj.clone()))
-        }
-    }
-}
-
-impl TryFrom<&Robj> for Vec<Rbool> {
-    type Error = Error;
-
-    /// Convert a `LGLSXP` object into a vector of `Rbool` (tri-state booleans).
-    /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedInteger(robj.clone()))
-        }
-    }
-}
-
-impl TryFrom<&Robj> for Vec<Rcplx> {
-    type Error = Error;
-
-    /// Convert a complex object into a vector of `Rcplx`.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        if let Some(v) = robj.as_typed_slice() {
-            Ok(Vec::from(v))
-        } else {
-            Err(Error::ExpectedComplex(robj.clone()))
-        }
+        let v = robj.try_into_typed_slice()?;
+        // TODO: check NAs
+        Ok(Vec::from(v))
     }
 }
 
@@ -281,9 +194,7 @@ where
     type Error = Error;
 
     fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedVector(robj.clone()))
-            .map(Self)
+        robj.try_into_typed_slice().map(Self)
     }
 }
 
@@ -294,9 +205,7 @@ where
     type Error = Error;
 
     fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedVector(robj.clone()))
-            .map(Self)
+        robj.try_into_typed_slice_mut().map(Self)
     }
 }
 
@@ -307,9 +216,7 @@ where
     type Error = Error;
 
     fn try_from(robj: &Robj) -> Result<Self> {
-        let slice = robj
-            .as_typed_slice()
-            .ok_or_else(|| Error::ExpectedVector(robj.clone()))?;
+        let slice = robj.try_into_typed_slice()?;
         match robj.len() {
             0 => Err(Error::ExpectedNonZeroLength(robj.clone())),
             1 => Ok(Self(slice.first().unwrap())),
@@ -325,9 +232,7 @@ where
     type Error = Error;
 
     fn try_from(robj: &mut Robj) -> Result<Self> {
-        let slice = robj
-            .as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedVector(robj.clone()))?;
+        let slice = robj.try_into_typed_slice_mut()?;
         match robj.len() {
             0 => Err(Error::ExpectedNonZeroLength(robj.clone())),
             1 => Ok(Self(slice.first_mut().unwrap())),
@@ -338,79 +243,15 @@ where
 
 // endregion
 
-impl TryFrom<&Robj> for &[i32] {
+impl<T> TryFrom<&Robj> for &[T]
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
     type Error = Error;
 
-    /// Convert an `INTSXP` object into a slice of `i32` (integer).
     /// Use `value.is_na()` to detect `NA` values.
     fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
-    }
-}
-
-impl TryFrom<&Robj> for &[Rint] {
-    type Error = Error;
-
-    /// Convert an integer object into a slice of `Rint` (tri-state booleans).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
-    }
-}
-
-impl TryFrom<&Robj> for &[Rfloat] {
-    type Error = Error;
-
-    /// Convert a doubles object into a slice of `Rfloat` (tri-state booleans).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedReal(robj.clone()))
-    }
-}
-
-impl TryFrom<&Robj> for &[Rbool] {
-    type Error = Error;
-
-    /// Convert a logical object into a slice of `Rbool` (tri-state booleans).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedLogical(robj.clone()))
-    }
-}
-
-impl TryFrom<&Robj> for &[Rcplx] {
-    type Error = Error;
-
-    /// Convert a complex object into a slice of `Rbool`
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedComplex(robj.clone()))
-    }
-}
-
-impl TryFrom<&Robj> for &[u8] {
-    type Error = Error;
-
-    /// Convert a `RAWSXP` object into a slice of bytes.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedRaw(robj.clone()))
-    }
-}
-
-impl TryFrom<&Robj> for &[f64] {
-    type Error = Error;
-
-    /// Convert a `REALSXP` object into a slice of `f64` (double precision floating point).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &Robj) -> Result<Self> {
-        robj.as_typed_slice()
-            .ok_or_else(|| Error::ExpectedReal(robj.clone()))
+        robj.try_into_typed_slice()
     }
 }
 
@@ -444,11 +285,8 @@ impl TryFrom<&Robj> for Rcplx {
         }
 
         // Complex slices return their first element.
-        if let Some(s) = robj.as_typed_slice() {
-            return Ok(s[0]);
-        }
-
-        Err(Error::ExpectedComplex(robj.clone()))
+        let s = robj.try_into_typed_slice()?;
+        Ok(s[0])
     }
 }
 
@@ -516,7 +354,64 @@ impl_try_from_robj_ref!(
 // by first making a macro that takes in a list of tokens, then making one that
 // specifically expects owned, ref, and ref mut together with type.
 //
-// ($t:ty) (mut $t:ty) (&mut $t:ty) (&$t:ty)
+/*
+macro_rules! impl_try_from_on {
+    // Base case: no more tokens to process
+    () => {};
+
+    // Handle Vec<T>
+    (Vec<$t:ty>  $(, $($rest:tt)*)?) => {
+        println!("Vec<{}>", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+
+    // Handle slice references &[T]
+    (&[$t:ty]  $(, $($rest:tt)*)?) => {
+        println!("&[{}]", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+
+    // Handle mutable slice references &mut [T]
+    (&mut [$t:ty]  $(, $($rest:tt)*)?) => {
+        println!("&mut [{}]", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+    // Handle Option<T>
+    (Option<$t:ty>  $(, $($rest:tt)*)?) => {
+        println!("Option<{}>", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+
+    // Handle Option<&T>
+    (Option<&$t:ty>  $(, $($rest:tt)*)?) => {
+        println!("Option<&{}>", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+    // Handle Option<&mut T>
+    (Option<&mut $t:ty> $(, $($rest:tt)*)?) => {
+        println!("Option<&mut {}>", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+
+    // Handle references &T
+    (&$t:ty  $(, $($rest:tt)*)?) => {
+        println!("&{}", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+
+    // Handle mutable references &mut T
+    (&mut $t:ty  $(, $($rest:tt)*)?) => {
+        println!("&mut {}", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+
+    // Handle owned types
+    ($t:ty  $(, $($rest:tt)*)?) => {
+        println!("Owned {}", stringify!($t));
+        $(impl_try_from_on!($($rest)*);)?
+    };
+}
+ */
 //
 
 macro_rules! impl_try_from_robj_mut {
@@ -559,79 +454,16 @@ impl_try_from_robj_mut!(
     RobjMut<'_, [Rint]> RobjMut<'_, [Rfloat]> RobjMut<'_, [Rbool]> RobjMut<'_, [Rcplx]> RobjMut<'_, [u8]> RobjMut<'_, [i32]> RobjMut<'_, [f64]>
 );
 
-impl TryFrom<&mut Robj> for &mut [i32] {
+impl<T> TryFrom<&mut Robj> for &mut [T]
+where
+    Robj: for<'a> AsTypedSlice<'a, T>,
+{
     type Error = Error;
 
     /// Convert an `INTSXP` object into a mutable slice of `i32` (integer).
     /// Use `value.is_na()` to detect `NA` values.
     fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
-    }
-}
-
-impl TryFrom<&mut Robj> for &mut [Rint] {
-    type Error = Error;
-
-    /// Convert an integer object into a slice of `Rint` (tri-state booleans).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
-    }
-}
-
-impl TryFrom<&mut Robj> for &mut [Rfloat] {
-    type Error = Error;
-
-    /// Convert a doubles object into a slice of `Rfloat` (tri-state booleans).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedReal(robj.clone()))
-    }
-}
-
-impl TryFrom<&mut Robj> for &mut [Rbool] {
-    type Error = Error;
-
-    /// Convert a logical object into a slice of `Rbool` (tri-state booleans).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedLogical(robj.clone()))
-    }
-}
-
-impl TryFrom<&mut Robj> for &mut [Rcplx] {
-    type Error = Error;
-
-    /// Convert a complex object into a slice of `Rbool`
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedComplex(robj.clone()))
-    }
-}
-
-impl TryFrom<&mut Robj> for &mut [u8] {
-    type Error = Error;
-
-    /// Convert a `RAWSXP` object into a slice of bytes.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedRaw(robj.clone()))
-    }
-}
-
-impl TryFrom<&mut Robj> for &mut [f64] {
-    type Error = Error;
-
-    /// Convert a `REALSXP` object into a slice of `f64` (double precision floating point).
-    /// Use `value.is_na()` to detect `NA` values.
-    fn try_from(robj: &mut Robj) -> Result<Self> {
-        robj.as_typed_slice_mut()
-            .ok_or_else(|| Error::ExpectedReal(robj.clone()))
+        robj.try_into_typed_slice_mut()
     }
 }
 

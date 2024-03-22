@@ -571,7 +571,7 @@ pub trait RobjItertools: Iterator {
     /// # Arguments
     ///
     /// * `dims` - an array containing the length of each dimension
-    fn collect_rarray<'a, const LEN: usize>(
+    fn collect_rarray<const LEN: usize>(
         self,
         dims: [usize; LEN],
     ) -> Result<RArray<Self::Item, [usize; LEN]>>
@@ -579,8 +579,7 @@ pub trait RobjItertools: Iterator {
         Self: Iterator,
         Self: Sized,
         Self::Item: ToVectorValue,
-        Robj: AsTypedSlice<'a, Self::Item>,
-        Self::Item: 'a,
+        Robj: for<'a> AsTypedSlice<'a, Self::Item>,
     {
         let mut vector = self.collect_robj();
         let prod = dims.iter().product::<usize>();
@@ -592,9 +591,8 @@ pub trait RobjItertools: Iterator {
             )));
         }
         let robj = vector.set_attrib(wrapper::symbol::dim_symbol(), dims.iter().collect_robj())?;
-        let _data = robj.as_typed_slice().ok_or(Error::Other(
-            "Unknown error in converting to slice".to_string(),
-        ))?;
+        //FIXME: find a cheaper way to do this, as this is ridiculous
+        let _data = robj.try_into_typed_slice()?;
         Ok(RArray::from_parts(robj, dims))
     }
 }
@@ -626,7 +624,8 @@ macro_rules! impl_from_as_iterator {
         }
     };
 }
-
+// Example of the above `impl_from_as_iterator`
+//
 // impl<T> From<Range<T>> for Robj
 // where
 //     Range<T> : RobjItertools,

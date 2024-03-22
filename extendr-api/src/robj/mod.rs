@@ -767,8 +767,10 @@ pub trait AsTypedSlice<'a, T>
 where
     Self: 'a,
 {
-    fn as_typed_slice(&self) -> Option<&'a [T]>;
+    fn try_into_typed_slice(&self) -> Result<&'a [T]>;
+    fn try_into_typed_slice_mut(&mut self) -> Result<&'a mut [T]>;
 
+    fn as_typed_slice(&self) -> Option<&'a [T]>;
     fn as_typed_slice_mut(&mut self) -> Option<&'a mut [T]>;
 }
 
@@ -785,6 +787,7 @@ pub(crate) trait SexpAsPtr: Sized {
     const R_TYPE_ID: u32;
     /// Corresponding rust type to the type in C (in R's C-API)
     type CType;
+    const TYPE_ERROR: fn(robj::Robj) -> error::Error;
     /// Returns a typed mutable pointer to the underlying value
     unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
         DATAPTR(x).cast()
@@ -798,41 +801,49 @@ impl SexpAsPtr for Rbool {
     /// Corresponds to `logical` in R
     const R_TYPE_ID: u32 = LGLSXP;
     type CType = raw::c_int;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedLogical;
 }
 impl SexpAsPtr for i32 {
     /// Corresponds to `integer` in R
     const R_TYPE_ID: u32 = INTSXP;
     type CType = raw::c_int;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedInteger;
 }
 impl SexpAsPtr for u32 {
     /// Corresponds to `integer` in R
     const R_TYPE_ID: u32 = INTSXP;
     type CType = raw::c_int;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedInteger;
 }
 impl SexpAsPtr for Rint {
     /// Corresponds to `integer` in R
     const R_TYPE_ID: u32 = INTSXP;
     type CType = raw::c_int;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedInteger;
 }
 impl SexpAsPtr for f64 {
     /// Corresponds to `numeric` in R
     const R_TYPE_ID: u32 = REALSXP;
     type CType = Self;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedReal;
 }
 impl SexpAsPtr for Rfloat {
     /// Corresponds to `numeric` in R
     const R_TYPE_ID: u32 = REALSXP;
     type CType = f64;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedReal;
 }
 impl SexpAsPtr for u8 {
     const R_TYPE_ID: u32 = RAWSXP;
     type CType = Rbyte;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedRaw;
 }
 impl SexpAsPtr for Rstr {
     /// Corresponds to `character` in R
     const R_TYPE_ID: u32 = STRSXP;
     type CType = SEXP;
-    unsafe fn as_mut_ptr(_x: SEXP) -> *mut Self {
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedString;
+    unsafe fn as_mut_ptr(_sexp: SEXP) -> *mut Self {
         std::ptr::null_mut()
     }
     unsafe fn as_ptr(x: SEXP) -> *const Self {
@@ -842,6 +853,7 @@ impl SexpAsPtr for Rstr {
 impl SexpAsPtr for CString {
     /// Corresponds to `character` in R
     const R_TYPE_ID: u32 = STRSXP;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedString;
     type CType = SEXP;
     unsafe fn as_mut_ptr(x: SEXP) -> *mut Self {
         unsafe { STRING_PTR(x).cast() }
@@ -854,23 +866,45 @@ impl SexpAsPtr for c64 {
     /// Corresponds to `complex` in R
     const R_TYPE_ID: u32 = CPLXSXP;
     type CType = Rcomplex;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedComplex;
 }
 impl SexpAsPtr for Rcplx {
     /// Corresponds to `complex` in R
     const R_TYPE_ID: u32 = CPLXSXP;
     type CType = Rcomplex;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedComplex;
 }
 impl SexpAsPtr for Rcomplex {
     /// Corresponds to `complex` in R
     const R_TYPE_ID: u32 = CPLXSXP;
     type CType = Rcomplex;
+    const TYPE_ERROR: fn(robj::Robj) -> Error = Error::ExpectedComplex;
 }
 
 impl<'a, T> AsTypedSlice<'a, T> for Robj
 where
-    Self: 'a,
     T: SexpAsPtr,
 {
+    fn try_into_typed_slice(&self) -> Result<&'a [T]> {
+        if self.sexptype() != <T as SexpAsPtr>::R_TYPE_ID {
+            return Err(T::TYPE_ERROR(self.clone()));
+        }
+        unsafe {
+            let ptr = <T as SexpAsPtr>::as_ptr(self.get());
+            Ok(std::slice::from_raw_parts(ptr, self.len()))
+        }
+    }
+
+    fn try_into_typed_slice_mut(&mut self) -> Result<&'a mut [T]> {
+        if self.sexptype() != <T as SexpAsPtr>::R_TYPE_ID {
+            return Err(T::TYPE_ERROR(self.clone()));
+        }
+        unsafe {
+            let ptr = <T as SexpAsPtr>::as_mut_ptr(self.get_mut());
+            Ok(std::slice::from_raw_parts_mut(ptr, self.len()))
+        }
+    }
+
     fn as_typed_slice(&self) -> Option<&'a [T]> {
         if self.sexptype() == <T as SexpAsPtr>::R_TYPE_ID {
             unsafe {
