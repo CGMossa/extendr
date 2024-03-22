@@ -98,11 +98,14 @@ impl_try_from_robj_ref! {
     ArrayView1<'_, Rint>
     ArrayView1<'_, i32>
     ArrayView1<'_, u32>
+    ArrayView1<'_, u8>
     ArrayView1<'_, Rfloat>
     ArrayView1<'_, f64>
     ArrayView1<'_, Rcplx>
+    ArrayView1<'_, Rcomplex>
     ArrayView1<'_, c64>
     ArrayView1<'_, Rstr>
+    ArrayView1<'_, CString>
 }
 
 impl_try_from_robj_ref! {
@@ -110,11 +113,14 @@ impl_try_from_robj_ref! {
     ArrayView2<'_, Rint>
     ArrayView2<'_, i32>
     ArrayView2<'_, u32>
+    ArrayView2<'_, u8>
     ArrayView2<'_, Rfloat>
     ArrayView2<'_, f64>
     ArrayView2<'_, Rcplx>
+    ArrayView2<'_, Rcomplex>
     ArrayView2<'_, c64>
     ArrayView2<'_, Rstr>
+    ArrayView2<'_, CString>
 }
 
 impl<A, S, D> TryFrom<&ArrayBase<S, D>> for Robj
