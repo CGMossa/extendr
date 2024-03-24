@@ -74,4 +74,4 @@ pub trait Load {
     }
 }
 
-impl Load for Robj {}
+impl<T: ?Sized> Load for T {}

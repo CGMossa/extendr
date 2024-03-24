@@ -106,4 +106,4 @@ pub trait Save: GetSexp {
     }
 }
 
-impl<R: GetSexp> Save for R {}
+impl<T: ?Sized + GetSexp> Save for T {}

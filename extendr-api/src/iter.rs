@@ -201,7 +201,7 @@ pub trait AsStrIter: GetSexp + Types + Length + Attributes + Rinternals {
     }
 }
 
-impl AsStrIter for Robj {}
+impl<T: ?Sized + GetSexp + Types + Length + Attributes> AsStrIter for T {}
 
 impl TryFrom<&Robj> for StrIter {
     type Error = Error;

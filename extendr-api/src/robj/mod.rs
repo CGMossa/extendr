@@ -760,7 +760,7 @@ pub trait Eval: GetSexp {
     }
 }
 
-impl Eval for Robj {}
+impl<T: ?Sized + GetSexp> Eval for T {}
 
 /// Generic access to typed slices in an Robj.
 pub trait AsTypedSlice<'a, T>
@@ -770,7 +770,9 @@ where
     fn try_into_typed_slice(&self) -> Result<&'a [T]>;
     fn try_into_typed_slice_mut(&mut self) -> Result<&'a mut [T]>;
 
+    #[deprecated]
     fn as_typed_slice(&self) -> Option<&'a [T]>;
+    #[deprecated]
     fn as_typed_slice_mut(&mut self) -> Option<&'a mut [T]>;
 }
 
