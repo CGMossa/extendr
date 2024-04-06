@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/wrapper/matrix.rs`."><title>matrix.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (8df7e723e 2024-03-30)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/wrapper/matrix.rs`."><title>matrix.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -567,6 +567,29 @@
 <a href="#565" id="565">565</a>
 <a href="#566" id="566">566</a>
 <a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Wrappers for matrices with deferred arithmetic.
 </span><span class="kw">use </span><span class="self">self</span>::robj::{AsTypedSlice, Robj};
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
@@ -606,14 +629,33 @@
 <span class="kw">pub type </span>RColumn&lt;T&gt; = RArray&lt;T, [usize; <span class="number">1</span>]&gt;;
 <span class="kw">pub type </span>RMatrix&lt;T&gt; = RArray&lt;T, [usize; <span class="number">2</span>]&gt;;
 <span class="kw">pub type </span>RMatrix3D&lt;T&gt; = RArray&lt;T, [usize; <span class="number">3</span>]&gt;;
+<span class="comment">// impl&lt;'a, T&gt; RMatrix&lt;T&gt;
+// where
+//     T::ScalarType: ToVectorValue  'a,
+//     // Robj: AsTypedSlice&lt;'a, T::ScalarType&gt;
+//     Robj: AsTypedSlice&lt;'a, T&gt;,
+//     T: RTypeAssoc + 'a,
+// {
+//     pub fn new(nrow: usize, ncol: usize) -&gt; Self {
+//         let sexptype = T::ScalarType::sexptype();
+//         let matrix = Robj::alloc_matrix(sexptype, nrow as _, ncol as _);
+//         // todo!()
+//         // this is pretty much the same?
+//         let mut robj = matrix;
+//         let slice = robj.as_typed_slice_mut().unwrap();
+//         let data = slice.as_mut_ptr();
+//         RArray::from_parts(robj, data, [nrow, ncol])
+//     }
+// }
 
-<span class="kw">impl</span>&lt;T&gt; RMatrix&lt;T&gt;
+</span><span class="kw">impl</span>&lt;T&gt; RMatrix&lt;T&gt;
 <span class="kw">where
     </span>T: ToVectorValue,
     Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Returns an [`RMatrix`] with dimensions according to `nrow` and `ncol`,
-    /// with arbitrary entries.
+    /// with arbitrary entries. To initialize a matrix containing only `NA`
+    /// values, use [`RMatrix::new_with_na`].
     </span><span class="kw">pub fn </span>new(nrow: usize, ncol: usize) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>sexptype = T::sexptype();
         <span class="kw">let </span>matrix = Robj::alloc_matrix(sexptype, nrow <span class="kw">as _</span>, ncol <span class="kw">as _</span>);
@@ -623,14 +665,14 @@
 
 <span class="kw">impl</span>&lt;T&gt; RMatrix&lt;T&gt;
 <span class="kw">where
-    </span>T: CanBeNA + ToVectorValue,
+    </span>T: ToVectorValue + CanBeNA,
     Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
 {
     <span class="doccomment">/// Returns an [`RMatrix`] with dimensions according to `nrow` and `ncol`,
     /// with all entries set to `NA`.
     ///
-    /// Note that since `RAW` cannot represent `NA` in R,
-    /// then this isn't implemented for [`Rbyte`]
+    /// Note that since [`Raw`] does not have an NA representation in R,
+    /// this method is not implemented for [`Rbyte`].
     </span><span class="kw">pub fn </span>new_with_na(nrow: usize, ncol: usize) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span><span class="kw-2">mut </span>matrix = <span class="self">Self</span>::new(nrow, ncol);
         <span class="kw">if </span>nrow != <span class="number">0 </span>|| ncol != <span class="number">0 </span>{
@@ -1042,37 +1084,41 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use crate as </span>extendr_api;
     <span class="kw">use </span>extendr_engine::with_r;
     <span class="kw">use </span>prelude::{Rcplx, Rfloat, Rint};
-
-    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
     <span class="attr">#[test]
     #[ignore]
     </span><span class="kw">fn </span>test_empty_matrix_new() {
         <span class="macro">dbg!</span>(<span class="string">"print like R"</span>);
         with_r(|| {
-            <span class="kw">let </span>m: RMatrix&lt;Rbyte&gt; = RMatrix::new(<span class="number">10</span>, <span class="number">2</span>); <span class="comment">// possible!
+            <span class="comment">// These are arbitrarily filled. We cannot create assertions for them.
+            </span><span class="kw">let </span>m: RMatrix&lt;Rbyte&gt; = RMatrix::new(<span class="number">5</span>, <span class="number">2</span>); <span class="comment">// possible!
             </span><span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
-            <span class="kw">let </span>m: RMatrix&lt;Rbool&gt; = RMatrix::new(<span class="number">10</span>, <span class="number">2</span>);
+            <span class="kw">let </span>m: RMatrix&lt;Rbool&gt; = RMatrix::new(<span class="number">5</span>, <span class="number">2</span>);
             <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
-            <span class="kw">let </span>m: RMatrix&lt;Rint&gt; = RMatrix::new(<span class="number">10</span>, <span class="number">2</span>);
+            <span class="kw">let </span>m: RMatrix&lt;Rint&gt; = RMatrix::new(<span class="number">5</span>, <span class="number">2</span>);
             <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
-            <span class="kw">let </span>m: RMatrix&lt;Rfloat&gt; = RMatrix::new(<span class="number">10</span>, <span class="number">2</span>);
+            <span class="kw">let </span>m: RMatrix&lt;Rfloat&gt; = RMatrix::new(<span class="number">5</span>, <span class="number">2</span>);
             <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
-            <span class="kw">let </span>m: RMatrix&lt;Rcplx&gt; = RMatrix::new(<span class="number">10</span>, <span class="number">2</span>);
+            <span class="kw">let </span>m: RMatrix&lt;Rcplx&gt; = RMatrix::new(<span class="number">5</span>, <span class="number">2</span>);
             <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
 
             <span class="comment">// let m: RMatrix&lt;Rbyte&gt; = RMatrix::new_with_na(10, 2); // not possible!
-            </span><span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
-            <span class="kw">let </span>m: RMatrix&lt;Rbool&gt; = RMatrix::new_with_na(<span class="number">10</span>, <span class="number">2</span>);
-            <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
+            // unsafe { Rf_PrintValue(m.get()) };
+            </span><span class="kw">let </span>m: RMatrix&lt;Rbool&gt; = RMatrix::new_with_na(<span class="number">10</span>, <span class="number">2</span>);
+            <span class="macro">assert_eq!</span>(<span class="macro">R!</span>(<span class="string">"matrix(NA, 10, 2)"</span>).unwrap(), m.into_robj());
+
             <span class="kw">let </span>m: RMatrix&lt;Rint&gt; = RMatrix::new_with_na(<span class="number">10</span>, <span class="number">2</span>);
-            <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
+            <span class="macro">assert_eq!</span>(<span class="macro">R!</span>(<span class="string">"matrix(NA_integer_, 10, 2)"</span>).unwrap(), m.into_robj());
+
             <span class="kw">let </span>m: RMatrix&lt;Rfloat&gt; = RMatrix::new_with_na(<span class="number">10</span>, <span class="number">2</span>);
-            <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
+            <span class="macro">assert_eq!</span>(<span class="macro">R!</span>(<span class="string">"matrix(NA_real_, 10, 2)"</span>).unwrap(), m.into_robj());
+
             <span class="kw">let </span>m: RMatrix&lt;Rcplx&gt; = RMatrix::new_with_na(<span class="number">10</span>, <span class="number">2</span>);
-            <span class="kw">unsafe </span>{ Rf_PrintValue(m.get()) };
+            <span class="macro">assert_eq!</span>(<span class="macro">R!</span>(<span class="string">"matrix(NA_complex_, 10, 2)"</span>).unwrap(), m.into_robj());
         });
     }
 
@@ -1129,7 +1175,7 @@
             <span class="macro">vec!</span>[<span class="number">15.0</span>, <span class="number">16.0</span>, <span class="number">22.0</span>, <span class="number">3.0</span>, <span class="number">9.0</span>].try_into().unwrap(),
         ];
         <span class="kw">let </span>(n_x, n_y) = (<span class="number">5</span>, <span class="number">5</span>);
-        <span class="kw">let </span>matrix = RMatrix::new_matrix(n_x, n_y, |r, c| res[c][r]);
+        <span class="kw">let </span>_matrix = RMatrix::new_matrix(n_x, n_y, |r, c| res[c][r]);
 
         }
     }

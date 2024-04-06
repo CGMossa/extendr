@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-macros/src/wrappers.rs`."><title>wrappers.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-e935ef01ae1c1829.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (8df7e723e 2024-03-30)" data-channel="nightly" data-search-js="search-42d8da7a6b9792c2.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-4c98445ec4002617.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-12cf3b4f4f9dc36d.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-macros/src/wrappers.rs`."><title>wrappers.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
             <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
     <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../extendr_macros/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
@@ -497,6 +497,26 @@
 <a href="#495" id="495">495</a>
 <a href="#496" id="496">496</a>
 <a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! This is responsible for generating the C functions that act as wrappers of
 //! the exported Rust functions.
 //!
@@ -539,7 +559,7 @@
     attrs: <span class="kw-2">&amp;</span>[syn::Attribute],
     sig: <span class="kw-2">&amp;mut </span>syn::Signature,
     self_ty: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>syn::Type&gt;,
-) {
+) -&gt; syn::Result&lt;()&gt; {
     <span class="kw">let </span>rust_name = sig.ident.clone();
 
     <span class="kw">let </span>r_name_str = <span class="kw">if let </span><span class="prelude-val">Some</span>(r_name) = opts.r_name.as_ref() {
@@ -606,12 +626,15 @@
     // impl-block. Functions without a self-arg, are regarded as any other
     // function.
 
-    </span><span class="kw">let </span>formal_args: Punctuated&lt;FnArg, <span class="macro">Token!</span>[,]&gt; = inputs
+    </span><span class="kw">let </span>formal_args = inputs
         .iter()
         .map(|input| translate_formal(input, self_ty))
-        .collect();
+        .collect::&lt;syn::Result&lt;Punctuated&lt;FnArg, <span class="macro">Token!</span>[,]&gt;&gt;&gt;()<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>convert_args: Vec&lt;syn::Stmt&gt; = inputs.iter().map(translate_to_robj).collect();
+    <span class="kw">let </span>convert_args: Vec&lt;syn::Stmt&gt; = inputs
+        .iter()
+        .map(translate_to_robj)
+        .collect::&lt;syn::Result&lt;Vec&lt;syn::Stmt&gt;&gt;&gt;()<span class="question-mark">?</span>;
 
     <span class="kw">let </span>actual_args: Punctuated&lt;Expr, <span class="macro">Token!</span>[,]&gt; = inputs
         .iter()
@@ -621,7 +644,7 @@
     <span class="kw">let </span>meta_args: Vec&lt;Expr&gt; = inputs
         .iter_mut()
         .map(|input| translate_meta_arg(input, self_ty))
-        .collect();
+        .collect::&lt;syn::Result&lt;Vec&lt;Expr&gt;&gt;&gt;()<span class="question-mark">?</span>;
 
     <span class="comment">// Generate wrappers for rust functions to be called from R.
     // Example:
@@ -757,6 +780,8 @@
             })
         }
     ));
+
+    <span class="prelude-val">Ok</span>(())
 }
 
 <span class="comment">// Extract doc strings from attributes.
@@ -835,7 +860,7 @@
 }
 
 <span class="comment">// Generate a list of arguments for the wrapper. All arguments are SEXP for .Call in R.
-</span><span class="kw">pub fn </span>translate_formal(input: <span class="kw-2">&amp;</span>FnArg, self_ty: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>syn::Type&gt;) -&gt; FnArg {
+</span><span class="kw">pub fn </span>translate_formal(input: <span class="kw-2">&amp;</span>FnArg, self_ty: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>syn::Type&gt;) -&gt; syn::Result&lt;FnArg&gt; {
     <span class="kw">match </span>input {
         <span class="comment">// function argument.
         </span>FnArg::Typed(pattype) =&gt; {
@@ -844,23 +869,28 @@
                 syn::Pat::Ident(<span class="kw-2">ref </span>pat_ident) =&gt; <span class="kw-2">&amp;</span>pat_ident.ident,
                 <span class="kw">_ </span>=&gt; <span class="macro">todo!</span>(),
             };
-            <span class="macro">parse_quote!</span> { #pat_ident : extendr_api::SEXP }
+            <span class="prelude-val">Ok</span>(<span class="macro">parse_quote!</span> { #pat_ident : extendr_api::SEXP })
         }
         <span class="comment">// &amp;self / &amp;mut self
         </span>FnArg::Receiver(<span class="kw-2">ref </span>receiver) =&gt; {
             <span class="kw">if </span>!receiver.attrs.is_empty() || receiver.reference.is_none() {
-                <span class="macro">quote!</span>(<span class="macro">compile_error!</span>(<span class="string">"expected &amp;self or &amp;mut self"</span>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new_spanned(
+                    input,
+                    <span class="string">"expected &amp;self or &amp;mut self"</span>,
+                ));
             }
             <span class="kw">if </span>self_ty.is_none() {
-                <span class="macro">quote!</span>(<span class="macro">compile_error!</span>(<span class="string">"found &amp;self in non-impl function - have you missed the #[extendr] before the impl?"</span>));
+                <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new_spanned(
+                    input,<span class="string">"found &amp;self in non-impl function - have you missed the #[extendr] before the impl?"
+                </span>));
             }
-            <span class="macro">parse_quote!</span> { _self : extendr_api::SEXP }
+            <span class="prelude-val">Ok</span>(<span class="macro">parse_quote!</span> { _self : extendr_api::SEXP })
         }
     }
 }
 
 <span class="comment">// Generate code to make a metadata::Arg.
-</span><span class="kw">fn </span>translate_meta_arg(input: <span class="kw-2">&amp;mut </span>FnArg, self_ty: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>syn::Type&gt;) -&gt; Expr {
+</span><span class="kw">fn </span>translate_meta_arg(input: <span class="kw-2">&amp;mut </span>FnArg, self_ty: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>syn::Type&gt;) -&gt; syn::Result&lt;Expr&gt; {
     <span class="kw">match </span>input {
         <span class="comment">// function argument.
         </span>FnArg::Typed(<span class="kw-2">ref mut </span>pattype) =&gt; {
@@ -878,30 +908,37 @@
             } <span class="kw">else </span>{
                 <span class="macro">quote!</span>(<span class="prelude-val">None</span>)
             };
-            <span class="macro">parse_quote!</span> {
+            <span class="prelude-val">Ok</span>(<span class="macro">parse_quote!</span> {
                 extendr_api::metadata::Arg {
                     name: #name_string,
                     arg_type: #type_string,
                     default: #default
                 }
-            }
+            })
         }
         <span class="comment">// &amp;self
         </span>FnArg::Receiver(<span class="kw-2">ref </span>receiver) =&gt; {
             <span class="kw">if </span>!receiver.attrs.is_empty() || receiver.reference.is_none() {
-                <span class="macro">panic!</span>(<span class="string">"expected &amp;self or &amp;mut self"</span>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new_spanned(
+                    input,
+                    <span class="string">"expected &amp;self or &amp;mut self"</span>,
+                ));
             }
             <span class="kw">if </span>self_ty.is_none() {
-                <span class="macro">panic!</span>(<span class="string">"found &amp;self in non-impl function - have you missed the #[extendr] before the impl?"</span>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new_spanned(
+                    input,
+            <span class="string">"found &amp;self in non-impl function - have you missed the #[extendr] before the impl?"
+        </span>)
+    );
             }
             <span class="kw">let </span>type_string = type_name(self_ty.unwrap());
-            <span class="macro">parse_quote!</span> {
+            <span class="prelude-val">Ok</span>(<span class="macro">parse_quote!</span> {
                 extendr_api::metadata::Arg {
                     name: <span class="string">"self"</span>,
                     arg_type: #type_string,
                     default: <span class="prelude-val">None
                 </span>}
-            }
+            })
         }
     }
 }
@@ -910,7 +947,7 @@
 /// This maintains the lifetime of references.
 ///
 /// These conversions are from R into Rust
-</span><span class="kw">fn </span>translate_to_robj(input: <span class="kw-2">&amp;</span>FnArg) -&gt; syn::Stmt {
+</span><span class="kw">fn </span>translate_to_robj(input: <span class="kw-2">&amp;</span>FnArg) -&gt; syn::Result&lt;syn::Stmt&gt; {
     <span class="kw">match </span>input {
         FnArg::Typed(<span class="kw-2">ref </span>pattype) =&gt; {
             <span class="kw">let </span>pat = <span class="kw-2">&amp;</span>pattype.pat.as_ref();
@@ -918,14 +955,17 @@
                 <span class="kw">let </span>ident = <span class="kw-2">&amp;</span>ident.ident;
                 <span class="kw">let </span>varname = <span class="macro">format_ident!</span>(<span class="string">"_{}_robj"</span>, ident);
                 <span class="comment">//TODO: no need to protect incoming data from R
-                </span><span class="macro">parse_quote!</span> { <span class="kw">let </span>#varname = extendr_api::robj::Robj::from_sexp(#ident); }
+                </span><span class="prelude-val">Ok</span>(<span class="macro">parse_quote!</span> { <span class="kw">let </span>#varname = extendr_api::robj::Robj::from_sexp(#ident); })
             } <span class="kw">else </span>{
-                <span class="macro">parse_quote!</span> { <span class="macro">compile_error!</span>(<span class="string">"expect identifier as arg name"</span>) }
+                <span class="prelude-val">Err</span>(syn::Error::new_spanned(
+                    input,
+                    <span class="string">"expect identifier as arg name"</span>,
+                ))
             }
         }
         FnArg::Receiver(<span class="kw">_</span>) =&gt; {
             <span class="comment">//TODO: no need to protect incoming data from R
-            </span><span class="macro">parse_quote!</span> { <span class="kw">let </span><span class="kw-2">mut </span>_self_robj = extendr_api::robj::Robj::from_sexp(_self); }
+            </span><span class="prelude-val">Ok</span>(<span class="macro">parse_quote!</span> { <span class="kw">let </span><span class="kw-2">mut </span>_self_robj = extendr_api::robj::Robj::from_sexp(_self); })
         }
     }
 }
