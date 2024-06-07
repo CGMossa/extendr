@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-macros/src/dataframe.rs`."><title>dataframe.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../extendr_macros/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-macros/src/dataframe.rs`."><title>dataframe.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (98489f248 2024-06-06)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -55,34 +53,18 @@
 <a href="#53" id="53">53</a>
 <a href="#54" id="54">54</a>
 <a href="#55" id="55">55</a>
-<a href="#56" id="56">56</a>
-<a href="#57" id="57">57</a>
-<a href="#58" id="58">58</a>
-<a href="#59" id="59">59</a>
-<a href="#60" id="60">60</a>
-<a href="#61" id="61">61</a>
-<a href="#62" id="62">62</a>
-<a href="#63" id="63">63</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>proc_macro::TokenStream;
 <span class="kw">use </span>quote::quote;
 <span class="kw">use </span>syn::{parse_macro_input, Data, DataStruct, DeriveInput};
 
-<span class="comment">//TODO: Add these options to the macro:
-// data.frame(..., row.names = NULL, check.rows = FALSE,
-//     check.names = TRUE, fix.empty.names = TRUE,
-//     stringsAsFactors = FALSE)
-//
-// First, ensure that these names aren't fields in the struct.
-// Then include them.
-
-</span><span class="kw">fn </span>derive_struct_into_dataframe(input: <span class="kw-2">&amp;</span>DeriveInput, datastruct: <span class="kw-2">&amp;</span>DataStruct) -&gt; TokenStream {
+<span class="kw">fn </span>parse_struct(input: <span class="kw-2">&amp;</span>DeriveInput, datastruct: <span class="kw-2">&amp;</span>DataStruct) -&gt; TokenStream {
     <span class="kw">let </span>structname = <span class="kw-2">&amp;</span>input.ident;
     <span class="kw">let </span><span class="kw-2">mut </span>a = Vec::new();
     <span class="kw">for </span>f <span class="kw">in </span><span class="kw-2">&amp;</span>datastruct.fields {
         a.push(f.ident.clone());
     }
     <span class="macro">quote!</span> {
-        <span class="kw">impl </span>IntoDataframe&lt;#structname&gt; <span class="kw">for </span>Vec&lt;#structname&gt;
+        <span class="kw">impl </span>IntoDataFrameRow&lt;#structname&gt; <span class="kw">for </span>Vec&lt;#structname&gt;
         {
             <span class="kw">fn </span>into_dataframe(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Dataframe&lt;#structname&gt;&gt; {
                 #(<span class="kw">let </span><span class="kw-2">mut </span>#a = Vec::with_capacity(<span class="self">self</span>.len());)*
@@ -97,9 +79,9 @@
             }
         }
 
-        <span class="kw">impl</span>&lt;I&gt; IntoDataframe&lt;#structname&gt; <span class="kw">for </span>(I,)
+        <span class="kw">impl</span>&lt;I&gt; IntoDataFrameRow&lt;#structname&gt; <span class="kw">for </span>(I,)
         <span class="kw">where
-            </span>I: ExactSizeIterator&lt;Item = #structname&gt;,
+            </span>I : ExactSizeIterator&lt;Item=#structname&gt;,
         {
             <span class="doccomment">/// Thanks to RFC 2451, we need to wrap a generic iterator in a tuple!
             </span><span class="kw">fn </span>into_dataframe(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Dataframe&lt;#structname&gt;&gt; {
@@ -122,7 +104,7 @@
     <span class="kw">let </span>input: DeriveInput = <span class="macro">parse_macro_input!</span>(item <span class="kw">as </span>DeriveInput);
 
     <span class="kw">match </span><span class="kw-2">&amp;</span>input.data {
-        Data::Struct(datastruct) =&gt; derive_struct_into_dataframe(<span class="kw-2">&amp;</span>input, datastruct),
+        Data::Struct(datastruct) =&gt; parse_struct(<span class="kw-2">&amp;</span>input, datastruct),
         <span class="kw">_ </span>=&gt; <span class="macro">quote!</span>(compile_error(<span class="string">"IntoDataFrameRow expected a struct."</span>)).into(),
     }
 }

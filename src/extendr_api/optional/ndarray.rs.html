@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/optional/ndarray.rs`."><title>ndarray.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/optional/ndarray.rs`."><title>ndarray.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (98489f248 2024-06-06)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -315,13 +313,27 @@
 <a href="#313" id="313">313</a>
 <a href="#314" id="314">314</a>
 <a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
 </pre></div><pre class="rust"><code><span class="doccomment">/*!
 Defines conversions between R objects and the [`ndarray`](https://docs.rs/ndarray/latest/ndarray/) crate, which offers native Rust array types and numerical computation routines.
 
 To enable these conversions, you must first enable the `ndarray` feature for extendr:
 ```toml
 [dependencies]
-extendr-api = { version = "0.6", features = ["ndarray"] }
+extendr-api = { version = "0.4", features = ["ndarray"] }
 ```
 
 Specifically, extendr supports the following conversions:
@@ -373,72 +385,85 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
 */
 </span><span class="attr">#[doc(hidden)]
 </span><span class="kw">use </span>ndarray::prelude::<span class="kw-2">*</span>;
-<span class="kw">use </span>ndarray::Data;
+<span class="kw">use </span>ndarray::{Data, ShapeBuilder};
 
 <span class="kw">use </span><span class="kw">crate</span>::prelude::{c64, dim_symbol, Rcplx, Rfloat, Rint};
 <span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
-<span class="comment">// TODO: Use the AsTypedSlice route for this
+<span class="macro">macro_rules!</span> make_array_view_1 {
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$error_fn</span>: expr) =&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>Robj&gt; <span class="kw">for </span>ArrayView1&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
+            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw">crate</span>::Error;
 
-</span><span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>ArrayView2&lt;<span class="lifetime">'_</span>, T&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = <span class="kw">crate</span>::Error;
-    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">if </span>!robj.is_matrix() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj.clone()));
+            <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+                    <span class="prelude-val">Ok</span>(ArrayView1::&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt;<span class="macro-nonterminal">::from</span>(v))
+                } <span class="kw">else </span>{
+                    <span class="prelude-val">Err</span>(<span class="macro-nonterminal">$error_fn</span>(robj.clone()))
+                }
+            }
         }
-        <span class="kw">let </span>nrows = robj.nrows();
-        <span class="kw">let </span>ncols = robj.ncols();
-        <span class="kw">let </span>v = robj.try_into_typed_slice()<span class="question-mark">?</span>;
-        <span class="comment">// use fortran order.
-        </span><span class="kw">let </span>shape = (nrows, ncols).into_shape().f();
-        <span class="kw">return </span>ArrayView2::from_shape(shape, v).map_err(Error::NDArrayShapeError);
-    }
+
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>ArrayView1&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
+            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw">crate</span>::Error;
+
+            <span class="kw">fn </span>try_from(robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                <span class="self">Self</span>::try_from(<span class="kw-2">&amp;</span>robj)
+            }
+        }
+    };
 }
 
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>ArrayView1&lt;<span class="lifetime">'_</span>, T&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = <span class="kw">crate</span>::Error;
+<span class="macro">macro_rules!</span> make_array_view_2 {
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$error_str</span>: expr, <span class="macro-nonterminal">$error_fn</span>: expr) =&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'_ </span>Robj&gt; <span class="kw">for </span>ArrayView2&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
+            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw">crate</span>::Error;
+            <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                <span class="kw">if </span>robj.is_matrix() {
+                    <span class="kw">let </span>nrows = robj.nrows();
+                    <span class="kw">let </span>ncols = robj.ncols();
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+                        <span class="comment">// use fortran order.
+                        </span><span class="kw">let </span>shape = (nrows, ncols).into_shape().f();
+                        <span class="kw">return </span>ArrayView2::from_shape(shape, v)
+                            .map_err(|err| Error::NDArrayShapeError(err));
+                    } <span class="kw">else </span>{
+                        <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="macro-nonterminal">$error_fn</span>(robj.clone()));
+                    }
+                }
+                <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedMatrix(robj.clone()));
+            }
+        }
 
-    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>v = robj.try_into_typed_slice()<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(ArrayView1::&lt;<span class="lifetime">'_</span>, T&gt;::from(v))
-    }
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; TryFrom&lt;Robj&gt; <span class="kw">for </span>ArrayView2&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
+            <span class="kw">type </span><span class="macro-nonterminal">Error </span>= <span class="kw">crate</span>::Error;
+            <span class="kw">fn </span>try_from(robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+                <span class="self">Self</span>::try_from(<span class="kw-2">&amp;</span>robj)
+            }
+        }
+    };
 }
+<span class="macro">make_array_view_1!</span>(Rbool, Error::ExpectedLogical);
+<span class="macro">make_array_view_1!</span>(Rint, Error::ExpectedInteger);
+<span class="macro">make_array_view_1!</span>(i32, Error::ExpectedInteger);
+<span class="macro">make_array_view_1!</span>(Rfloat, Error::ExpectedReal);
+<span class="macro">make_array_view_1!</span>(f64, Error::ExpectedReal);
+<span class="macro">make_array_view_1!</span>(Rcplx, Error::ExpectedComplex);
+<span class="macro">make_array_view_1!</span>(c64, Error::ExpectedComplex);
+<span class="macro">make_array_view_1!</span>(Rstr, Error::ExpectedString);
 
-<span class="macro">impl_try_from_robj_ref!</span> {
-    ArrayView1&lt;<span class="lifetime">'_</span>, Rbool&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, Rint&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, i32&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, u32&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, u8&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, Rfloat&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, f64&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, Rcplx&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, Rcomplex&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, c64&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, Rstr&gt;
-    ArrayView1&lt;<span class="lifetime">'_</span>, CString&gt;
-}
-
-<span class="macro">impl_try_from_robj_ref!</span> {
-    ArrayView2&lt;<span class="lifetime">'_</span>, Rbool&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, Rint&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, i32&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, u32&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, u8&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, Rfloat&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, f64&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, Rcplx&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, Rcomplex&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, c64&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, Rstr&gt;
-    ArrayView2&lt;<span class="lifetime">'_</span>, CString&gt;
-}
+<span class="macro">make_array_view_2!</span>(Rbool, <span class="string">"Not a logical matrix."</span>, Error::ExpectedLogical);
+<span class="macro">make_array_view_2!</span>(Rint, <span class="string">"Not an integer matrix."</span>, Error::ExpectedInteger);
+<span class="macro">make_array_view_2!</span>(i32, <span class="string">"Not an integer matrix."</span>, Error::ExpectedInteger);
+<span class="macro">make_array_view_2!</span>(Rfloat, <span class="string">"Not a floating point matrix."</span>, Error::ExpectedReal);
+<span class="macro">make_array_view_2!</span>(f64, <span class="string">"Not a floating point matrix."</span>, Error::ExpectedReal);
+<span class="macro">make_array_view_2!</span>(
+    Rcplx,
+    <span class="string">"Not a complex number matrix."</span>,
+    Error::ExpectedComplex
+);
+<span class="macro">make_array_view_2!</span>(c64, <span class="string">"Not a complex number matrix."</span>, Error::ExpectedComplex);
+<span class="macro">make_array_view_2!</span>(Rstr, <span class="string">"Not a string matrix."</span>, Error::ExpectedString);
 
 <span class="kw">impl</span>&lt;A, S, D&gt; TryFrom&lt;<span class="kw-2">&amp;</span>ArrayBase&lt;S, D&gt;&gt; <span class="kw">for </span>Robj
 <span class="kw">where
@@ -457,25 +482,26 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
 
         // In general, transposing and then iterating an ndarray in C-order (`iter()`) is exactly
         // equivalent to iterating that same array in Fortan-order (which `ndarray` doesn't currently support)
-        </span>value
+        </span><span class="kw">let </span><span class="kw-2">mut </span>result = value
             .t()
             .iter()
             <span class="comment">// Since we only have a reference, we have to copy all elements so that we can own the entire R array
             </span>.copied()
-            .collect_robj()
-            .set_attrib(
-                dim_symbol(),
-                value
-                    .shape()
-                    .iter()
-                    .map(|x| i32::try_from(<span class="kw-2">*</span>x))
-                    .collect::&lt;std::result::Result&lt;Vec&lt;i32&gt;, &lt;i32 <span class="kw">as </span>TryFrom&lt;usize&gt;&gt;::Error&gt;&gt;()
-                    .map_err(|_err| {
-                        Error::Other(String::from(
-                            <span class="string">"One or more array dimensions were too large to be handled by R."</span>,
-                        ))
-                    })<span class="question-mark">?</span>,
-            )
+            .collect_robj();
+        result.set_attrib(
+            dim_symbol(),
+            value
+                .shape()
+                .iter()
+                .map(|x| i32::try_from(<span class="kw-2">*</span>x))
+                .collect::&lt;std::result::Result&lt;Vec&lt;i32&gt;, &lt;i32 <span class="kw">as </span>TryFrom&lt;usize&gt;&gt;::Error&gt;&gt;()
+                .map_err(|_err| {
+                    Error::Other(String::from(
+                        <span class="string">"One or more array dimensions were too large to be handled by R."</span>,
+                    ))
+                })<span class="question-mark">?</span>,
+        )<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(result)
     }
 }
 
@@ -497,7 +523,6 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>test {
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use crate as </span>extendr_api;
     <span class="kw">use </span>ndarray::array;
     <span class="kw">use </span>rstest::rstest;
 
@@ -538,11 +563,12 @@ For all array uses in Rust, refer to the [`ndarray::ArrayBase`] documentation, w
         <span class="attr">#[case] </span>right: ArrayBase&lt;DataType, DimType&gt;,
     ) <span class="kw">where
         </span>DataType: Data,
+        Error: std::fmt::Debug,
         <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; ArrayView&lt;<span class="lifetime">'a</span>, &lt;DataType <span class="kw">as </span>ndarray::RawData&gt;::Elem, DimType&gt;:
             TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>Robj, Error = Error&gt;,
         DimType: Dimension,
-        Error: std::fmt::Debug,
         &lt;DataType <span class="kw">as </span>ndarray::RawData&gt;::Elem: PartialEq + std::fmt::Debug,
+        Error: std::fmt::Debug,
     {
         <span class="comment">// Tests for the R → Rust conversion
         </span><span class="macro">test!</span> {

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["rint_helpers"],"struct":["Rint"]};
+window.SIDEBAR_ITEMS = {"struct":["Rint"]};

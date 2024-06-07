@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/mod.rs`."><title>mod.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/mod.rs`."><title>mod.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (98489f248 2024-06-06)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1093,127 +1091,6 @@
 <a href="#1091" id="1091">1091</a>
 <a href="#1092" id="1092">1092</a>
 <a href="#1093" id="1093">1093</a>
-<a href="#1094" id="1094">1094</a>
-<a href="#1095" id="1095">1095</a>
-<a href="#1096" id="1096">1096</a>
-<a href="#1097" id="1097">1097</a>
-<a href="#1098" id="1098">1098</a>
-<a href="#1099" id="1099">1099</a>
-<a href="#1100" id="1100">1100</a>
-<a href="#1101" id="1101">1101</a>
-<a href="#1102" id="1102">1102</a>
-<a href="#1103" id="1103">1103</a>
-<a href="#1104" id="1104">1104</a>
-<a href="#1105" id="1105">1105</a>
-<a href="#1106" id="1106">1106</a>
-<a href="#1107" id="1107">1107</a>
-<a href="#1108" id="1108">1108</a>
-<a href="#1109" id="1109">1109</a>
-<a href="#1110" id="1110">1110</a>
-<a href="#1111" id="1111">1111</a>
-<a href="#1112" id="1112">1112</a>
-<a href="#1113" id="1113">1113</a>
-<a href="#1114" id="1114">1114</a>
-<a href="#1115" id="1115">1115</a>
-<a href="#1116" id="1116">1116</a>
-<a href="#1117" id="1117">1117</a>
-<a href="#1118" id="1118">1118</a>
-<a href="#1119" id="1119">1119</a>
-<a href="#1120" id="1120">1120</a>
-<a href="#1121" id="1121">1121</a>
-<a href="#1122" id="1122">1122</a>
-<a href="#1123" id="1123">1123</a>
-<a href="#1124" id="1124">1124</a>
-<a href="#1125" id="1125">1125</a>
-<a href="#1126" id="1126">1126</a>
-<a href="#1127" id="1127">1127</a>
-<a href="#1128" id="1128">1128</a>
-<a href="#1129" id="1129">1129</a>
-<a href="#1130" id="1130">1130</a>
-<a href="#1131" id="1131">1131</a>
-<a href="#1132" id="1132">1132</a>
-<a href="#1133" id="1133">1133</a>
-<a href="#1134" id="1134">1134</a>
-<a href="#1135" id="1135">1135</a>
-<a href="#1136" id="1136">1136</a>
-<a href="#1137" id="1137">1137</a>
-<a href="#1138" id="1138">1138</a>
-<a href="#1139" id="1139">1139</a>
-<a href="#1140" id="1140">1140</a>
-<a href="#1141" id="1141">1141</a>
-<a href="#1142" id="1142">1142</a>
-<a href="#1143" id="1143">1143</a>
-<a href="#1144" id="1144">1144</a>
-<a href="#1145" id="1145">1145</a>
-<a href="#1146" id="1146">1146</a>
-<a href="#1147" id="1147">1147</a>
-<a href="#1148" id="1148">1148</a>
-<a href="#1149" id="1149">1149</a>
-<a href="#1150" id="1150">1150</a>
-<a href="#1151" id="1151">1151</a>
-<a href="#1152" id="1152">1152</a>
-<a href="#1153" id="1153">1153</a>
-<a href="#1154" id="1154">1154</a>
-<a href="#1155" id="1155">1155</a>
-<a href="#1156" id="1156">1156</a>
-<a href="#1157" id="1157">1157</a>
-<a href="#1158" id="1158">1158</a>
-<a href="#1159" id="1159">1159</a>
-<a href="#1160" id="1160">1160</a>
-<a href="#1161" id="1161">1161</a>
-<a href="#1162" id="1162">1162</a>
-<a href="#1163" id="1163">1163</a>
-<a href="#1164" id="1164">1164</a>
-<a href="#1165" id="1165">1165</a>
-<a href="#1166" id="1166">1166</a>
-<a href="#1167" id="1167">1167</a>
-<a href="#1168" id="1168">1168</a>
-<a href="#1169" id="1169">1169</a>
-<a href="#1170" id="1170">1170</a>
-<a href="#1171" id="1171">1171</a>
-<a href="#1172" id="1172">1172</a>
-<a href="#1173" id="1173">1173</a>
-<a href="#1174" id="1174">1174</a>
-<a href="#1175" id="1175">1175</a>
-<a href="#1176" id="1176">1176</a>
-<a href="#1177" id="1177">1177</a>
-<a href="#1178" id="1178">1178</a>
-<a href="#1179" id="1179">1179</a>
-<a href="#1180" id="1180">1180</a>
-<a href="#1181" id="1181">1181</a>
-<a href="#1182" id="1182">1182</a>
-<a href="#1183" id="1183">1183</a>
-<a href="#1184" id="1184">1184</a>
-<a href="#1185" id="1185">1185</a>
-<a href="#1186" id="1186">1186</a>
-<a href="#1187" id="1187">1187</a>
-<a href="#1188" id="1188">1188</a>
-<a href="#1189" id="1189">1189</a>
-<a href="#1190" id="1190">1190</a>
-<a href="#1191" id="1191">1191</a>
-<a href="#1192" id="1192">1192</a>
-<a href="#1193" id="1193">1193</a>
-<a href="#1194" id="1194">1194</a>
-<a href="#1195" id="1195">1195</a>
-<a href="#1196" id="1196">1196</a>
-<a href="#1197" id="1197">1197</a>
-<a href="#1198" id="1198">1198</a>
-<a href="#1199" id="1199">1199</a>
-<a href="#1200" id="1200">1200</a>
-<a href="#1201" id="1201">1201</a>
-<a href="#1202" id="1202">1202</a>
-<a href="#1203" id="1203">1203</a>
-<a href="#1204" id="1204">1204</a>
-<a href="#1205" id="1205">1205</a>
-<a href="#1206" id="1206">1206</a>
-<a href="#1207" id="1207">1207</a>
-<a href="#1208" id="1208">1208</a>
-<a href="#1209" id="1209">1209</a>
-<a href="#1210" id="1210">1210</a>
-<a href="#1211" id="1211">1211</a>
-<a href="#1212" id="1212">1212</a>
-<a href="#1213" id="1213">1213</a>
-<a href="#1214" id="1214">1214</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! R object handling.
 //!
 //! See. [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html)
@@ -1225,15 +1102,22 @@
 //! * The interface should be friendly to R users without Rust experience.
 //!
 
-</span><span class="kw">use </span>libR_sys::<span class="kw-2">*</span>;
-<span class="kw">use </span>prelude::{c64, Rcplx};
+</span><span class="kw">use </span>std::collections::HashMap;
+<span class="kw">use </span>std::iter::IntoIterator;
+<span class="kw">use </span>std::ops::{Range, RangeInclusive};
 <span class="kw">use </span>std::os::raw;
 
-<span class="kw">use crate</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span>libR_sys::<span class="kw-2">*</span>;
+<span class="kw">use </span>SEXPTYPE::<span class="kw-2">*</span>;
+
+<span class="kw">pub use </span>into_robj::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>iter::<span class="kw-2">*</span>;
+<span class="kw">pub use </span>operators::Operators;
+<span class="kw">use </span>prelude::{c64, Rcplx};
+<span class="kw">pub use </span>rinternals::Rinternals;
 
 <span class="kw">use </span><span class="kw">crate</span>::scalar::{Rbool, Rfloat, Rint};
-<span class="kw">use </span>std::collections::HashMap;
-<span class="kw">use </span>std::ops::{Range, RangeInclusive};
+<span class="kw">use crate</span>::<span class="kw-2">*</span>;
 
 <span class="kw">mod </span>debug;
 <span class="kw">mod </span>into_robj;
@@ -1243,18 +1127,6 @@
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests;
-
-<span class="kw">pub use </span>into_robj::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>iter::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>operators::Operators;
-<span class="kw">pub use </span>operators::<span class="kw-2">*</span>;
-<span class="kw">pub use </span>rinternals::Rinternals;
-
-<span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RobjRef&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span>Sized&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>T);
-
-<span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>RobjMut&lt;<span class="lifetime">'a</span>, T: <span class="question-mark">?</span>Sized&gt;(<span class="kw">pub </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>T);
 
 <span class="doccomment">/// Wrapper for an R S-expression pointer (SEXP).
 ///
@@ -1342,20 +1214,14 @@
 }
 
 <span class="kw">pub trait </span>GetSexp {
-    <span class="doccomment">/// Get a copy of the underlying [SEXP].
+    <span class="doccomment">/// Get a copy of the underlying SEXP.
     ///
     /// # Safety
     ///
-    /// Access to a raw [SEXP] pointer can cause undefined behaviour and is not thread safe.
+    /// Access to a raw SEXP pointer can cause undefined behaviour and is not thread safe.
     </span><span class="kw">unsafe fn </span>get(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SEXP;
 
-    <span class="doccomment">/// Get a copy of the underlying [SEXP] through an exclusive reference.
-    ///
-    /// # Safety
-    ///
-    /// Ensure that you use this, and not `get`-variant, when you need to do
-    /// mutable operations.
-    </span><span class="kw">unsafe fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; SEXP;
+    <span class="kw">unsafe fn </span>get_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; SEXP;
 
     <span class="doccomment">/// Get a reference to a Robj for this type.
     </span><span class="kw">fn </span>as_robj(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Robj;
@@ -1388,10 +1254,11 @@
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instantiate and AltRep objects.
+    /// Creating this slice will also instantiate an Altrep objects.
     </span><span class="kw">unsafe fn </span>as_typed_slice_raw&lt;T&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[T] {
-        <span class="kw">let </span>data = DATAPTR_RO(<span class="self">self</span>.get()).cast();
-        std::slice::from_raw_parts(data, <span class="self">self</span>.len())
+        <span class="kw">let </span>len = XLENGTH(<span class="self">self</span>.get()) <span class="kw">as </span>usize;
+        <span class="kw">let </span>data = DATAPTR_RO(<span class="self">self</span>.get()) <span class="kw">as </span><span class="kw-2">*const </span>T;
+        std::slice::from_raw_parts(data, len)
     }
 
     <span class="doccomment">/// Get a mutable slice to this object's data.
@@ -1399,15 +1266,16 @@
     /// # Safety
     ///
     /// Unless the type is correct, this will cause undefined behaviour.
-    /// Creating this slice will also instantiate and AltRep objects.
+    /// Creating this slice will also instantiate Altrep objects.
     /// Not all objects (especially not list and strings) support this.
     </span><span class="kw">unsafe fn </span>as_typed_slice_raw_mut&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[T] {
-        <span class="kw">let </span>data = DATAPTR(<span class="self">self</span>.get_mut()).cast();
-        std::slice::from_raw_parts_mut(data, <span class="self">self</span>.len())
+        <span class="kw">let </span>len = XLENGTH(<span class="self">self</span>.get()) <span class="kw">as </span>usize;
+        <span class="kw">let </span>data = DATAPTR(<span class="self">self</span>.get_mut()) <span class="kw">as </span><span class="kw-2">*mut </span>T;
+        std::slice::from_raw_parts_mut(data, len)
     }
 }
 
-<span class="kw">impl</span>&lt;T: GetSexp + <span class="question-mark">?</span>Sized&gt; Slices <span class="kw">for </span>T {}
+<span class="kw">impl </span>Slices <span class="kw">for </span>Robj {}
 
 <span class="kw">pub trait </span>Length: GetSexp {
     <span class="doccomment">/// Get the extended length of the object.
@@ -1437,11 +1305,10 @@
     </span>}
 }
 
-<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + GetSexp&gt; Length <span class="kw">for </span>T {}
+<span class="kw">impl </span>Length <span class="kw">for </span>Robj {}
 
 <span class="kw">impl </span>Robj {
-    <span class="attr">#[allow(clippy::not_unsafe_ptr_arg_deref)]
-    </span><span class="kw">pub fn </span>from_sexp(sexp: SEXP) -&gt; <span class="self">Self </span>{
+    <span class="kw">pub fn </span>from_sexp(sexp: SEXP) -&gt; <span class="self">Self </span>{
         single_threaded(|| {
             <span class="kw">unsafe </span>{ ownership::protect(sexp) };
             Robj { inner: sexp }
@@ -1458,7 +1325,7 @@
 <span class="kw">pub trait </span>Types: GetSexp {
     <span class="attr">#[doc(hidden)]
     </span><span class="doccomment">/// Get the XXXSXP type of the object.
-    </span><span class="kw">fn </span>sexptype(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+    </span><span class="kw">fn </span>sexptype(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SEXPTYPE {
         <span class="kw">unsafe </span>{ TYPEOF(<span class="self">self</span>.get()) }
     }
 
@@ -1485,6 +1352,7 @@
     /// }
     /// ```
     </span><span class="kw">fn </span>rtype(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rtype {
+        <span class="kw">use </span>SEXPTYPE::<span class="kw-2">*</span>;
         <span class="kw">match </span><span class="self">self</span>.sexptype() {
             NILSXP =&gt; Rtype::Null,
             SYMSXP =&gt; Rtype::Symbol,
@@ -1509,12 +1377,16 @@
             EXTPTRSXP =&gt; Rtype::ExternalPtr,
             WEAKREFSXP =&gt; Rtype::WeakRef,
             RAWSXP =&gt; Rtype::Raw,
-            S4SXP =&gt; Rtype::S4,
+            <span class="attr">#[cfg(not(use_objsxp))]
+            </span>S4SXP =&gt; Rtype::S4,
+            <span class="attr">#[cfg(use_objsxp)]
+            </span>OBJSXP =&gt; Rtype::S4,
             <span class="kw">_ </span>=&gt; Rtype::Unknown,
         }
     }
 
     <span class="kw">fn </span>as_any(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Rany {
+        <span class="kw">use </span>SEXPTYPE::<span class="kw-2">*</span>;
         <span class="kw">unsafe </span>{
             <span class="kw">match </span><span class="self">self</span>.sexptype() {
                 NILSXP =&gt; Rany::Null(std::mem::transmute(<span class="self">self</span>.as_robj())),
@@ -1540,17 +1412,20 @@
                 EXTPTRSXP =&gt; Rany::ExternalPtr(std::mem::transmute(<span class="self">self</span>.as_robj())),
                 WEAKREFSXP =&gt; Rany::WeakRef(std::mem::transmute(<span class="self">self</span>.as_robj())),
                 RAWSXP =&gt; Rany::Raw(std::mem::transmute(<span class="self">self</span>.as_robj())),
-                S4SXP =&gt; Rany::S4(std::mem::transmute(<span class="self">self</span>.as_robj())),
+                <span class="attr">#[cfg(not(use_objsxp))]
+                </span>S4SXP =&gt; Rany::S4(std::mem::transmute(<span class="self">self</span>.as_robj())),
+                <span class="attr">#[cfg(use_objsxp)]
+                </span>OBJSXP =&gt; Rany::S4(std::mem::transmute(<span class="self">self</span>.as_robj())),
                 <span class="kw">_ </span>=&gt; Rany::Unknown(std::mem::transmute(<span class="self">self</span>.as_robj())),
             }
         }
     }
 }
 
-<span class="kw">impl</span>&lt;T: GetSexp + <span class="question-mark">?</span>Sized&gt; Types <span class="kw">for </span>T {}
+<span class="kw">impl </span>Types <span class="kw">for </span>Robj {}
 
 <span class="kw">impl </span>Robj {
-    <span class="doccomment">/// Is this object an `NA` scalar?
+    <span class="doccomment">/// Is this object is an `NA` scalar?
     /// Works for character, integer and numeric types.
     ///
     /// ```
@@ -1568,16 +1443,16 @@
         </span>} <span class="kw">else </span>{
             <span class="kw">unsafe </span>{
                 <span class="kw">let </span>sexp = <span class="self">self</span>.get();
-                <span class="comment">//TODO: use SexpAsPtr maybe?
-                </span><span class="kw">match </span><span class="self">self</span>.sexptype() {
-                    <span class="comment">// a character vector contains `CHARSXP`, and thus you
-                    // seldomly have `Robj`'s that are `CHARSXP` themselves
-                    </span>CHARSXP =&gt; sexp == libR_sys::R_NaString,
+                <span class="kw">use </span>SEXPTYPE::<span class="kw-2">*</span>;
+                <span class="kw">match </span><span class="self">self</span>.sexptype() {
                     STRSXP =&gt; STRING_ELT(sexp, <span class="number">0</span>) == libR_sys::R_NaString,
                     INTSXP =&gt; <span class="kw-2">*</span>(INTEGER(sexp)) == libR_sys::R_NaInt,
                     LGLSXP =&gt; <span class="kw-2">*</span>(LOGICAL(sexp)) == libR_sys::R_NaInt,
                     REALSXP =&gt; R_IsNA(<span class="kw-2">*</span>(REAL(sexp))) != <span class="number">0</span>,
                     CPLXSXP =&gt; R_IsNA((<span class="kw-2">*</span>COMPLEX(sexp)).r) != <span class="number">0</span>,
+                    <span class="comment">// a character vector contains `CHARSXP`, and thus you
+                    // seldom have `Robj`'s that are `CHARSXP` themselves
+                    </span>CHARSXP =&gt; sexp == libR_sys::R_NaString,
                     <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
                 }
             }
@@ -1599,7 +1474,7 @@
 
     <span class="doccomment">/// Convert an [`Robj`] into [`Integers`].
     </span><span class="kw">pub fn </span>as_integers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Integers&gt; {
-        <span class="self">self</span>.try_into().ok()
+        <span class="self">self</span>.clone().try_into().ok()
     }
 
     <span class="doccomment">/// Get a `Vec&lt;i32&gt;` copied from the object.
@@ -1819,32 +1694,15 @@
                     </span><span class="kw">if </span><span class="self">self</span>.len() != <span class="number">1 </span>{
                         <span class="kw">return </span><span class="prelude-val">None</span>;
                     }
-                    <span class="prelude-val">Some</span>(STRING_ELT(<span class="self">self</span>.get(), <span class="number">0</span>))
+                    STRING_ELT(<span class="self">self</span>.get(), <span class="number">0</span>)
                 }
-                CHARSXP =&gt; <span class="prelude-val">Some</span>(<span class="self">self</span>.get()),
-                SYMSXP =&gt; <span class="prelude-val">Some</span>(PRINTNAME(<span class="self">self</span>.get())),
-                <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
+                CHARSXP =&gt; <span class="self">self</span>.get(),
+                SYMSXP =&gt; PRINTNAME(<span class="self">self</span>.get()),
+                <span class="kw">_ </span>=&gt; <span class="kw">return </span><span class="prelude-val">None</span>,
             };
-
-            <span class="kw">let </span>charsxp = charsxp<span class="question-mark">?</span>;
-            <span class="kw">if </span>charsxp == R_NaString {
-                <span class="kw">return </span><span class="prelude-val">Some</span>(&lt;<span class="kw-2">&amp;</span>str&gt;::na());
-            }
-
-            <span class="kw">let </span>length = Rf_xlength(charsxp);
-            <span class="kw">let </span>all_bytes = std::slice::from_raw_parts(R_CHAR(charsxp) <span class="kw">as _</span>, length <span class="kw">as _</span>);
-            <span class="prelude-val">Some</span>(std::str::from_utf8_unchecked(all_bytes))
+            rstr::charsxp_to_str(charsxp)
         }
     }
-    <span class="doccomment">/// Under no circumstance, is it safe to get mutable access to a `CHARSXP`.
-    ///
-    /// # Safety
-    ///
-    /// It is not safe, you're not allowed to get this.
-    </span><span class="attr">#[deprecated = <span class="string">"It is dangerous to modify a `CHARSXP`"</span>]
-    </span><span class="kw">pub unsafe fn </span>as_str_mut&lt;<span class="lifetime">'a</span>&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>str&gt; {
-        <span class="prelude-val">None
-    </span>}
 
     <span class="doccomment">/// Get a scalar integer.
     /// ```
@@ -1976,177 +1834,76 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + GetSexp&gt; Eval <span class="kw">for </span>T {}
+<span class="kw">impl </span>Eval <span class="kw">for </span>Robj {}
 
 <span class="doccomment">/// Generic access to typed slices in an Robj.
 </span><span class="kw">pub trait </span>AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;
 <span class="kw">where
     </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
 {
-    <span class="kw">fn </span>try_into_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;;
-    <span class="kw">fn </span>try_into_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;;
+    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
+    {
+        <span class="prelude-val">None
+    </span>}
 
-    <span class="attr">#[deprecated]
-    </span><span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt;;
-    <span class="attr">#[deprecated]
-    </span><span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;;
-}
-
-<span class="doccomment">/// Trait for providing rust with a typed pointer to an R scalar/vector type.
-///
-/// R data are hidden behind [`SEXP`] opaque pointers with an identifier
-/// for the underlying r storage type. Thus this trait is only meaningful for
-/// [`SEXP`]-wrappers.
-///
-/// [`SEXP`]: libR_sys::SEXP
-/// Marker for the R object modes / types represented as a value.
-</span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">trait </span>SexpAsPtr: Sized {
-    <span class="doccomment">/// See [`Rtype`] for reference.
-    </span><span class="kw">const </span>R_TYPE_ID: u32;
-    <span class="doccomment">/// Corresponding rust type to the type in C (in R's C-API)
-    </span><span class="kw">type </span>CType;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; error::Error;
-    <span class="doccomment">/// Returns a typed mutable pointer to the underlying value
-    </span><span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
-        DATAPTR(x).cast()
-    }
-    <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ DATAPTR(x).cast() }
-    }
+    <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt;
+    <span class="kw">where
+        </span><span class="self">Self</span>: <span class="lifetime">'a</span>,
+    {
+        <span class="prelude-val">None
+    </span>}
 }
 
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rbool {
-    <span class="doccomment">/// Corresponds to `logical` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = LGLSXP;
-    <span class="kw">type </span>CType = raw::c_int;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedLogical;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>i32 {
-    <span class="doccomment">/// Corresponds to `integer` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
-    <span class="kw">type </span>CType = raw::c_int;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedInteger;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>u32 {
-    <span class="doccomment">/// Corresponds to `integer` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
-    <span class="kw">type </span>CType = raw::c_int;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedInteger;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rint {
-    <span class="doccomment">/// Corresponds to `integer` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = INTSXP;
-    <span class="kw">type </span>CType = raw::c_int;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedInteger;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>f64 {
-    <span class="doccomment">/// Corresponds to `numeric` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = REALSXP;
-    <span class="kw">type </span>CType = <span class="self">Self</span>;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedReal;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rfloat {
-    <span class="doccomment">/// Corresponds to `numeric` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = REALSXP;
-    <span class="kw">type </span>CType = f64;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedReal;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>u8 {
-    <span class="kw">const </span>R_TYPE_ID: u32 = RAWSXP;
-    <span class="kw">type </span>CType = Rbyte;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedRaw;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rstr {
-    <span class="doccomment">/// Corresponds to `character` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = STRSXP;
-    <span class="kw">type </span>CType = SEXP;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedString;
-    <span class="kw">unsafe fn </span>as_mut_ptr(_sexp: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
-        std::ptr::null_mut()
-    }
-    <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
-    }
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>CString {
-    <span class="doccomment">/// Corresponds to `character` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = STRSXP;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedString;
-    <span class="kw">type </span>CType = SEXP;
-    <span class="kw">unsafe fn </span>as_mut_ptr(x: SEXP) -&gt; <span class="kw-2">*mut </span><span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
-    }
-    <span class="kw">unsafe fn </span>as_ptr(x: SEXP) -&gt; <span class="kw-2">*const </span><span class="self">Self </span>{
-        <span class="kw">unsafe </span>{ STRING_PTR(x).cast() }
-    }
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>c64 {
-    <span class="doccomment">/// Corresponds to `complex` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
-    <span class="kw">type </span>CType = Rcomplex;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedComplex;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rcplx {
-    <span class="doccomment">/// Corresponds to `complex` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
-    <span class="kw">type </span>CType = Rcomplex;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedComplex;
-}
-<span class="kw">impl </span>SexpAsPtr <span class="kw">for </span>Rcomplex {
-    <span class="doccomment">/// Corresponds to `complex` in R
-    </span><span class="kw">const </span>R_TYPE_ID: u32 = CPLXSXP;
-    <span class="kw">type </span>CType = Rcomplex;
-    <span class="kw">const </span>TYPE_ERROR: <span class="kw">fn</span>(robj::Robj) -&gt; Error = Error::ExpectedComplex;
-}
-
-<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt; <span class="kw">for </span>Robj
-<span class="kw">where
-    </span>T: SexpAsPtr,
-{
-    <span class="kw">fn </span>try_into_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt; {
-        <span class="kw">if </span><span class="self">self</span>.sexptype() != &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(T::TYPE_ERROR(<span class="self">self</span>.clone()));
-        }
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_ptr(<span class="self">self</span>.get());
-            <span class="prelude-val">Ok</span>(std::slice::from_raw_parts(ptr, <span class="self">self</span>.len()))
-        }
-    }
-
-    <span class="kw">fn </span>try_into_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt; {
-        <span class="kw">if </span><span class="self">self</span>.sexptype() != &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(T::TYPE_ERROR(<span class="self">self</span>.clone()));
-        }
-        <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_mut_ptr(<span class="self">self</span>.get_mut());
-            <span class="prelude-val">Ok</span>(std::slice::from_raw_parts_mut(ptr, <span class="self">self</span>.len()))
-        }
-    }
-
-    <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[T]&gt; {
-        <span class="kw">if </span><span class="self">self</span>.sexptype() == &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
-            <span class="kw">unsafe </span>{
-                <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_ptr(<span class="self">self</span>.get());
-                <span class="prelude-val">Some</span>(std::slice::from_raw_parts(ptr, <span class="self">self</span>.len()))
+<span class="macro">macro_rules!</span> make_typed_slice {
+    (<span class="macro-nonterminal">$</span><span class="kw">type</span>: <span class="macro-nonterminal">ty</span>, <span class="macro-nonterminal">$</span><span class="kw">fn</span>: <span class="macro-nonterminal">tt</span>, $(<span class="macro-nonterminal">$sexp</span>: tt),* ) =&gt; {
+        <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, <span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; <span class="kw">for </span><span class="macro-nonterminal">Robj
+        </span><span class="kw">where
+            </span><span class="self">Self </span>: <span class="lifetime">'a</span>,
+        {
+            <span class="kw">fn </span>as_typed_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>[<span class="macro-nonterminal">$</span><span class="kw">type</span>]&gt; {
+                <span class="kw">match </span><span class="macro-nonterminal">self</span>.sexptype() {
+                    $( <span class="macro-nonterminal">$sexp </span>)|* =&gt; {
+                        <span class="kw">unsafe </span>{
+                            <span class="kw">let </span>ptr = <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">self</span>.get()) <span class="kw">as </span><span class="kw-2">*const </span><span class="macro-nonterminal">$</span><span class="kw">type</span>;
+                            <span class="prelude-val">Some</span>(<span class="macro-nonterminal">std::slice::from_raw_parts</span>(ptr, <span class="self">self</span>.len()))
+                        }
+                    }
+                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None
+                </span>}
             }
-        } <span class="kw">else </span>{
-            <span class="prelude-val">None
-        </span>}
-    }
 
-    <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[T]&gt; {
-        <span class="kw">if </span><span class="self">self</span>.sexptype() == &lt;T <span class="kw">as </span>SexpAsPtr&gt;::R_TYPE_ID {
-            <span class="kw">unsafe </span>{
-                <span class="kw">let </span>ptr = &lt;T <span class="kw">as </span>SexpAsPtr&gt;::as_mut_ptr(<span class="self">self</span>.get_mut());
-                <span class="prelude-val">Some</span>(std::slice::from_raw_parts_mut(ptr, <span class="self">self</span>.len()))
+            <span class="kw">fn </span>as_typed_slice_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[<span class="macro-nonterminal">$</span><span class="kw">type</span>]&gt; {
+                <span class="kw">match </span><span class="macro-nonterminal">self</span>.sexptype() {
+                    $( <span class="macro-nonterminal">$sexp </span>)|* =&gt; {
+                        <span class="kw">unsafe </span>{
+                            <span class="kw">let </span>ptr = <span class="macro-nonterminal">$</span><span class="kw">fn</span>(<span class="macro-nonterminal">self</span>.get_mut()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="macro-nonterminal">$</span><span class="kw">type</span>;
+                            <span class="prelude-val">Some</span>(<span class="macro-nonterminal">std::slice::from_raw_parts_mut</span>(ptr, <span class="self">self</span>.len()))
+                        }
+                    }
+                    <span class="kw">_ </span>=&gt; <span class="prelude-val">None
+                </span>}
             }
-        } <span class="kw">else </span>{
-            <span class="prelude-val">None
-        </span>}
+        }
     }
 }
 
-<span class="doccomment">/// These are helper functions which give access to common properties of R objects.
+<span class="macro">make_typed_slice!</span>(Rbool, INTEGER, LGLSXP);
+<span class="macro">make_typed_slice!</span>(i32, INTEGER, INTSXP);
+<span class="macro">make_typed_slice!</span>(Rint, INTEGER, INTSXP);
+<span class="macro">make_typed_slice!</span>(f64, REAL, REALSXP);
+<span class="macro">make_typed_slice!</span>(Rfloat, REAL, REALSXP);
+<span class="macro">make_typed_slice!</span>(u8, RAW, RAWSXP);
+<span class="macro">make_typed_slice!</span>(Rstr, STRING_PTR, STRSXP);
+<span class="macro">make_typed_slice!</span>(c64, COMPLEX, CPLXSXP);
+<span class="macro">make_typed_slice!</span>(Rcplx, COMPLEX, CPLXSXP);
+<span class="macro">make_typed_slice!</span>(Rcomplex, COMPLEX, CPLXSXP);
+
+<span class="doccomment">/// Provides access to the attributes of an R object.
+///
+/// The `Attribute` trait provides a consistent interface to getting, setting, and checking for the presence of attributes in an R object.
+///
 </span><span class="attr">#[allow(non_snake_case)]
 </span><span class="kw">pub trait </span>Attributes: Types + Length {
     <span class="doccomment">/// Get a specific attribute as a borrowed `Robj` if it exists.
@@ -2165,7 +1922,7 @@
         Robj: From&lt;N&gt; + <span class="lifetime">'a</span>,
     {
         <span class="kw">let </span>name = Robj::from(name);
-        <span class="kw">if </span><span class="self">self</span>.sexptype() == CHARSXP {
+        <span class="kw">if </span><span class="self">self</span>.sexptype() == SEXPTYPE::CHARSXP {
             <span class="prelude-val">None
         </span>} <span class="kw">else </span>{
             <span class="comment">// FIXME: this attribute does not need protection
@@ -2185,7 +1942,7 @@
         Robj: From&lt;N&gt; + <span class="lifetime">'a</span>,
     {
         <span class="kw">let </span>name = Robj::from(name);
-        <span class="kw">if </span><span class="self">self</span>.sexptype() == CHARSXP {
+        <span class="kw">if </span><span class="self">self</span>.sexptype() == SEXPTYPE::CHARSXP {
             <span class="bool-val">false
         </span>} <span class="kw">else </span>{
             <span class="kw">unsafe </span>{ Rf_getAttrib(<span class="self">self</span>.get(), name.get()) != R_NilValue }
@@ -2199,11 +1956,12 @@
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
-    ///    let mut robj = r!("hello").set_attrib(sym!(xyz), 1)?;
+    ///    let mut robj = r!("hello");
+    ///    robj.set_attrib(sym!(xyz), 1)?;
     ///    assert_eq!(robj.get_attrib(sym!(xyz)), Some(r!(1)));
     /// }
     /// ```
-    </span><span class="kw">fn </span>set_attrib&lt;N, V&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: N, value: V) -&gt; <span class="prelude-ty">Result</span>&lt;Robj&gt;
+    </span><span class="kw">fn </span>set_attrib&lt;N, V&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, name: N, value: V) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;
     <span class="kw">where
         </span>N: Into&lt;Robj&gt;,
         V: Into&lt;Robj&gt;,
@@ -2212,17 +1970,13 @@
         <span class="kw">let </span>value = value.into();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>sexp = <span class="self">self</span>.get_mut();
-            single_threaded(|| {
-                catch_r_error(|| Rf_setAttrib(sexp, name.get(), value.get()))
-                    <span class="comment">// FIXME: there is no reason to re-wrap this, as this mutates
-                    // the input `self`, and returns another pointer to the same
-                    // object
-                    </span>.map(|<span class="kw">_</span>| Robj::from_sexp(sexp))
-            })
+            <span class="kw">let </span>result =
+                single_threaded(|| catch_r_error(|| Rf_setAttrib(sexp, name.get(), value.get())));
+            result.map(|<span class="kw">_</span>| <span class="self">self</span>)
         }
     }
 
-    <span class="doccomment">/// Get the names attribute as a string iterator if one exists.
+    <span class="doccomment">/// Get the `names` attribute as a string iterator if one exists.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -2239,12 +1993,12 @@
         </span>}
     }
 
-    <span class="doccomment">/// Return true if this object has names.
+    <span class="doccomment">/// Return true if this object has an attribute called `names`.
     </span><span class="kw">fn </span>has_names(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.has_attrib(wrapper::symbol::names_symbol())
     }
 
-    <span class="doccomment">/// Set the names attribute from a string iterator.
+    <span class="doccomment">/// Set the `names` attribute from a string iterator.
     ///
     /// Returns `Error::NamesLengthMismatch` if the length of the names does
     /// not match the length of the object.
@@ -2252,12 +2006,13 @@
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
-    ///     let mut obj = r!([1, 2, 3]).set_names(&amp;["a", "b", "c"]).unwrap();
+    ///     let mut obj = r!([1, 2, 3]);
+    ///     obj.set_names(&amp;["a", "b", "c"]).unwrap();
     ///     assert_eq!(obj.names().unwrap().collect::&lt;Vec&lt;_&gt;&gt;(), vec!["a", "b", "c"]);
     ///     assert_eq!(r!([1, 2, 3]).set_names(&amp;["a", "b"]), Err(Error::NamesLengthMismatch(r!(["a", "b"]))));
     /// }
     /// ```
-    </span><span class="kw">fn </span>set_names&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, names: T) -&gt; <span class="prelude-ty">Result</span>&lt;Robj&gt;
+    </span><span class="kw">fn </span>set_names&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, names: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;
     <span class="kw">where
         </span>T: IntoIterator,
         T::IntoIter: ExactSizeIterator,
@@ -2274,7 +2029,7 @@
         }
     }
 
-    <span class="doccomment">/// Get the dim attribute as an integer iterator if one exists.
+    <span class="doccomment">/// Get the `dim` attribute as an integer iterator if one exists.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -2292,7 +2047,7 @@
         </span>}
     }
 
-    <span class="doccomment">/// Get the dimnames attribute as a list iterator if one exists.
+    <span class="doccomment">/// Get the `dimnames` attribute as a list iterator if one exists.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -2309,7 +2064,7 @@
         </span>}
     }
 
-    <span class="doccomment">/// Get the class attribute as a string iterator if one exists.
+    <span class="doccomment">/// Get the `class` attribute as a string iterator if one exists.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -2326,19 +2081,20 @@
         </span>}
     }
 
-    <span class="doccomment">/// Set the class attribute from a string iterator, and returns the same
+    <span class="doccomment">/// Set the `class` attribute from a string iterator, and return the same
     /// object.
     ///
     /// May return an error for some class names.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
-    ///     let mut obj = r!([1, 2, 3]).set_class(&amp;["a", "b", "c"])?;
+    ///     let mut obj = r!([1, 2, 3]);
+    ///     obj.set_class(&amp;["a", "b", "c"])?;
     ///     assert_eq!(obj.class().unwrap().collect::&lt;Vec&lt;_&gt;&gt;(), vec!["a", "b", "c"]);
     ///     assert_eq!(obj.inherits("a"), true);
     /// }
     /// ```
-    </span><span class="kw">fn </span>set_class&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, class: T) -&gt; <span class="prelude-ty">Result</span>&lt;Robj&gt;
+    </span><span class="kw">fn </span>set_class&lt;T&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, class: T) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;mut </span><span class="self">Self</span>&gt;
     <span class="kw">where
         </span>T: IntoIterator,
         T::IntoIter: ExactSizeIterator,
@@ -2365,7 +2121,7 @@
         </span>}
     }
 
-    <span class="doccomment">/// Get the levels attribute as a string iterator if one exists.
+    <span class="doccomment">/// Get the `levels` attribute as a string iterator if one exists.
     /// ```
     /// use extendr_api::prelude::*;
     /// test! {
@@ -2383,7 +2139,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: <span class="question-mark">?</span>Sized + Types + Length&gt; Attributes <span class="kw">for </span>T {}
+<span class="kw">impl </span>Attributes <span class="kw">for </span>Robj {}
 
 <span class="doccomment">/// Compare equality with integer slices.
 </span><span class="kw">impl </span>PartialEq&lt;[i32]&gt; <span class="kw">for </span>Robj {

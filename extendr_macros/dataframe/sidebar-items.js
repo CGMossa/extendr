@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["derive_into_dataframe","derive_struct_into_dataframe"]};
+window.SIDEBAR_ITEMS = {"fn":["derive_into_dataframe","parse_struct"]};

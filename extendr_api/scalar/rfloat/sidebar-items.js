@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["rfloat_helpers"],"struct":["Rfloat"]};
+window.SIDEBAR_ITEMS = {"struct":["Rfloat"]};

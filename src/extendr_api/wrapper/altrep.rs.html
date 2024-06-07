@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/wrapper/altrep.rs`."><title>altrep.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/wrapper/altrep.rs`."><title>altrep.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (98489f248 2024-06-06)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1111,34 +1109,7 @@
 <a href="#1109" id="1109">1109</a>
 <a href="#1110" id="1110">1110</a>
 <a href="#1111" id="1111">1111</a>
-<a href="#1112" id="1112">1112</a>
-<a href="#1113" id="1113">1113</a>
-<a href="#1114" id="1114">1114</a>
-<a href="#1115" id="1115">1115</a>
-<a href="#1116" id="1116">1116</a>
-<a href="#1117" id="1117">1117</a>
-<a href="#1118" id="1118">1118</a>
-<a href="#1119" id="1119">1119</a>
-<a href="#1120" id="1120">1120</a>
-<a href="#1121" id="1121">1121</a>
-<a href="#1122" id="1122">1122</a>
-<a href="#1123" id="1123">1123</a>
-<a href="#1124" id="1124">1124</a>
-<a href="#1125" id="1125">1125</a>
-<a href="#1126" id="1126">1126</a>
-<a href="#1127" id="1127">1127</a>
-<a href="#1128" id="1128">1128</a>
-<a href="#1129" id="1129">1129</a>
-<a href="#1130" id="1130">1130</a>
-<a href="#1131" id="1131">1131</a>
-<a href="#1132" id="1132">1132</a>
-<a href="#1133" id="1133">1133</a>
-<a href="#1134" id="1134">1134</a>
-<a href="#1135" id="1135">1135</a>
-<a href="#1136" id="1136">1136</a>
-<a href="#1137" id="1137">1137</a>
-<a href="#1138" id="1138">1138</a>
-</pre></div><pre class="rust"><code><span class="kw">use </span>prelude::{Rcplx, Rfloat, Rint, Scalar};
+</pre></div><pre class="rust"><code><span class="kw">use </span>prelude::{Rbool, Rcplx, Rfloat, Rint, Scalar};
 
 <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
@@ -1149,37 +1120,33 @@
             </span>Iter: ExactSizeIterator + std::fmt::Debug + Clone + <span class="lifetime">'static </span>+ std::any::Any,
             Iter::Item: Into&lt;<span class="macro-nonterminal">$scalar_type</span>&gt;,
         {
+            <span class="kw">impl</span>&lt;Iter: ExactSizeIterator + std::fmt::Debug + Clone&gt; <span class="macro-nonterminal">$</span><span class="kw">impl for </span><span class="macro-nonterminal">Iter
+            </span><span class="kw">where
+                </span>Iter::Item: Into&lt;<span class="macro-nonterminal">$scalar_type</span>&gt;,
+            {
+                <span class="kw">fn </span>elt(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="macro-nonterminal">$scalar_type </span>{
+                    <span class="macro-nonterminal">$scalar_type::from</span>(<span class="self">self</span>.clone().nth(index).unwrap().into())
+                }
+
+                <span class="kw">fn </span>get_region(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize, data: <span class="kw-2">&amp;mut </span>[<span class="macro-nonterminal">$scalar_type</span>]) -&gt; usize {
+                    <span class="kw">let </span>len = <span class="self">self</span>.len();
+                    <span class="kw">if </span>index &gt; len {
+                        <span class="number">0
+                    </span>} <span class="kw">else </span>{
+                        <span class="kw">let </span><span class="kw-2">mut </span>iter = <span class="self">self</span>.clone().skip(index);
+                        <span class="kw">let </span>num_elems = data.len().min(len - index);
+                        <span class="kw">let </span>dest = <span class="kw-2">&amp;mut </span>data[<span class="number">0</span>..num_elems];
+                        <span class="kw">for </span>d <span class="kw">in </span>dest.iter_mut() {
+                            <span class="kw-2">*</span>d = <span class="macro-nonterminal">$scalar_type::from</span>(iter.next().unwrap().into());
+                        }
+                        num_elems
+                    }
+                }
+            }
+
             <span class="kw">let </span>class = Altrep::<span class="macro-nonterminal">$make_class</span>::&lt;Iter&gt;(std::any::type_name::&lt;Iter&gt;(), <span class="string">"extendr"</span>);
             <span class="kw">let </span>robj: Robj = Altrep::from_state_and_class(iter, class, <span class="bool-val">false</span>).into();
             Altrep { robj }
-        }
-    };
-}
-
-<span class="macro">macro_rules!</span> make_from_iterator_impl {
-    (<span class="macro-nonterminal">$fn_name </span>: ident, <span class="macro-nonterminal">$make_class </span>: ident, <span class="macro-nonterminal">$</span><span class="kw">impl </span>: <span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$scalar_type </span>: ident, <span class="macro-nonterminal">$prim_type </span>: ty) =&gt; {
-        <span class="kw">impl</span>&lt;Iter: ExactSizeIterator + std::fmt::Debug + Clone&gt; <span class="macro-nonterminal">$</span><span class="kw">impl for </span><span class="macro-nonterminal">Iter
-        </span><span class="kw">where
-            </span>Iter::Item: Into&lt;<span class="macro-nonterminal">$scalar_type</span>&gt;,
-        {
-            <span class="kw">fn </span>elt(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize) -&gt; <span class="macro-nonterminal">$scalar_type </span>{
-                <span class="macro-nonterminal">$scalar_type::from</span>(<span class="self">self</span>.clone().nth(index).unwrap().into())
-            }
-
-            <span class="kw">fn </span>get_region(<span class="kw-2">&amp;</span><span class="self">self</span>, index: usize, data: <span class="kw-2">&amp;mut </span>[<span class="macro-nonterminal">$scalar_type</span>]) -&gt; usize {
-                <span class="kw">let </span>len = <span class="self">self</span>.len();
-                <span class="kw">if </span>index &gt; len {
-                    <span class="number">0
-                </span>} <span class="kw">else </span>{
-                    <span class="kw">let </span><span class="kw-2">mut </span>iter = <span class="self">self</span>.clone().skip(index);
-                    <span class="kw">let </span>num_elems = data.len().min(len - index);
-                    <span class="kw">let </span>dest = <span class="kw-2">&amp;mut </span>data[<span class="number">0</span>..num_elems];
-                    <span class="kw">for </span>d <span class="kw">in </span>dest.iter_mut() {
-                        <span class="kw-2">*</span>d = <span class="macro-nonterminal">$scalar_type::from</span>(iter.next().unwrap().into());
-                    }
-                    num_elems
-                }
-            }
         }
     };
 }
@@ -1193,8 +1160,9 @@
 /// Implement one or more of these methods to generate an Altrep class.
 /// This is likely to be unstable for a while.
 </span><span class="kw">pub trait </span>AltrepImpl: Clone + std::fmt::Debug {
-    <span class="doccomment">/// Constructor that is called when loading an Altrep object from a file.
-    </span><span class="kw">fn </span>unserialize_ex(
+    <span class="attr">#[cfg(feature = <span class="string">"non-api"</span>)]
+    </span><span class="doccomment">/// Constructor that is called when loading an Altrep object from a file.
+    </span><span class="kw">unsafe fn </span>unserialize_ex(
         class: Robj,
         state: Robj,
         attributes: Robj,
@@ -1259,7 +1227,7 @@
 
     <span class="doccomment">/// Get the data pointer for this vector, possibly expanding the
     /// compact representation into a full R vector.
-    </span><span class="kw">unsafe fn </span>dataptr(x: SEXP, _writeable: bool) -&gt; <span class="kw-2">*mut </span>u8 {
+    </span><span class="kw">fn </span>dataptr(x: SEXP, _writeable: bool) -&gt; <span class="kw-2">*mut </span>u8 {
         single_threaded(|| <span class="kw">unsafe </span>{
             <span class="kw">let </span>data2 = R_altrep_data2(x);
             <span class="kw">if </span>data2 == R_NilValue || TYPEOF(data2) != TYPEOF(x) {
@@ -1274,7 +1242,7 @@
 
     <span class="doccomment">/// Get the data pointer for this vector, returning NULL
     /// if the object is unmaterialized.
-    </span><span class="kw">unsafe fn </span>dataptr_or_null(x: SEXP) -&gt; <span class="kw-2">*const </span>u8 {
+    </span><span class="kw">fn </span>dataptr_or_null(x: SEXP) -&gt; <span class="kw-2">*const </span>u8 {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>data2 = R_altrep_data2(x);
             <span class="kw">if </span>data2 == R_NilValue || TYPEOF(data2) != TYPEOF(x) {
@@ -1302,22 +1270,25 @@
         <span class="kw">let </span>data2 = Rf_allocVector(TYPEOF(x), len <span class="kw">as </span>R_xlen_t);
         Rf_protect(data2);
         <span class="kw">match </span>TYPEOF(x) {
-            INTSXP =&gt; {
+            SEXPTYPE::INTSXP =&gt; {
                 INTEGER_GET_REGION(x, <span class="number">0</span>, len <span class="kw">as </span>R_xlen_t, INTEGER(data2));
             }
-            LGLSXP =&gt; {
+            SEXPTYPE::LGLSXP =&gt; {
                 LOGICAL_GET_REGION(x, <span class="number">0</span>, len <span class="kw">as </span>R_xlen_t, LOGICAL(data2));
             }
-            REALSXP =&gt; {
+            SEXPTYPE::REALSXP =&gt; {
                 REAL_GET_REGION(x, <span class="number">0</span>, len <span class="kw">as </span>R_xlen_t, REAL(data2));
             }
-            RAWSXP =&gt; {
+            SEXPTYPE::RAWSXP =&gt; {
                 RAW_GET_REGION(x, <span class="number">0</span>, len <span class="kw">as </span>R_xlen_t, RAW(data2));
             }
-            CPLXSXP =&gt; {
+            SEXPTYPE::CPLXSXP =&gt; {
                 COMPLEX_GET_REGION(x, <span class="number">0</span>, len <span class="kw">as </span>R_xlen_t, COMPLEX(data2));
             }
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"unsupported ALTREP type."</span>),
+            <span class="kw">_ </span>=&gt; {
+                Rf_unprotect(<span class="number">2</span>);
+                <span class="macro">panic!</span>(<span class="string">"unsupported ALTREP type."</span>)
+            }
         };
         Rf_unprotect(<span class="number">2</span>);
         data2
@@ -1698,7 +1669,8 @@
         </span><span class="kw">use </span>std::os::raw::c_int;
         <span class="kw">use </span>std::os::raw::c_void;
 
-        <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>altrep_UnserializeEX&lt;StateType: AltrepImpl&gt;(
+        <span class="attr">#[cfg(feature = <span class="string">"non-api"</span>)]
+        </span><span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>altrep_UnserializeEX&lt;StateType: AltrepImpl&gt;(
             class: SEXP,
             state: SEXP,
             attr: SEXP,
@@ -1709,8 +1681,8 @@
                 Robj::from_sexp(class),
                 Robj::from_sexp(state),
                 Robj::from_sexp(attr),
-                objf,
-                levs,
+                objf <span class="kw">as </span>i32,
+                levs <span class="kw">as </span>i32,
             )
             .get()
         }
@@ -1730,7 +1702,7 @@
 
         <span class="kw">unsafe extern </span><span class="string">"C" </span><span class="kw">fn </span>altrep_Coerce&lt;StateType: AltrepImpl + <span class="lifetime">'static</span>&gt;(
             x: SEXP,
-            ty: c_int,
+            ty: SEXPTYPE,
         ) -&gt; SEXP {
             &lt;StateType&gt;::coerce(x, sxp_to_rtype(ty)).get()
         }
@@ -1821,7 +1793,8 @@
                 <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"expected Altvec compatible type"</span>),
             };
 
-            R_set_altrep_UnserializeEX_method(class_ptr, <span class="prelude-val">Some</span>(altrep_UnserializeEX::&lt;StateType&gt;));
+            <span class="attr">#[cfg(feature = <span class="string">"non-api"</span>)]
+            </span>R_set_altrep_UnserializeEX_method(class_ptr, <span class="prelude-val">Some</span>(altrep_UnserializeEX::&lt;StateType&gt;));
             R_set_altrep_Unserialize_method(class_ptr, <span class="prelude-val">Some</span>(altrep_Unserialize::&lt;StateType&gt;));
             R_set_altrep_Serialized_state_method(
                 class_ptr,
@@ -2241,35 +2214,6 @@
         c64
     );
 }
-
-<span class="macro">make_from_iterator_impl!</span>(
-    make_altinteger_from_iterator,
-    make_altinteger_class,
-    AltIntegerImpl,
-    Rint,
-    i32
-);
-<span class="macro">make_from_iterator_impl!</span>(
-    make_altlogical_from_iterator,
-    make_altlogical_class,
-    AltLogicalImpl,
-    Rbool,
-    i32
-);
-<span class="macro">make_from_iterator_impl!</span>(
-    make_altreal_from_iterator,
-    make_altreal_class,
-    AltRealImpl,
-    Rfloat,
-    f64
-);
-<span class="macro">make_from_iterator_impl!</span>(
-    make_altcomplex_from_iterator,
-    make_altcomplex_class,
-    AltComplexImpl,
-    Rcplx,
-    c64
-);
 
 <span class="kw">impl</span>&lt;Iter: ExactSizeIterator + std::fmt::Debug + Clone&gt; AltrepImpl <span class="kw">for </span>Iter {
     <span class="kw">fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {

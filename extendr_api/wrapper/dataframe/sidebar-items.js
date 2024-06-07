@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["Dataframe"],"trait":["IntoDataframe"]};
+window.SIDEBAR_ITEMS = {"struct":["Dataframe"],"trait":["IntoDataFrameRow"]};

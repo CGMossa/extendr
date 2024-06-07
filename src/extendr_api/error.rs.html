@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/error.rs`."><title>error.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/error.rs`."><title>error.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (98489f248 2024-06-06)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -241,26 +239,13 @@
 <a href="#239" id="239">239</a>
 <a href="#240" id="240">240</a>
 <a href="#241" id="241">241</a>
-<a href="#242" id="242">242</a>
-<a href="#243" id="243">243</a>
-<a href="#244" id="244">244</a>
-<a href="#245" id="245">245</a>
-<a href="#246" id="246">246</a>
-<a href="#247" id="247">247</a>
-<a href="#248" id="248">248</a>
-<a href="#249" id="249">249</a>
-<a href="#250" id="250">250</a>
-<a href="#251" id="251">251</a>
-<a href="#252" id="252">252</a>
-<a href="#253" id="253">253</a>
-<a href="#254" id="254">254</a>
-<a href="#255" id="255">255</a>
 </pre></div><pre class="rust"><code><span class="doccomment">//! Error handling in Rust called from R.
 
-</span><span class="kw">use </span><span class="kw">crate</span>::robj::Types;
-<span class="kw">use crate</span>::{throw_r_error, Robj};
+</span><span class="kw">use </span>std::convert::Infallible;
 
-<span class="kw">use </span>std::convert::Infallible;
+<span class="kw">use </span><span class="kw">crate</span>::conversions::try_into_int::ConversionError;
+<span class="kw">use </span><span class="kw">crate</span>::robj::Types;
+<span class="kw">use crate</span>::{throw_r_error, Robj};
 
 <span class="doccomment">/// Throw an R error if a result is an error.
 </span><span class="attr">#[doc(hidden)]
@@ -321,25 +306,22 @@
     ExpectedVector(Robj),
     ExpectedMatrix(Robj),
     ExpectedMatrix3D(Robj),
-    ExpectedArray(Robj),
     ExpectedNumeric(Robj),
     ExpectedAltrep(Robj),
     ExpectedDataframe(Robj),
 
     OutOfRange(Robj),
     MustNotBeNA(Robj),
+    ExpectedWholeNumber(Robj, ConversionError),
     ExpectedNonZeroLength(Robj),
-    ExpectedWholeNumber(Robj),
     OutOfLimits(Robj),
     TypeMismatch(Robj),
     NamespaceNotFound(Robj),
     NoGraphicsDevices(Robj),
 
-    ExpectedFactor(Robj),
-    ExpectedScalarFactor(Robj),
-    InvalidLevels(Robj, Robj),
     ExpectedExternalPtrType(Robj, String),
     ExpectedExternalNonNullPtr(Robj),
+    ExpectedExternalPtrReference,
     Other(String),
 
     <span class="attr">#[cfg(feature = <span class="string">"ndarray"</span>)]
@@ -400,7 +382,6 @@
             Error::ExpectedVector(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Vector, got {:?}"</span>, robj.rtype()),
             Error::ExpectedMatrix(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Matrix, got {:?}"</span>, robj.rtype()),
             Error::ExpectedMatrix3D(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Matrix3D, got {:?}"</span>, robj.rtype()),
-            Error::ExpectedArray(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Array, got {:?}"</span>, robj.rtype()),
             Error::ExpectedNumeric(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Numeric, got {:?}"</span>, robj.rtype()),
             Error::ExpectedAltrep(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected Altrep, got {:?}"</span>, robj.rtype()),
             Error::ExpectedDataframe(robj) =&gt; {
@@ -410,32 +391,10 @@
             Error::OutOfRange(_robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Out of range."</span>),
             Error::MustNotBeNA(_robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Must not be NA."</span>),
             Error::ExpectedNonZeroLength(_robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected non zero length"</span>),
-            Error::ExpectedWholeNumber(robj) =&gt; {
-                <span class="macro">write!</span>(
-                    f,
-                    <span class="string">"Expected an integer or a float representing a whole number, got {:?}"</span>,
-                    robj
-                )
-            }
             Error::OutOfLimits(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"The value is too big: {:?}"</span>, robj),
             Error::TypeMismatch(_robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Type mismatch"</span>),
 
             Error::NamespaceNotFound(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Namespace {:?} not found"</span>, robj),
-            <span class="comment">// factor conversion errors
-            </span>Error::ExpectedFactor(robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"Expected factor, got {:?}"</span>, robj),
-            Error::ExpectedScalarFactor(robj) =&gt; {
-                <span class="macro">write!</span>(
-                    f,
-                    <span class="string">"Expected scalar factor, got {:?}, of length {} instead of 1"</span>,
-                    robj,
-                    <span class="kw">crate</span>::Length::len(robj)
-                )
-            }
-            Error::InvalidLevels(source_levels, target_levels) =&gt; <span class="macro">write!</span>(
-                f,
-                <span class="string">"Expected levels: {:?}, received levels: {:?}"</span>,
-                target_levels, source_levels
-            ),
             Error::ExpectedExternalPtrType(_robj, type_name) =&gt; {
                 <span class="macro">write!</span>(f, <span class="string">"Incorrect external pointer type {}"</span>, type_name)
             }
@@ -446,8 +405,19 @@
                     robj
                 )
             }
+            Error::ExpectedExternalPtrReference =&gt; {
+                <span class="macro">write!</span>(f, <span class="string">"It is only possible to return a reference to self."</span>)
+            }
             Error::NoGraphicsDevices(_robj) =&gt; <span class="macro">write!</span>(f, <span class="string">"No graphics devices active."</span>),
             Error::Other(str) =&gt; <span class="macro">write!</span>(f, <span class="string">"{}"</span>, str),
+
+            Error::ExpectedWholeNumber(robj, conversion_error) =&gt; {
+                <span class="macro">write!</span>(
+                    f,
+                    <span class="string">"Failed to convert a float to a whole number: {}. Actual value received: {:?}"</span>,
+                    conversion_error, robj
+                )
+            }
 
             <span class="attr">#[cfg(feature = <span class="string">"ndarray"</span>)]
             </span>Error::NDArrayShapeError(shape_error) =&gt; {

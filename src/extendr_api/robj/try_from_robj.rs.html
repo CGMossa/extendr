@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/try_from_robj.rs`."><title>try_from_robj.rs - source</title><script> if (window.location.protocol !== "file:") document.write(`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2">`)</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9e1300b5663a8a03.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.79.0-nightly (9d79cd5f7 2024-04-05)" data-channel="nightly" data-search-js="search-ffac13a0df2b1870.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-e32f0c247825364d.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-c97aec732c613ca4.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-09095024cf37855e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
-            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
-    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../extendr_api/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `extendr-api/src/robj/try_from_robj.rs`."><title>try_from_robj.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="extendr_api" data-themes="" data-resource-suffix="" data-rustdoc-version="1.80.0-nightly (98489f248 2024-06-06)" data-channel="nightly" data-search-js="search-d52510db62a78183.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -466,39 +464,17 @@
 <a href="#464" id="464">464</a>
 <a href="#465" id="465">465</a>
 <a href="#466" id="466">466</a>
-<a href="#467" id="467">467</a>
-<a href="#468" id="468">468</a>
-<a href="#469" id="469">469</a>
-<a href="#470" id="470">470</a>
-<a href="#471" id="471">471</a>
-<a href="#472" id="472">472</a>
-<a href="#473" id="473">473</a>
-<a href="#474" id="474">474</a>
-<a href="#475" id="475">475</a>
-<a href="#476" id="476">476</a>
-<a href="#477" id="477">477</a>
-<a href="#478" id="478">478</a>
-<a href="#479" id="479">479</a>
-<a href="#480" id="480">480</a>
-<a href="#481" id="481">481</a>
-<a href="#482" id="482">482</a>
-<a href="#483" id="483">483</a>
-<a href="#484" id="484">484</a>
-<a href="#485" id="485">485</a>
-<a href="#486" id="486">486</a>
-<a href="#487" id="487">487</a>
-<a href="#488" id="488">488</a>
-<a href="#489" id="489">489</a>
-<a href="#490" id="490">490</a>
-<a href="#491" id="491">491</a>
-<a href="#492" id="492">492</a>
-<a href="#493" id="493">493</a>
-<a href="#494" id="494">494</a>
-<a href="#495" id="495">495</a>
-<a href="#496" id="496">496</a>
-</pre></div><pre class="rust"><code><span class="doccomment">//! Conversions to [`Robj`]
+</pre></div><pre class="rust"><code><span class="doccomment">//! There are various ways an [`Robj`] may be converted into different types `T`.
+//!
+//! This module defines these conversions on `&amp;Robj`. Due to internal reference
+//! counting measure of [`ownership`]-module, it is cheaper to copy `&amp;Robj`,
+//! than copying `Robj`, as the latter will incur an increase in reference counting.
+//!
+//!
+//! [`ownership`]: crate::ownership
+</span><span class="kw">use </span><span class="kw">crate</span>::conversions::try_into_int::FloatToInt;
 
-</span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+<span class="kw">use super</span>::<span class="kw-2">*</span>;
 
 <span class="macro">macro_rules!</span> impl_try_from_scalar_integer {
     (<span class="macro-nonterminal">$t</span>:ty) =&gt; {
@@ -533,16 +509,11 @@
 
                 <span class="comment">// If the conversion is float-to-int, check if the value is
                 // integer-like (i.e., an integer, or a float representing a
-                // whole number). This needs to be down with `as`, as no
-                // `TryFrom` is implemented for float types. `FloatToInt` trait
-                // might eventually become available in future, though.
+                // whole number).
                 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_real() {
-                    <span class="kw">let </span>result = v <span class="kw">as </span><span class="self">Self</span>;
-                    <span class="kw">if </span>(result <span class="kw">as </span>f64 - v).abs() &lt; f64::EPSILON {
-                        <span class="kw">return </span><span class="prelude-val">Ok</span>(result);
-                    } <span class="kw">else </span>{
-                        <span class="kw">return </span><span class="prelude-val">Err</span>(Error::ExpectedWholeNumber(robj.clone()));
-                    }
+                    <span class="kw">return </span>v
+                        .try_into_int()
+                        .map_err(|conv_err| Error::ExpectedWholeNumber(robj.clone(), conv_err));
                 }
 
                 <span class="prelude-val">Err</span>(Error::ExpectedNumeric(robj.clone()))
@@ -570,14 +541,16 @@
                     <span class="kw">return </span><span class="prelude-val">Err</span>(Error::MustNotBeNA(robj.clone()));
                 }
 
-                <span class="comment">// &lt;Robj&gt;::as_xxx() methods can work only when the underlying
+                <span class="comment">// `&lt;Robj&gt;::as_xxx()` methods can work only when the underlying
                 // `SEXP` is the corresponding type, so we cannot use `as_real()`
                 // directly on `INTSXP`.
                 </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_real() {
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(v <span class="kw">as </span><span class="self">Self</span>);
+                    <span class="comment">// f64 to f32 and f64 to f64 is always safe.
+                    </span><span class="kw">return </span><span class="prelude-val">Ok</span>(v <span class="kw">as </span><span class="self">Self</span>);
                 }
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_integer() {
-                    <span class="kw">return </span><span class="prelude-val">Ok</span>(v <span class="kw">as </span><span class="self">Self</span>);
+                    <span class="comment">// An i32 R integer can be represented exactly by f64, but might be truncated in f32.
+                    </span><span class="kw">return </span><span class="prelude-val">Ok</span>(v <span class="kw">as </span><span class="self">Self</span>);
                 }
 
                 <span class="prelude-val">Err</span>(Error::ExpectedNumeric(robj.clone()))
@@ -602,7 +575,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>bool {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an `LGLSXP` object into a boolean.
+    <span class="doccomment">/// Convert an LGLSXP object into a boolean.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>robj.is_na() {
@@ -616,7 +589,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>str {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a scalar `STRSXP` object into a string slice.
+    <span class="doccomment">/// Convert a scalar STRSXP object into a string slice.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if </span>robj.is_na() {
@@ -639,7 +612,7 @@
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>String {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an scalar `STRSXP` object into a `String`.
+    <span class="doccomment">/// Convert an scalar STRSXP object into a String.
     /// Note: Unless you plan to store the result, use a string slice instead.
     /// NAs are not allowed.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -647,31 +620,118 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;T&gt;
-<span class="kw">where
-    </span>T: Clone,
-    Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;i32&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert an `INTSXP` object into a vector of `i32` (integer).
+    <span class="doccomment">/// Convert an INTSXP object into a vector of i32 (integer).
     /// Note: Unless you plan to store the result, use a slice instead.
-    /// Use `value.is_na()` to detect `NA` values.
+    /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>v = robj.try_into_typed_slice()<span class="question-mark">?</span>;
-        <span class="comment">// TODO: check NAs
-        </span><span class="prelude-val">Ok</span>(Vec::from(v))
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="comment">// TODO: check NAs
+            </span><span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedInteger(robj.clone()))
+        }
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;f64&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a REALSXP object into a vector of f64 (double precision floating point).
+    /// Note: Unless you plan to store the result, use a slice instead.
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="comment">// TODO: check NAs
+            </span><span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedReal(robj.clone()))
+        }
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;u8&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a RAWSXP object into a vector of bytes.
+    /// Note: Unless you plan to store the result, use a slice instead.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedRaw(robj.clone()))
+        }
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rint&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert an INTSXP object into a vector of i32 (integer).
+    /// Note: Unless you plan to store the result, use a slice instead.
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedInteger(robj.clone()))
+        }
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rfloat&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a REALSXP object into a vector of f64 (double precision floating point).
+    /// Note: Unless you plan to store the result, use a slice instead.
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedReal(robj.clone()))
+        }
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rbool&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a LGLSXP object into a vector of Rbool (tri-state booleans).
+    /// Note: Unless you plan to store the result, use a slice instead.
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedInteger(robj.clone()))
+        }
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;Rcplx&gt; {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a complex object into a vector of Rcplx.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_typed_slice() {
+            <span class="prelude-val">Ok</span>(Vec::from(v))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(Error::ExpectedComplex(robj.clone()))
+        }
     }
 }
 
 <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Vec&lt;String&gt; {
     <span class="kw">type </span>Error = Error;
 
-    <span class="doccomment">/// Convert a `STRSXP` object into a vector of `String`s.
+    <span class="doccomment">/// Convert a STRSXP object into a vector of `String`s.
     /// Note: Unless you plan to store the result, use a slice instead.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">if let </span><span class="prelude-val">Some</span>(iter) = robj.as_str_iter() {
-            <span class="comment">// check for `NA`'s in the string vector
+            <span class="comment">// check for NA's in the string vector
             </span><span class="kw">if </span>iter.clone().any(|s| s.is_na()) {
                 <span class="prelude-val">Err</span>(Error::MustNotBeNA(robj.clone()))
             } <span class="kw">else </span>{
@@ -683,79 +743,83 @@
     }
 }
 
-<span class="comment">// region: `RobjRef` / `RobjMut`
-
-</span><span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RobjRef&lt;<span class="lifetime">'_</span>, [T]&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[i32] {
     <span class="kw">type </span>Error = Error;
 
-    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        robj.try_into_typed_slice().map(<span class="self">Self</span>)
-    }
-}
-
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span>RobjMut&lt;<span class="lifetime">'_</span>, [T]&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
-
-    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        robj.try_into_typed_slice_mut().map(<span class="self">Self</span>)
-    }
-}
-
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>RobjRef&lt;<span class="lifetime">'_</span>, T&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
-
-    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>slice = robj.try_into_typed_slice()<span class="question-mark">?</span>;
-        <span class="kw">match </span>robj.len() {
-            <span class="number">0 </span>=&gt; <span class="prelude-val">Err</span>(Error::ExpectedNonZeroLength(robj.clone())),
-            <span class="number">1 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>(slice.first().unwrap())),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(Error::ExpectedScalar(robj.clone())),
-        }
-    }
-}
-
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span>RobjMut&lt;<span class="lifetime">'_</span>, T&gt;
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
-
-    <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>slice = robj.try_into_typed_slice_mut()<span class="question-mark">?</span>;
-        <span class="kw">match </span>robj.len() {
-            <span class="number">0 </span>=&gt; <span class="prelude-val">Err</span>(Error::ExpectedNonZeroLength(robj.clone())),
-            <span class="number">1 </span>=&gt; <span class="prelude-val">Ok</span>(<span class="self">Self</span>(slice.first_mut().unwrap())),
-            <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(Error::ExpectedScalar(robj.clone())),
-        }
-    }
-}
-
-<span class="comment">// endregion
-
-</span><span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[T]
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
-
-    <span class="doccomment">/// Use `value.is_na()` to detect `NA` values.
+    <span class="doccomment">/// Convert an INTSXP object into a slice of i32 (integer).
+    /// Use `value.is_na()` to detect NA values.
     </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        robj.try_into_typed_slice()
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
     }
 }
 
-<span class="comment">// NOTE: Cannot support `Box&lt;[T]&gt;` as that may cause a double-free!
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rint] {
+    <span class="kw">type </span>Error = Error;
 
-</span><span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Rcplx {
+    <span class="doccomment">/// Convert an integer object into a slice of Rint (tri-state booleans).
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedInteger(robj.clone()))
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rfloat] {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a doubles object into a slice of Rfloat (tri-state booleans).
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedReal(robj.clone()))
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rbool] {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a logical object into a slice of Rbool (tri-state booleans).
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedLogical(robj.clone()))
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[Rcplx] {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a complex object into a slice of Rbool
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedComplex(robj.clone()))
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[u8] {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a RAWSXP object into a slice of bytes.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedRaw(robj.clone()))
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>[f64] {
+    <span class="kw">type </span>Error = Error;
+
+    <span class="doccomment">/// Convert a REALSXP object into a slice of f64 (double precision floating point).
+    /// Use `value.is_na()` to detect NA values.
+    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
+        robj.as_typed_slice()
+            .ok_or_else(|| Error::ExpectedReal(robj.clone()))
+    }
+}
+
+<span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>Rcplx {
     <span class="kw">type </span>Error = Error;
 
     <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;</span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
@@ -771,27 +835,29 @@
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Rcplx::na());
         }
 
-        <span class="comment">// This should always work, `NA` is handled above.
+        <span class="comment">// This should always work, NA is handled above.
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_real() {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Rcplx::from(v));
         }
 
-        <span class="comment">// Any integer (32 bit) can be represented as `f64`,
+        <span class="comment">// Any integer (32 bit) can be represented as f64,
         // this always works.
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(v) = robj.as_integer() {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(Rcplx::from(v <span class="kw">as </span>f64));
         }
 
         <span class="comment">// Complex slices return their first element.
-        </span><span class="kw">let </span>s = robj.try_into_typed_slice()<span class="question-mark">?</span>;
-        <span class="prelude-val">Ok</span>(s[<span class="number">0</span>])
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(s) = robj.as_typed_slice() {
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(s[<span class="number">0</span>]);
+        }
+
+        <span class="prelude-val">Err</span>(Error::ExpectedComplex(robj.clone()))
     }
 }
 
-<span class="comment">// Convert `TryFrom&lt;&amp;Robj&gt;` into `TryFrom&lt;Robj&gt;`. Sadly, we are unable to make a blanket
-// conversion using `GetSexp` with the current version of Rust.
-</span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules!</span> impl_try_from_robj_ref {
+<span class="comment">// Convert TryFrom&lt;&amp;Robj&gt; into TryFrom&lt;Robj&gt;. Sadly, we are unable to make a blanket
+// conversion using GetSexp with the current version of Rust.
+</span><span class="macro">macro_rules!</span> impl_try_from_robj {
     ($(<span class="macro-nonterminal">$</span><span class="kw">type </span>: <span class="macro-nonterminal">ty</span>)<span class="kw-2">*</span>) =&gt; {
         $(
             <span class="kw">impl </span>TryFrom&lt;Robj&gt; <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
@@ -824,151 +890,23 @@
         )*
     }
 }
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_try_from_robj_ref;
 
-<span class="macro">impl_try_from_robj_ref!</span>(
+<span class="macro">impl_try_from_robj!</span>(
     u8 u16 u32 u64 usize
     i8 i16 i32 i64 isize
     bool
     Rint Rfloat Rbool Rcplx
     f32 f64
+    Vec&lt;String&gt;
     HashMap::&lt;String, Robj&gt; HashMap::&lt;<span class="kw-2">&amp;</span>str, Robj&gt;
-    Vec::&lt;String&gt;
     Vec::&lt;Rint&gt; Vec::&lt;Rfloat&gt; Vec::&lt;Rbool&gt; Vec::&lt;Rcplx&gt; Vec::&lt;u8&gt; Vec::&lt;i32&gt; Vec::&lt;f64&gt;
     <span class="kw-2">&amp;</span>[Rint] <span class="kw-2">&amp;</span>[Rfloat] <span class="kw-2">&amp;</span>[Rbool] <span class="kw-2">&amp;</span>[Rcplx] <span class="kw-2">&amp;</span>[u8] <span class="kw-2">&amp;</span>[i32] <span class="kw-2">&amp;</span>[f64]
-    <span class="comment">//TODO: RobjRef&lt;'_, str&gt;
-    //TODO: RobjRef&lt;'_, [str]&gt;
-    </span>RobjRef&lt;<span class="lifetime">'_</span>, Rstr&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rint&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rfloat&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rbool&gt; RobjRef&lt;<span class="lifetime">'_</span>, Rcplx&gt; RobjRef&lt;<span class="lifetime">'_</span>, u8&gt; RobjRef&lt;<span class="lifetime">'_</span>, i32&gt; RobjRef&lt;<span class="lifetime">'_</span>, f64&gt;
-    RobjRef&lt;<span class="lifetime">'_</span>, [Rstr]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rint]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rfloat]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rbool]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [Rcplx]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [u8]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [i32]&gt; RobjRef&lt;<span class="lifetime">'_</span>, [f64]&gt;
     <span class="kw-2">&amp;</span>str String
 );
 
-<span class="comment">// region: mutable
-
-// Convert `TryFrom&lt;&amp;mut Robj&gt;` into `TryFrom&lt;Robj&gt;`.
-// TODO: Try with GATS now?
-// Sadly, we are unable to make a blanket
-// conversion using `GetSexp` with the current version of Rust.
-
-// TODO: It might be possible to unify `impl_try_from_robj_ref` and `impl_try_from_robj_mut`,
-// by first making a macro that takes in a list of tokens, then making one that
-// specifically expects owned, ref, and ref mut together with type.
-//
-/*
-macro_rules! impl_try_from_on {
-    // Base case: no more tokens to process
-    () =&gt; {};
-
-    // Handle Vec&lt;T&gt;
-    (Vec&lt;$t:ty&gt;  $(, $($rest:tt)*)?) =&gt; {
-        println!("Vec&lt;{}&gt;", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-
-    // Handle slice references &amp;[T]
-    (&amp;[$t:ty]  $(, $($rest:tt)*)?) =&gt; {
-        println!("&amp;[{}]", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-
-    // Handle mutable slice references &amp;mut [T]
-    (&amp;mut [$t:ty]  $(, $($rest:tt)*)?) =&gt; {
-        println!("&amp;mut [{}]", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-    // Handle Option&lt;T&gt;
-    (Option&lt;$t:ty&gt;  $(, $($rest:tt)*)?) =&gt; {
-        println!("Option&lt;{}&gt;", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-
-    // Handle Option&lt;&amp;T&gt;
-    (Option&lt;&amp;$t:ty&gt;  $(, $($rest:tt)*)?) =&gt; {
-        println!("Option&lt;&amp;{}&gt;", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-    // Handle Option&lt;&amp;mut T&gt;
-    (Option&lt;&amp;mut $t:ty&gt; $(, $($rest:tt)*)?) =&gt; {
-        println!("Option&lt;&amp;mut {}&gt;", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-
-    // Handle references &amp;T
-    (&amp;$t:ty  $(, $($rest:tt)*)?) =&gt; {
-        println!("&amp;{}", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-
-    // Handle mutable references &amp;mut T
-    (&amp;mut $t:ty  $(, $($rest:tt)*)?) =&gt; {
-        println!("&amp;mut {}", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-
-    // Handle owned types
-    ($t:ty  $(, $($rest:tt)*)?) =&gt; {
-        println!("Owned {}", stringify!($t));
-        $(impl_try_from_on!($($rest)*);)?
-    };
-}
- */
-//
-</span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules!</span> impl_try_from_robj_mut {
-    ($(<span class="macro-nonterminal">$</span><span class="kw">type </span>: <span class="macro-nonterminal">ty</span>)<span class="kw-2">*</span>) =&gt; {
-        $(
-            <span class="kw">impl </span>TryFrom&lt;Robj&gt; <span class="kw">for </span><span class="macro-nonterminal">$</span><span class="kw">type </span>{
-                <span class="kw">type </span><span class="macro-nonterminal">Error </span>= Error;
-
-                <span class="kw">fn </span>try_from(<span class="kw-2">mut </span>robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-                    &lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt;<span class="macro-nonterminal">::try_from</span>(<span class="kw-2">&amp;mut </span>robj)
-                }
-            }
-
-            <span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
-                <span class="kw">type </span><span class="macro-nonterminal">Error </span>= Error;
-
-                <span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-                    <span class="kw">if </span>robj.is_null() || robj.is_na() {
-                        <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>)
-                    } <span class="kw">else </span>{
-                        <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt;<span class="macro-nonterminal">::try_from</span>(robj)<span class="question-mark">?</span>))
-                    }
-                }
-            }
-
-            <span class="kw">impl </span>TryFrom&lt;Robj&gt; <span class="kw">for </span><span class="prelude-ty">Option</span>&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt; {
-                <span class="kw">type </span><span class="macro-nonterminal">Error </span>= Error;
-
-                <span class="kw">fn </span>try_from(<span class="kw-2">mut </span>robj: Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-                    &lt;<span class="prelude-ty">Option</span>::&lt;<span class="macro-nonterminal">$</span><span class="kw">type</span>&gt;&gt;<span class="macro-nonterminal">::try_from</span>(<span class="kw-2">&amp;mut </span>robj)
-                }
-            }
-        )*
-    }
-}
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">use </span>impl_try_from_robj_mut;
-
-<span class="macro">impl_try_from_robj_mut!</span>(
-    <span class="kw-2">&amp;mut </span>[Rint] <span class="kw-2">&amp;mut </span>[Rfloat] <span class="kw-2">&amp;mut </span>[Rbool] <span class="kw-2">&amp;mut </span>[Rcplx] <span class="kw-2">&amp;mut </span>[u8] <span class="kw-2">&amp;mut </span>[i32] <span class="kw-2">&amp;mut </span>[f64]
-    RobjMut&lt;<span class="lifetime">'_</span>, Rint&gt; RobjMut&lt;<span class="lifetime">'_</span>, Rfloat&gt; RobjMut&lt;<span class="lifetime">'_</span>, Rbool&gt; RobjMut&lt;<span class="lifetime">'_</span>, Rcplx&gt; RobjMut&lt;<span class="lifetime">'_</span>, u8&gt; RobjMut&lt;<span class="lifetime">'_</span>, i32&gt; RobjMut&lt;<span class="lifetime">'_</span>, f64&gt;
-    RobjMut&lt;<span class="lifetime">'_</span>, [Rint]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rfloat]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rbool]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [Rcplx]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [u8]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [i32]&gt; RobjMut&lt;<span class="lifetime">'_</span>, [f64]&gt;
-);
-
-<span class="kw">impl</span>&lt;T&gt; TryFrom&lt;<span class="kw-2">&amp;mut </span>Robj&gt; <span class="kw">for </span><span class="kw-2">&amp;mut </span>[T]
-<span class="kw">where
-    </span>Robj: <span class="kw">for</span>&lt;<span class="lifetime">'a</span>&gt; AsTypedSlice&lt;<span class="lifetime">'a</span>, T&gt;,
-{
-    <span class="kw">type </span>Error = Error;
-
-    <span class="doccomment">/// Convert an `INTSXP` object into a mutable slice of `i32` (integer).
-    /// Use `value.is_na()` to detect `NA` values.
-    </span><span class="kw">fn </span>try_from(robj: <span class="kw-2">&amp;mut </span>Robj) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>&gt; {
-        robj.try_into_typed_slice_mut()
-    }
-}
-
-<span class="comment">// endregion
+<span class="comment">// NOTE: this is included for compatibility with previously defined `FromRobj`
+// One should prefer `List::from_hashmap` instead,
+// and this `impl` should be deprecated next.
 
 </span><span class="kw">impl </span>TryFrom&lt;<span class="kw-2">&amp;</span>Robj&gt; <span class="kw">for </span>HashMap&lt;String, Robj&gt; {
     <span class="kw">type </span>Error = Error;

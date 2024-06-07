@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["rcplx_helpers"],"struct":["Rcplx"],"type":["c64"]};
+window.SIDEBAR_ITEMS = {"struct":["Rcplx"],"type":["c64"]};
