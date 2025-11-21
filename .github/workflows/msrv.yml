@@ -29,7 +29,7 @@ jobs:
         shell: pwsh
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: baptiste0928/cargo-install@v3
         with:
           crate: cargo-msrv
